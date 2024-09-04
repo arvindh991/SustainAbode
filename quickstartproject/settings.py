@@ -34,7 +34,9 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     # my_apps
     'sustainScoreMap',
+    'compareSuburbsMap',
 
+    # default_apps
     "whitenoise.runserver_nostatic",
     'django.contrib.admin',
     'django.contrib.auth',
@@ -63,6 +65,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
