@@ -32,6 +32,9 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    # my_apps
+    'sustainScoreMap',
+
     "whitenoise.runserver_nostatic",
     'django.contrib.admin',
     'django.contrib.auth',
