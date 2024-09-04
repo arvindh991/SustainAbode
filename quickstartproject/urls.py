@@ -15,8 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from . import views  # Import the views from the project folder
 
 urlpatterns = [
-    path('', include('hello_azure.urls')),
+    path('', views.landing_page, name='landing_page'),  # Load the landing page from project views
+    path('sustainscoremap/', include('sustainScoreMap.urls')),  # Link the app's URLs
+    path('comparesuburbsmap/', include('compareSuburbsMap.urls')),
     path('admin/', admin.site.urls),
 ]
