@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% load static %} <!-- Load the static tag library -->
+
+{% block title %}Home - SustainABode{% endblock %}
+
+{% block content %}
+
+<div id='map' style='width: 400px; height: 300px;'></div>
+<script>
+  mapboxgl.accessToken = 'pk.eyJ1IjoiZWpvczAwMDgiLCJhIjoiY20waTAxdmp1MGd3ajJqb2p4ZnhtdDZ0cyJ9.4BNUInHpOpk5wPUqURv7EA';
+  var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/streets-v11'
+  });
+</script>
+
+{% comment %} <div id='map' style='width: 100%; height: 400px;'></div>
+<script>
+  mapboxgl.accessToken = 'pk.eyJ1IjoiZWpvczAwMDgiLCJhIjoiY2x6aWE2aXJtMGNuNTJwb3B4cmY5cGc0dCJ9.YglcmpVEfBIHdKUmERis_w';
+  var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/ejos0008/cm0jdjhjr015101rbhwbxc2ql'
+  });
+</script> {% endcomment %}
+{% endblock %}

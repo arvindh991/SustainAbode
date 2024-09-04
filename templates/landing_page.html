@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Home - SustainABode{% endblock %}
+
+{% load static %}  <!-- Add this line to load the static files -->
+
+{% block content %}
+<!-- Hero Section -->
+<div class="px-4 py-5 my-5 text-center">
+  <img class="d-block mx-auto mb-4" src="{% static 'images/home-image.jpeg' %}" alt="Sustainable Home" style="max-width: 100%; height: auto; border-radius: 10px;">
+  <h1 class="display-5 fw-bold">Discover a sustainable suburb for your next home</h1>
+  <p class="lead mb-4">Align your home with your eco-values</p>
+  <a href="{% url 'sustainscoremap' %}" class="btn btn-success btn-lg px-4 gap-3">Explore</a>
+</div>
+
+<!-- Suburb-Wise Sustainability Score Section -->
+<div class="row align-items-center my-5">
+  <div class="col-lg-6">
+    <img class="img-fluid rounded mb-4" src="{% static 'images/overallmap.png' %}" alt="Sustainability Map">
+  </div>
+  <div class="col-lg-6">
+    <h2 class="fw-bold">Find the suburb that best fits your criteria of sustainable living</h2>
+    <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+    <a href="{% url 'sustainscoremap' %}" class="btn btn-success btn-lg px-4 gap-3">Find Out More</a>
+  </div>
+</div>
+
+<!-- Compare Section -->
+<div class="row align-items-center my-5 text-center">
+  <h2 class="fw-bold mb-4">Compare & Contrast: Find the Greener Choice</h2>
+  <div class="col-md-6">
+    <img class="img-fluid rounded mb-4" src="{% static 'images/comparemap1.png' %}" alt="Map Comparison 1">
+  </div>
+  <div class="col-md-6">
+    <img class="img-fluid rounded mb-4" src="{% static 'images/comparemap2.png' %}" alt="Map Comparison 2">
+  </div>
+  <div class="col-12">
+    <a href="{% url 'comparesuburbsmap' %}" class="btn btn-success btn-lg px-4 gap-3">Compare</a>
+  </div>
+</div>
+{% endblock %}

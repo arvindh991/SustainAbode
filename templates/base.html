@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {% load static %} <!-- Load the static tag library -->
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Sustain ABode - Your Path to a Greener Future">
+    <meta name="author" content="Sustain ABode">
+    <title>{% block title %}Sustain ABode{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet' />
+    <style>
+      body {
+        background-color: #f5f5f5;
+        font-family: 'Arial', sans-serif;
+        padding-top: 70px;
+      }
+
+      .navbar {
+        background-color: #1b5e20;
+      }
+
+      .navbar-brand img {
+        max-height: 40px;
+        margin-right: 10px;
+      }
+
+      .footer {
+        background-color: #1b5e20;
+        color: white;
+        padding: 20px 0;
+        text-align: center;
+        position: fixed;
+        width: 100%;
+        bottom: 0;
+      }
+
+      .container {
+        margin-bottom: 100px; /* Space for footer */
+      }
+    </style>
+  </head>
+  <body>
+
+    <!-- Navigation Bar -->
+    <header>
+      <nav class="navbar navbar-expand-md navbar-dark fixed-top">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="{% url 'landing_page' %}">
+            <img src="{% static 'images/logo.jpeg' %}" alt="SustainABode Logo">
+            SustainABode
+          </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav ms-auto">
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'sustainscoremap' %}">SustainScore</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'comparesuburbsmap' %}">Compare</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">About</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="container">
+      {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <p>&copy; 2024 SustainABode. All Rights Reserved.</p>
+      </div>
+    </footer>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  </body>
+</html>
