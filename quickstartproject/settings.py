@@ -26,7 +26,10 @@ SECRET_KEY = '1234567890'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['sustainabode-a9e2evf2fzafb3ad.australiasoutheast-01.azurewebsites.net', '13.70.146.110']
+ALLOWED_HOSTS = [
+    'sustainabode-a9e2evf2fzafb3ad.australiasoutheast-01.azurewebsites.net', 
+    '13.70.146.110'
+    ]
 
 
 # Application definition
