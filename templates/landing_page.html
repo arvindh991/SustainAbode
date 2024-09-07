@@ -51,42 +51,45 @@
         <span class="visually-hidden">Next</span>
       </button>
     </div>
-
-    <p class="lead mt-4">
-      <a href="#" class="btn btn-lg btn-light fw-bold">Learn more</a>
-    </p>
+  <a href="#section1" class="btn btn-primary">Scroll to Section 1</a>
   </div>
 </div>
 
 <!-- Suburb-Wise Sustainability Score Section -->
-<div class="container-fluid d-flex min-vh-100 justify-content-center align-items-center bg-light text-dark">
-  <div class="row w-100 align-items-center">
-    <div class="col-lg-6">
-      <img class="img-fluid rounded mb-4" src="{% static 'images/overallmap.png' %}" alt="Sustainability Map">
-    </div>
-    <div class="col-lg-6 text-center">
-      <h2 class="fw-bold">Find the suburb that best fits your criteria of sustainable living</h2>
-      <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-      <a href="{% url 'sustainscoremap' %}" class="btn btn-success btn-lg px-4 gap-3">Find Out More</a>
+  <div id="section1" class="container-fluid d-flex min-vh-100 justify-content-center align-items-center bg-light text-dark">
+    <div class="row w-100 align-items-center">
+      <div class="col-lg-6">
+        <img class="img-fluid rounded mb-4" src="{% static 'images/overallmap.png' %}" alt="Sustainability Map">
+      </div>
+      <div class="col-lg-6 text-center">
+        <h2 class="fw-bold">Find the suburb that best fits your criteria of sustainable living</h2>
+        <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        <a href="{% url 'sustainscoremap' %}" class="btn btn-success btn-lg px-4 gap-3">Find Out More</a>
+      </div>
+      <a href="#section2" class="btn btn-primary">Scroll to Section 2</a>
     </div>
   </div>
-</div>
+  
+
 
 <!-- Compare Section -->
-<div class="container-fluid d-flex min-vh-100 justify-content-center align-items-center bg-secondary text-white">
-  <div class="row w-100 text-center">
-    <div class="col-12">
-      <h2 class="fw-bold mb-4">Compare & Contrast: Find the Greener Choice</h2>
-    </div>
-    <div class="col-md-6">
-      <img class="img-fluid rounded mb-4" src="{% static 'images/comparemap1.png' %}" alt="Map Comparison 1">
-    </div>
-    <div class="col-md-6">
-      <img class="img-fluid rounded mb-4" src="{% static 'images/comparemap2.png' %}" alt="Map Comparison 2">
-    </div>
-    <div class="col-12">
-      <a href="{% url 'comparesuburbsmap' %}" class="btn btn-success btn-lg px-4 gap-3">Compare</a>
+  <div id="section2" class="container-fluid d-flex min-vh-100 justify-content-center align-items-center bg-secondary text-white">
+    <div class="row w-100 text-center">
+      <div class="col-12">
+        <h2 class="fw-bold mb-4">Compare & Contrast: Find the Greener Choice</h2>
+      </div>
+      <div class="col-md-6">
+        <img class="img-fluid rounded mb-4" src="{% static 'images/comparemap1.png' %}" alt="Map Comparison 1">
+      </div>
+      <div class="col-md-6">
+        <img class="img-fluid rounded mb-4" src="{% static 'images/comparemap2.png' %}" alt="Map Comparison 2">
+      </div>
+      <div class="col-12">
+        <a href="{% url 'comparesuburbsmap' %}" class="btn btn-success btn-lg px-4 gap-3">Compare</a>
+      </div>
+      <div class="col-12">
+        <a class="float-end" href="#">Back to top</a></p>
     </div>
   </div>
-</div>
+
 {% endblock %}
