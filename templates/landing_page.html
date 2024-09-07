@@ -5,37 +5,88 @@
 {% load static %}  <!-- Add this line to load the static files -->
 
 {% block content %}
-<!-- Hero Section -->
-<div class="px-4 py-5 my-5 text-center">
-  <img class="d-block mx-auto mb-4" src="{% static 'images/home-image.jpeg' %}" alt="Sustainable Home" style="max-width: 100%; height: auto; border-radius: 10px;">
-  <h1 class="display-5 fw-bold">Discover a sustainable suburb for your next home</h1>
-  <p class="lead mb-4">Align your home with your eco-values</p>
-  <a href="{% url 'sustainscoremap' %}" class="btn btn-success btn-lg px-4 gap-3">Explore</a>
+
+<!-- Full-Screen Cover Page with Carousel -->
+<div class="container-fluid d-flex min-vh-100 justify-content-center align-items-center bg-dark text-white">
+  <div class="text-center w-100">
+    <h1 class="display-4">Welcome to SustainAbode</h1>
+    <p class="lead">This is a one-page template for building simple and beautiful home pages. Customize the text and add your own images to make it unique.</p>
+
+    <!-- Carousel Section -->
+    <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-indicators">
+        <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+      </div>
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="{% static 'images/carousel1.jpg' %}" class="d-block w-100" alt="Slide 1">
+          <div class="carousel-caption text-start">
+            <h3>First Slide Label</h3>
+            <p>Some representative placeholder content for the first slide.</p>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img src="{% static 'images/carousel2.jpg' %}" class="d-block w-100" alt="Slide 2">
+          <div class="carousel-caption">
+            <h3>Second Slide Label</h3>
+            <p>Some representative placeholder content for the second slide.</p>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img src="{% static 'images/carousel3.jpg' %}" class="d-block w-100" alt="Slide 3">
+          <div class="carousel-caption text-end">
+            <h3>Third Slide Label</h3>
+            <p>Some representative placeholder content for the third slide.</p>
+          </div>
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+
+    <p class="lead mt-4">
+      <a href="#" class="btn btn-lg btn-light fw-bold">Learn more</a>
+    </p>
+  </div>
 </div>
 
 <!-- Suburb-Wise Sustainability Score Section -->
-<div class="row align-items-center my-5">
-  <div class="col-lg-6">
-    <img class="img-fluid rounded mb-4" src="{% static 'images/overallmap.png' %}" alt="Sustainability Map">
-  </div>
-  <div class="col-lg-6">
-    <h2 class="fw-bold">Find the suburb that best fits your criteria of sustainable living</h2>
-    <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-    <a href="{% url 'sustainscoremap' %}" class="btn btn-success btn-lg px-4 gap-3">Find Out More</a>
+<div class="container-fluid d-flex min-vh-100 justify-content-center align-items-center bg-light text-dark">
+  <div class="row w-100 align-items-center">
+    <div class="col-lg-6">
+      <img class="img-fluid rounded mb-4" src="{% static 'images/overallmap.png' %}" alt="Sustainability Map">
+    </div>
+    <div class="col-lg-6 text-center">
+      <h2 class="fw-bold">Find the suburb that best fits your criteria of sustainable living</h2>
+      <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+      <a href="{% url 'sustainscoremap' %}" class="btn btn-success btn-lg px-4 gap-3">Find Out More</a>
+    </div>
   </div>
 </div>
 
 <!-- Compare Section -->
-<div class="row align-items-center my-5 text-center">
-  <h2 class="fw-bold mb-4">Compare & Contrast: Find the Greener Choice</h2>
-  <div class="col-md-6">
-    <img class="img-fluid rounded mb-4" src="{% static 'images/comparemap1.png' %}" alt="Map Comparison 1">
-  </div>
-  <div class="col-md-6">
-    <img class="img-fluid rounded mb-4" src="{% static 'images/comparemap2.png' %}" alt="Map Comparison 2">
-  </div>
-  <div class="col-12">
-    <a href="{% url 'comparesuburbsmap' %}" class="btn btn-success btn-lg px-4 gap-3">Compare</a>
+<div class="container-fluid d-flex min-vh-100 justify-content-center align-items-center bg-secondary text-white">
+  <div class="row w-100 text-center">
+    <div class="col-12">
+      <h2 class="fw-bold mb-4">Compare & Contrast: Find the Greener Choice</h2>
+    </div>
+    <div class="col-md-6">
+      <img class="img-fluid rounded mb-4" src="{% static 'images/comparemap1.png' %}" alt="Map Comparison 1">
+    </div>
+    <div class="col-md-6">
+      <img class="img-fluid rounded mb-4" src="{% static 'images/comparemap2.png' %}" alt="Map Comparison 2">
+    </div>
+    <div class="col-12">
+      <a href="{% url 'comparesuburbsmap' %}" class="btn btn-success btn-lg px-4 gap-3">Compare</a>
+    </div>
   </div>
 </div>
 {% endblock %}
