@@ -5,7 +5,7 @@
 {% block title %}Home - SustainABode{% endblock %}
 
 {% block content %}
-
+{% comment %} 
 <div id='map' style='width: 400px; height: 300px;'></div>
 <script>
   mapboxgl.accessToken = 'pk.eyJ1IjoiZWpvczAwMDgiLCJhIjoiY2x6aWE2aXJtMGNuNTJwb3B4cmY5cGc0dCJ9.YglcmpVEfBIHdKUmERis_w';
@@ -13,7 +13,9 @@
     container: 'map',
     style: 'mapbox://styles/ejos0008/cm0jdjhjr015101rbhwbxc2ql'
   });
-</script>
+</script> {% endcomment %}
+
+<iframe width='100%' height='400px' src="https://api.mapbox.com/styles/v1/ejos0008/cm0jdjhjr015101rbhwbxc2ql.html?title=false&access_token=pk.eyJ1IjoiZWpvczAwMDgiLCJhIjoiY2x6aWE2aXJtMGNuNTJwb3B4cmY5cGc0dCJ9.YglcmpVEfBIHdKUmERis_w&zoomwheel=false#10.87/-37.8316/144.9429" title="SustainScore" style="border:none;"></iframe>
 
 {% comment %} <div id='map' style='width: 100%; height: 400px;'></div>
 <script>
