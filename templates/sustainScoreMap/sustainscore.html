@@ -15,7 +15,100 @@
   });
 </script> {% endcomment %}
 
-<iframe width='100%' height='400px' src="https://api.mapbox.com/styles/v1/ejos0008/cm0jdjhjr015101rbhwbxc2ql.html?title=false&access_token=pk.eyJ1IjoiZWpvczAwMDgiLCJhIjoiY2x6aWE2aXJtMGNuNTJwb3B4cmY5cGc0dCJ9.YglcmpVEfBIHdKUmERis_w&zoomwheel=false#10.87/-37.8316/144.9429" title="SustainScore" style="border:none;"></iframe>
+<div class="container-fluid">
+  <div class="row">
+    <!-- First column for dropdown, slider, and radio buttons -->
+    <div class="col-md-5">
+      <div class="dropdown mb-4">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Dropdown button
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item" href="#">Action</a>
+          <a class="dropdown-item" href="#">Another action</a>
+          <a class="dropdown-item" href="#">Something else here</a>
+        </div>
+      </div>
+
+      <!-- Slider -->
+      <div class="mb-4">
+        <label for="customRange" class="form-label">Adjust Value:</label>
+        <input type="range" class="form-range" id="customRange" min="0" max="100">
+      </div>
+
+      <!-- Radio Buttons -->
+      <div class="mb-4">
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="options" id="option1" value="option1" checked>
+          <label class="form-check-label" for="option1">
+            Option 1
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="options" id="option2" value="option2">
+          <label class="form-check-label" for="option2">
+            Option 2
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Second column for map -->
+    <div class="col-md-7">
+      <div id="map" style="width: 100%; height: 400px;"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  mapboxgl.accessToken = 'pk.eyJ1IjoicmFydjAwMDEiLCJhIjoiY20wamc3NGw4MHgzZDJqb2pkd3Judzd6MyJ9.V-psI2cWdQmog7DogdbMwA';
+
+  var map = new mapboxgl.Map({
+    container: 'map', // container id
+    style: 'mapbox://styles/mapbox/streets-v11', // style URL
+    center: [144.9631, -37.8136], // starting position [lng, lat]
+    zoom: 11 // starting zoom
+  });
+
+  map.on('load', function () {
+    // Add the GeoJSON data as a source
+    map.addSource('melbourne', {
+      'type': 'geojson',
+      'data': "{% static 'geoJSON/melbourne.geojson' %}" // Local server URL
+    });
+
+    // Add a new layer to visualize the polygons with colors based on suscore
+    map.addLayer({
+      'id': 'melbourne-layer',
+      'type': 'fill',
+      'source': 'melbourne',
+      'paint': {
+        'fill-color': [
+          'interpolate',
+          ['linear'],
+          ['to-number', ['get', 'suscore']], // Convert suscore to a number
+          1, '#FFEDA0',  // light yellow
+          2, '#FED976',  // yellow
+          3, '#FEB24C',  // orange
+          4, '#FD8D3C',  // red-orange
+          5, '#E31A1C'   // dark red
+        ],
+        'fill-opacity': 0.7
+      }
+    });
+
+    // Add a black border around each neighborhood
+    map.addLayer({
+      'id': 'border-layer',
+      'type': 'line',
+      'source': 'melbourne',
+      'paint': {
+        'line-color': '#000',
+        'line-width': 1
+      }
+    });
+  });
+</script>
 
 {% comment %} <div id='map' style='width: 100%; height: 400px;'></div>
 <script>
