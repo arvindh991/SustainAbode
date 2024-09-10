@@ -5,31 +5,18 @@
 {% block title %}Home - SustainABode{% endblock %}
 
 {% block content %}
-{% comment %} 
-<div id='map' style='width: 400px; height: 300px;'></div>
-<script>
-  mapboxgl.accessToken = 'pk.eyJ1IjoiZWpvczAwMDgiLCJhIjoiY2x6aWE2aXJtMGNuNTJwb3B4cmY5cGc0dCJ9.YglcmpVEfBIHdKUmERis_w';
-  var map = new mapboxgl.Map({
-    container: 'map',
-    style: 'mapbox://styles/ejos0008/cm0jdjhjr015101rbhwbxc2ql'
-  });
-</script> {% endcomment %}
 
 <div class="container-fluid">
   <div class="row">
-    <!-- First column for dropdown, slider, and radio buttons -->
-    
     <!-- Render the form -->
-  <form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Submit</button>
-  </form>
-
-
+    <form method="POST">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Submit</button>
+    </form>
     <!-- Second column for map -->
-    <div class="col-md-7">
-      <div id="map" style="width: 100%; height: 400px;"></div>
+    <div class="container-fluid col-md-7">
+      <div id="map" style="width: 800px; height: 600px;"></div>
     </div>
   </div>
 </div>
@@ -89,12 +76,4 @@
   });
 </script>
 
-{% comment %} <div id='map' style='width: 100%; height: 400px;'></div>
-<script>
-  mapboxgl.accessToken = 'pk.eyJ1IjoiZWpvczAwMDgiLCJhIjoiY2x6aWE2aXJtMGNuNTJwb3B4cmY5cGc0dCJ9.YglcmpVEfBIHdKUmERis_w';
-  var map = new mapboxgl.Map({
-    container: 'map',
-    style: 'mapbox://styles/ejos0008/cm0jdjhjr015101rbhwbxc2ql'
-  });
-</script> {% endcomment %}
 {% endblock %}
