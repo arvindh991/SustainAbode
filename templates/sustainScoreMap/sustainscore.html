@@ -42,6 +42,31 @@
       'data': "{% static geojson_url %}" // Local server URL
     });
 
+    // After the GeoJSON is loaded, get the bounds of the features and adjust the map's view
+    map.on('sourcedata', function(e) {
+      if (e.isSourceLoaded && e.sourceId === 'melbourne') {
+          // Get the bounds of the loaded GeoJSON features
+          var bounds = new mapboxgl.LngLatBounds();
+
+          // Loop through each feature in the GeoJSON source
+          var features = map.querySourceFeatures('melbourne');
+          features.forEach(function(feature) {
+              // Extend the bounds to include the coordinates of each feature
+              var coordinates = feature.geometry.coordinates;
+              coordinates.forEach(function(coord) {
+                  bounds.extend(coord);
+              });
+          });
+
+          // Fit the map's bounds to the GeoJSON layer
+          map.fitBounds(bounds, {
+              padding: 20, // Padding around the edges of the map
+              maxZoom: 14, // Set a maximum zoom level
+              duration: 1000 // Animation duration in milliseconds
+          });
+      }
+  });
+
     // Add a new layer to visualize the polygons with colors based on suscore
     map.addLayer({
       'id': 'melbourne-layer',
@@ -72,6 +97,73 @@
         'line-width': 1
       }
     });
+
+      // Add a new symbol layer to display the LOC_NAME (suburb name) as labels
+      map.addLayer({
+        'id': 'suburb-labels',
+        'type': 'symbol',
+        'source': 'melbourne',
+        'layout': {
+          'text-field': ['get', 'LOC_NAME'], // Get the suburb name from the GeoJSON
+          'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'],
+          'text-size': 12,
+          'text-anchor': 'center'
+        },
+        'paint': {
+          'text-color': '#000', // Black color for the text
+          'text-halo-color': '#FFF', // White halo around the text for better readability
+          'text-halo-width': 2
+        }
+      });
+  
+
+    let currentPopup = null;  // Keep track of the current popup
+
+map.on('mouseenter', 'melbourne-layer', function (e) {
+    // Change the cursor to a pointer to indicate hover
+    map.getCanvas().style.cursor = 'pointer';
+
+    // Get the coordinates and properties of the hovered feature (suburb)
+    var coordinates = e.lngLat;
+    var suburbName = e.features[0].properties.LOC_NAME;
+    var houseCount = e.features[0].properties.HouseCount;
+    var averagePrice = e.features[0].properties.AveragePrice;
+    var averageDistance = e.features[0].properties.AverageDistance;
+    var rank = e.features[0].properties.TotalRank;
+
+    // Remove any existing popup
+    if (currentPopup) {
+        currentPopup.remove();
+    }
+
+  
+    // Create a new popup with the suburb information
+    currentPopup = new mapboxgl.Popup({
+            closeButton: false, // Disable the default close button for better control
+            closeOnClick: false // Prevent popup from closing on click
+        })
+        .setLngLat(coordinates)
+        .setHTML('<h4>' + suburbName + '</h4>' +
+                 '<p>House Count: ' + houseCount + '</p>' +
+                 '<p>Average Price: $' + averagePrice.toFixed(2) + '</p>' +
+                 '<p>Average Distance: ' + averageDistance + ' km</p>' +
+                 '<p>Total Rank: ' + rank + '</p>')
+        .addTo(map);
+});
+
+map.on('mouseleave', 'melbourne-layer', function () {
+    // Reset cursor back to default
+    map.getCanvas().style.cursor = '';
+
+    // Remove the current popup when the mouse leaves the feature
+    if (currentPopup) {
+        currentPopup.remove();
+        currentPopup = null;  // Ensure it's cleared out
+    }
+});
+
+
+
     {% endif %}
   });
 </script>
