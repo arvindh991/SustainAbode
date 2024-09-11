@@ -30,6 +30,10 @@ DEBUG = False
 
 ALLOWED_HOSTS = [os.environ['WEBSITE_HOSTNAME']] if 'WEBSITE_HOSTNAME' in os.environ else []
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://sustainabode-a9e2evf2fzafb3ad.australiasoutheast-01.azurewebsites.net'
+]
+
 # Application definition
 
 INSTALLED_APPS = [
