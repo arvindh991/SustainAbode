@@ -16,156 +16,201 @@
     </form>
     <!-- Second column for map -->
     <div class="container-fluid col-md-7">
-      <div id="map" style="width: 800px; height: 600px;"></div>
+      <div id="map" style="width: 800px; height: 600px;"></div> <!-- Map container with specified width and height -->
     </div>
   </div>
 </div>
 
 <script>
-  mapboxgl.accessToken = 'pk.eyJ1IjoicmFydjAwMDEiLCJhIjoiY20wamc3NGw4MHgzZDJqb2pkd3Judzd6MyJ9.V-psI2cWdQmog7DogdbMwA';
+  mapboxgl.accessToken = 'pk.eyJ1IjoicmFydjAwMDEiLCJhIjoiY20wamc3NGw4MHgzZDJqb2pkd3Judzd6MyJ9.V-psI2cWdQmog7DogdbMwA'; <!-- Mapbox public access token -->
 
+  // Initialize the map with basic settings
   var map = new mapboxgl.Map({
-    container: 'map', // container id
-    style: 'mapbox://styles/mapbox/streets-v11', // style URL
-    center: [144.9631, -37.8136], // starting position [lng, lat]
-    zoom: 11 // starting zoom
+    container: 'map', // ID of the container element
+    style: 'mapbox://styles/mapbox/streets-v11', // Mapbox style URL
+    center: [144.9631, -37.8136], // Starting position [longitude, latitude]
+    zoom: 11 // Initial zoom level
   });
 
   map.on('load', function () {
+    // This function runs once the map has finished loading
 
-    // Only load the GeoJSON if it's provided
+    // Check if the geoJSON data is available
     {% if geojson_url %}
 
-    // Add the GeoJSON data as a source
+    // Add the GeoJSON data source to the map
     map.addSource('melbourne', {
       'type': 'geojson',
-      'data': "{% static geojson_url %}" // Local server URL
+      'data': "{% static geojson_url %}" // The URL to the geoJSON file
     });
 
-    // After the GeoJSON is loaded, get the bounds of the features and adjust the map's view
-    map.on('sourcedata', function(e) {
-      if (e.isSourceLoaded && e.sourceId === 'melbourne') {
-          // Get the bounds of the loaded GeoJSON features
-          var bounds = new mapboxgl.LngLatBounds();
-
-          // Loop through each feature in the GeoJSON source
-          var features = map.querySourceFeatures('melbourne');
-          features.forEach(function(feature) {
-              // Extend the bounds to include the coordinates of each feature
-              var coordinates = feature.geometry.coordinates;
-              coordinates.forEach(function(coord) {
-                  bounds.extend(coord);
-              });
-          });
-
-          // Fit the map's bounds to the GeoJSON layer
-          map.fitBounds(bounds, {
-              padding: 20, // Padding around the edges of the map
-              maxZoom: 14, // Set a maximum zoom level
-              duration: 1000 // Animation duration in milliseconds
-          });
-      }
-  });
-
-    // Add a new layer to visualize the polygons with colors based on suscore
+    // Add a layer for displaying the neighborhoods, color-coded by their 'suscore' property
     map.addLayer({
       'id': 'melbourne-layer',
-      'type': 'fill',
-      'source': 'melbourne',
+      'type': 'fill', // Fill polygons with color
+      'source': 'melbourne', // Use the 'melbourne' GeoJSON source
       'paint': {
         'fill-color': [
-          'interpolate',
-          ['linear'],
-          ['to-number', ['get', 'suscore']], // Convert suscore to a number
+          'interpolate', // Interpolate colors based on 'suscore' values
+          ['linear'], 
+          ['to-number', ['get', 'suscore']], // Convert 'suscore' to a number for color mapping
           1, '#FFEDA0',  // light yellow
           2, '#FED976',  // yellow
           3, '#FEB24C',  // orange
           4, '#FD8D3C',  // red-orange
           5, '#E31A1C'   // dark red
         ],
-        'fill-opacity': 0.7
+        'fill-opacity': 0.7 // Set fill opacity for the polygons
       }
     });
 
-    // Add a black border around each neighborhood
+    // Add a black border around each neighborhood polygon
     map.addLayer({
       'id': 'border-layer',
-      'type': 'line',
-      'source': 'melbourne',
+      'type': 'line', // Line layer for borders
+      'source': 'melbourne', // Use the same 'melbourne' GeoJSON source
       'paint': {
-        'line-color': '#000',
-        'line-width': 1
+        'line-color': '#000', // Black border color
+        'line-width': 1 // Border width
       }
     });
 
-      // Add a new symbol layer to display the LOC_NAME (suburb name) as labels
-      map.addLayer({
-        'id': 'suburb-labels',
-        'type': 'symbol',
-        'source': 'melbourne',
-        'layout': {
-          'text-field': ['get', 'LOC_NAME'], // Get the suburb name from the GeoJSON
-          'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'],
-          'text-size': 12,
-          'text-anchor': 'center'
-        },
-        'paint': {
-          'text-color': '#000', // Black color for the text
-          'text-halo-color': '#FFF', // White halo around the text for better readability
-          'text-halo-width': 2
+    // Once the GeoJSON data is fully loaded, adjust the map bounds to fit all the features
+    map.on('sourcedata', function(e) {
+      if (e.isSourceLoaded && e.sourceId === 'melbourne') {
+          var bounds = new mapboxgl.LngLatBounds(); // Create a bounding box object
+
+          // Get all features from the 'melbourne' source and extend the bounds to include each feature
+          var features = map.querySourceFeatures('melbourne');
+          features.forEach(function(feature) {
+              var coordinates = feature.geometry.coordinates;
+              coordinates.forEach(function(coord) {
+                  bounds.extend(coord); // Extend the bounds to include the feature's coordinates
+              });
+          });
+
+          originalBounds = bounds; // Store the bounds globally to allow reset later
+
+          // Fit the map to the calculated bounds
+          map.fitBounds(bounds, {
+              padding: 20, // Padding around the map view
+              maxZoom: 11, // Maximum zoom level
+              duration: 1000 // Animation duration (1 second)
+          });
+      }
+    });
+
+    // Add a layer to display suburb names as text labels
+    map.addLayer({
+      'id': 'suburb-labels',
+      'type': 'symbol', // Use symbols for labels
+      'source': 'melbourne', // Use the same 'melbourne' GeoJSON source
+      'layout': {
+        'text-field': ['get', 'LOC_NAME'], // Get the suburb name from the 'LOC_NAME' property
+        'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'], // Font for the labels
+        'text-size': 12, // Font size
+        'text-anchor': 'center' // Anchor the text to the center of the polygon
+      },
+      'paint': {
+        'text-color': '#000', // Set text color to black
+        'text-halo-color': '#FFF', // White halo around the text for readability
+        'text-halo-width': 2 // Halo width
+      }
+    });
+
+    // Initialize a variable to keep track of the current popup
+    let currentPopup = null;
+
+    // Add a hover effect to the 'melbourne-layer' to show a popup with information
+    map.on('mouseenter', 'melbourne-layer', function (e) {
+        map.getCanvas().style.cursor = 'pointer'; // Change cursor to pointer on hover
+
+        // Get information from the hovered feature
+        var coordinates = e.lngLat;
+        var suburbName = e.features[0].properties.LOC_NAME;
+        var houseCount = e.features[0].properties.HouseCount;
+        var averagePrice = e.features[0].properties.AveragePrice;
+        var averageDistance = e.features[0].properties.AverageDistance;
+        var rank = e.features[0].properties.TotalRank;
+
+        // If there's already a popup, remove it
+        if (currentPopup) {
+            currentPopup.remove();
         }
-      });
-  
 
-    let currentPopup = null;  // Keep track of the current popup
+        // Create a new popup with the suburb information
+        currentPopup = new mapboxgl.Popup({
+                closeButton: false, // Disable the close button
+                closeOnClick: false // Keep the popup open until manually closed or cursor leaves
+            })
+            .setLngLat(coordinates) // Set popup position
+            .setHTML('<h4>' + suburbName + '</h4>' +
+                     '<p>House Count: ' + houseCount + '</p>' +
+                     '<p>Average Price: $' + averagePrice.toFixed(2) + '</p>' +
+                     '<p>Average Distance: ' + averageDistance + ' km</p>' +
+                     '<p>Total Rank: ' + rank + '</p>') // Set HTML content
+            .addTo(map); // Add the popup to the map
+    });
 
-map.on('mouseenter', 'melbourne-layer', function (e) {
-    // Change the cursor to a pointer to indicate hover
-    map.getCanvas().style.cursor = 'pointer';
+    // Remove the popup when the mouse leaves the feature
+    map.on('mouseleave', 'melbourne-layer', function () {
+        map.getCanvas().style.cursor = ''; // Reset cursor to default
 
-    // Get the coordinates and properties of the hovered feature (suburb)
-    var coordinates = e.lngLat;
-    var suburbName = e.features[0].properties.LOC_NAME;
-    var houseCount = e.features[0].properties.HouseCount;
-    var averagePrice = e.features[0].properties.AveragePrice;
-    var averageDistance = e.features[0].properties.AverageDistance;
-    var rank = e.features[0].properties.TotalRank;
-
-    // Remove any existing popup
-    if (currentPopup) {
-        currentPopup.remove();
-    }
-
-  
-    // Create a new popup with the suburb information
-    currentPopup = new mapboxgl.Popup({
-            closeButton: false, // Disable the default close button for better control
-            closeOnClick: false // Prevent popup from closing on click
-        })
-        .setLngLat(coordinates)
-        .setHTML('<h4>' + suburbName + '</h4>' +
-                 '<p>House Count: ' + houseCount + '</p>' +
-                 '<p>Average Price: $' + averagePrice.toFixed(2) + '</p>' +
-                 '<p>Average Distance: ' + averageDistance + ' km</p>' +
-                 '<p>Total Rank: ' + rank + '</p>')
-        .addTo(map);
-});
-
-map.on('mouseleave', 'melbourne-layer', function () {
-    // Reset cursor back to default
-    map.getCanvas().style.cursor = '';
-
-    // Remove the current popup when the mouse leaves the feature
-    if (currentPopup) {
-        currentPopup.remove();
-        currentPopup = null;  // Ensure it's cleared out
-    }
-});
-
-
+        // Remove the popup if it exists
+        if (currentPopup) {
+            currentPopup.remove();
+            currentPopup = null; // Clear the variable
+        }
+    });
 
     {% endif %}
+
+    // Custom reset button control to reset the map view to the original bounds
+    class ResetViewControl {
+      onAdd(map) {
+          this.map = map;
+          this.container = document.createElement('button'); // Create a button element
+          this.container.className = 'mapboxgl-ctrl reset-btn'; // Set button class
+          this.container.textContent = 'Reset View'; // Button text
+          this.container.onclick = function() {
+              // Reset the map to the original bounds
+              if (originalBounds) {
+                  map.fitBounds(originalBounds, {
+                      padding: 20, // Same padding used before
+                      maxZoom: 11, // Same maxZoom
+                      duration: 1000 // Same duration
+                  });
+              }
+          };
+          return this.container; // Return the button element
+      }
+
+      onRemove() {
+          this.container.parentNode.removeChild(this.container); // Remove the button element
+          this.map = undefined;
+      }
+  }
+
+  // Add the reset view button control to the map
+  map.addControl(new ResetViewControl(), 'top-right'); // Add the control to the top-right corner
+
   });
+
 </script>
+
+<!-- Optional: Style the reset button with custom CSS -->
+<style>
+  .reset-btn {
+    background-color: #f8f9fa; /* Light background */
+    border: 1px solid #000; /* Black border */
+    padding: 5px 10px; /* Padding for button */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: 14px; /* Font size */
+  }
+  
+  .reset-btn:hover {
+    background-color: #ddd; /* Darker background on hover */
+  }
+</style>
 
 {% endblock %}
