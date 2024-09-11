@@ -5,4 +5,4 @@ import os
 # that Azure automatically creates for us.
 ALLOWED_HOSTS = [os.environ['WEBSITE_HOSTNAME']] if 'WEBSITE_HOSTNAME' in os.environ else []
 
-DEBUG = False
+DEBUG = True
