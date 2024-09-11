@@ -6,11 +6,12 @@
 
 {% block content %}
 
+{{MEDIA_URL}}{{ geojson_url }}
+
 <div class="container-fluid">
   <div class="row">
     <!-- Render the form -->
-    <form method="POST">
-      {% csrf_token %}
+    <form method="POST">{% csrf_token %}
       {{ form.as_p }}
       <button type="submit">Submit</button>
     </form>
@@ -41,7 +42,7 @@
     // Add the GeoJSON data source to the map
     map.addSource('melbourne', {
       'type': 'geojson',
-      'data': "{% static geojson_url %}" // The URL to the geoJSON file
+      'data': "{{ MEDIA_URL }}{{ geojson_url }}" // The URL to the geoJSON file
     });
 
     // Add a layer for displaying the neighborhoods, color-coded by their 'suscore' property
