@@ -16,10 +16,12 @@ def score_model(user_input):
     # Define the base data directory
     data_dir = os.path.join(settings.BASE_DIR, 'data')
 
+    media_dir = os.path.join(settings.BASE_DIR, 'media')
+
+    geojson_dir = os.path.join(media_dir, 'geoJSON')
+
     # Loading the house price dataset from the data folder
     melbourne_data = pd.read_csv(os.path.join(data_dir, 'MELBOURNE_HOUSE_PRICES_LESS_CLEAN.csv'))
-
-    
 
     # Filter data based on user inputs
     filtered_data = melbourne_data[
@@ -118,15 +120,12 @@ def score_model(user_input):
     # Preview the merged data to ensure that rank information is included
     print(final_geo_df.head())
 
-    geoJSON_path = os.path.join('geoJSON', 'top_5_suburbs_with_ranks.geojson')
-
-    # Generate GeoJSON and save to the static folder
-    output_geojson_path = os.path.join(settings.BASE_DIR, 'static', geoJSON_path)
+    output_geoJSON_path = os.path.join(geojson_dir, 'top_5_suburbs_with_ranks.geojson')
 
     # Save the GeoDataFrame as GeoJSON
-    final_geo_df.to_file(output_geojson_path, driver='GeoJSON')
+    final_geo_df.to_file(output_geoJSON_path, driver='GeoJSON')
 
     # Confirm the export was successful
-    print(f"GeoJSON file created at: {output_geojson_path}")
+    print(f"GeoJSON file created at: {output_geoJSON_path}")
 
-    return geoJSON_path  # Return the GeoJSON path
+    return os.path.join("geoJSON", "top_5_suburbs_with_ranks.geojson")   # Return the GeoJSON path
