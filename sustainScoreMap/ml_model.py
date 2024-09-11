@@ -118,20 +118,13 @@ def score_model(user_input):
     # Preview the merged data to ensure that rank information is included
     print(final_geo_df.head())
 
-    # geoJSON folder path
-    geoJSON_folder_path = os.path.join('geoJSON', 'top_5_suburbs_with_ranks.geojson')
-
     # Generate GeoJSON and save to the static folder
     output_geojson_path = os.path.join(settings.BASE_DIR, 'static', 'geoJSON', 'top_5_suburbs_with_ranks.geojson')
-    # output_static_path = os.path.join('static', geoJSON_folder_path)
 
     # Save the GeoDataFrame as GeoJSON
     final_geo_df.to_file(output_geojson_path, driver='GeoJSON')
-    # final_geo_df.to_file(output_static_path, driver='GeoJSON')
 
     # Confirm the export was successful
     print(f"GeoJSON file created at: {output_geojson_path}")
-    # print(f"GeoJSON file created at: {geoJSON_folder_path}")
 
-    # return output_geojson_path  # Return the GeoJSON path
-    return geoJSON_folder_path  # Return the GeoJSON path
+    return output_geojson_path  # Return the GeoJSON path
