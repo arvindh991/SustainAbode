@@ -20,8 +20,14 @@ def index(request):
                 'prefer_parks': form.cleaned_data['prefer_parks'],
             }
 
+            print(user_input)
+
             # Call the ML model and get the GeoJSON file
             geojson_file = score_model(user_input)
+
+            print("I have recieved an output from the ML_model")
+
+            print(f"Here is where my file is stored {geojson_file}")
 
             # Pass the form and GeoJSON path back to the template
             return render(request, 'sustainScoreMap/sustainscore.html', {
