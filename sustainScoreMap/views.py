@@ -36,6 +36,7 @@ def index(request):
                 'geojson_url': geojson_url,
                 'mapbox_api_key': settings.MAPBOX_API_KEY
             })
+        print(settings.MAPBOX_API_KEY)
     else:
         form = UserInputForm()
 
