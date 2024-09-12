@@ -9,6 +9,10 @@ from .ml_model import score_model
 from django.conf import settings 
 
 def index(request):
+
+    mapbox_api_key = settings.MAPBOX_API_KEY  # Assuming you've stored the API key in settings.py
+    geojson_url = None
+
     if request.method == 'POST':
         form = UserInputForm(request.POST)
         if form.is_valid():
@@ -30,14 +34,12 @@ def index(request):
 
             print(f"Here is where my file is stored {geojson_url}")
 
-            # Pass the form and GeoJSON path back to the template
-            return render(request, 'sustainScoreMap/sustainscore.html', {
-                'form': form,
-                'geojson_url': geojson_url,
-                'mapbox_api_key': settings.MAPBOX_API_KEY
-            })
-
     else:
         form = UserInputForm()
 
-    return render(request, 'sustainScoreMap/sustainscore.html', {'form': form})
+    return render(request, 'sustainScoreMap/sustainscore.html', {
+        'form': form,
+        'geojson_url': geojson_url,
+        'mapbox_api_key': mapbox_api_key # Assuming you've stored the API key in settings.py
+
+    })
