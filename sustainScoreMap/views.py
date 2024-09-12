@@ -29,8 +29,6 @@ def index(request):
             print("I have recieved an output from the ML_model")
 
             print(f"Here is where my file is stored {geojson_url}")
-            
-            print(settings.MAPBOX_API_KEY)
 
             # Pass the form and GeoJSON path back to the template
             return render(request, 'sustainScoreMap/sustainscore.html', {
