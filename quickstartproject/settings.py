@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '1234567890'
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -52,6 +52,31 @@ INSTALLED_APPS = [
     'hello_azure',
 ]
 
+<<<<<<< HEAD
+# Use Azure Blob Storage for media files
+DEFAULT_FILE_STORAGE = 'storages.backends.azure_storage.AzureStorage'
+
+# Azure Storage settings
+# Storage account name
+AZURE_ACCOUNT_NAME = os.getenv('AZURE_STORAGE_NAME')
+
+# Storage account URL
+AZURE_ACCOUNT_URL = f"https://{AZURE_ACCOUNT_NAME}.blob.core.windows.net"
+
+# Access key for the storage account
+AZURE_ACCOUNT_KEY = os.getenv('AZURE_STORAGE_KEY')
+
+# Container name
+AZURE_CONTAINER = os.getenv('AZURE_STORAGE_CONTAINER')
+
+# Custom domain for media
+AZURE_CONTAINER_URL = f"{AZURE_ACCOUNT_URL}/{AZURE_CONTAINER}"  
+
+# Fetch the Mapbox API key from environment variables
+MAPBOX_API_KEY = os.getenv('MAPBOX_API_KEY')
+
+=======
+>>>>>>> parent of 4975078 (azure settings)
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     # Add whitenoise middleware after the security middleware
