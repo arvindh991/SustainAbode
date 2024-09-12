@@ -31,11 +31,13 @@
     zoom: 11 // Initial zoom level
   });
 
+  {% if geojson_url %}
+
   map.on('load', function () {
     // This function runs once the map has finished loading
 
     // Check if the geoJSON data is available
-    {% if geojson_url %}
+
 
     // Add the GeoJSON data source to the map
     map.addSource('melbourne', {
@@ -162,8 +164,6 @@
         }
     });
 
-    {% endif %}
-
     // Custom reset button control to reset the map view to the original bounds
     class ResetViewControl {
       onAdd(map) {
@@ -195,6 +195,7 @@
 
   });
 
+{% endif %}
 </script>
 
 <!-- Optional: Style the reset button with custom CSS -->
