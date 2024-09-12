@@ -52,7 +52,6 @@ INSTALLED_APPS = [
     'hello_azure',
 ]
 
-<<<<<<< HEAD
 # Use Azure Blob Storage for media files
 DEFAULT_FILE_STORAGE = 'storages.backends.azure_storage.AzureStorage'
 
@@ -75,8 +74,7 @@ AZURE_CONTAINER_URL = f"{AZURE_ACCOUNT_URL}/{AZURE_CONTAINER}"
 # Fetch the Mapbox API key from environment variables
 MAPBOX_API_KEY = os.getenv('MAPBOX_API_KEY')
 
-=======
->>>>>>> parent of 4975078 (azure settings)
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     # Add whitenoise middleware after the security middleware
