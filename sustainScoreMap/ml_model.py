@@ -2,6 +2,10 @@ import os
 import pandas as pd
 import geopandas as gpd
 from django.conf import settings
+from io import BytesIO  # For in-memory file handling
+from azure.storage.blob import BlobServiceClient
+import os
+from datetime import datetime  # For generating timestamps
 
 # # Example of user inputs (these would be dynamic in a real application)
 #     user_input = {
@@ -120,12 +124,32 @@ def score_model(user_input):
     # Preview the merged data to ensure that rank information is included
     print(final_geo_df.head())
 
-    output_geoJSON_path = os.path.join(geojson_dir, 'top_5_suburbs_with_ranks.geojson')
+    # Generate a timestamp
+    timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
 
-    # Save the GeoDataFrame as GeoJSON
-    final_geo_df.to_file(output_geoJSON_path, driver='GeoJSON')
+    # Create a unique blob name by appending the timestamp
+    blob_name = f'top_5_suburbs_with_ranks_{timestamp}.geojson'
 
-    # Confirm the export was successful
-    print(f"GeoJSON file created at: {output_geoJSON_path}")
+    # Connect to the Blob service
+    blob_service_client = BlobServiceClient(account_url=settings.AZURE_ACCOUNT_URL, credential=settings.AZURE_ACCOUNT_KEY)
+    
+    blob_client = blob_service_client.get_blob_client(container=settings.AZURE_CONTAINER, blob=blob_name)
 
-    return os.path.join("geoJSON", "top_5_suburbs_with_ranks.geojson")   # Return the GeoJSON path
+    # Write the GeoDataFrame to a bytes buffer (in-memory) as GeoJSON
+    geojson_buffer = BytesIO()
+    final_geo_df.to_file(geojson_buffer, driver='GeoJSON')
+    
+    # Move the buffer's position to the start before reading (necessary to upload)
+    geojson_buffer.seek(0)
+
+    blob_url = f"{settings.AZURE_CONTAINER_URL}/{blob_name}"
+
+    try:
+        # Upload the in-memory GeoJSON data to the Blob
+        blob_client.upload_blob(geojson_buffer, overwrite=True)
+        print(f"GeoJSON uploaded successfully to {blob_url}")
+    except Exception as e:
+        print(f"Error uploading GeoJSON to Blob: {str(e)}")
+        raise
+
+    return blob_url   # Return the GeoJSON path
