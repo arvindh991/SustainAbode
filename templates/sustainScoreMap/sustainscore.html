@@ -6,6 +6,8 @@
 
 {% block content %}
 
+{{ geojson_url }}
+
 <div class="container-fluid">
   <div class="row">
     <!-- Render the form -->
@@ -40,7 +42,7 @@
     // Add the GeoJSON data source to the map
     map.addSource('melbourne', {
       'type': 'geojson',
-      'data': '{{ geojson_url }}' // The URL to the geoJSON file
+      'data': {{ geojson_url }} // The URL to the geoJSON file
     });
 
     // Add a layer for displaying the neighborhoods, color-coded by their 'suscore' property
