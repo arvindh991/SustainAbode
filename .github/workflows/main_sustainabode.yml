@@ -2,7 +2,7 @@
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 # More info on Python, GitHub Actions, and Azure App Service: https://aka.ms/python-webapps-actions
 
-name: Build and deploy Python app to Azure Web App - SustainAbode
+name: Build and deploy Python app to Azure Web App - sustainabode
 
 on:
   push:
@@ -65,14 +65,14 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_C8C9BF7FCBEC45BBA1B65A09F5507680 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_6D57F38FE81A41CE8311F01FD6DA24D7 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_8B96FABD84E84215AF8041D2A43BA43F }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_15EBDBE5A2C641908C08D25BB90C98A0 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_4B1A0599F359455D86CA2C308FD907F5 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_6B8A7A42AA284980B97A72ADAAF870EA }}
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
         with:
-          app-name: 'SustainAbode'
+          app-name: 'sustainabode'
           slot-name: 'Production'
           
