@@ -1,12 +1,10 @@
-# Create your views here.
-
 # sustainScoreMap/views.py
 
 from django.http import HttpResponse
 from django.shortcuts import render
 from .forms import UserInputForm
 from .ml_model import score_model
-from django.conf import settings 
+from django.conf import settings
 
 def index(request):
 
@@ -23,6 +21,8 @@ def index(request):
                 'distance': form.cleaned_data['distance'],
                 'affordable': form.cleaned_data['affordable'],
                 'prefer_parks': form.cleaned_data['prefer_parks'],
+                'prefer_bus': form.cleaned_data['prefer_bus'],  # New field for bus service preference
+                'prefer_carpark': form.cleaned_data['prefer_carpark'],  # New field for train carpark preference
             }
 
             print(user_input)
@@ -30,7 +30,7 @@ def index(request):
             # Call the ML model and get the GeoJSON file
             geojson_url = score_model(user_input)
 
-            print("I have recieved an output from the ML_model")
+            print("I have received an output from the ML_model")
 
             print(f"Here is where my file is stored {geojson_url}")
 
@@ -41,5 +41,4 @@ def index(request):
         'form': form,
         'geojson_url': geojson_url,
         'mapbox_api_key': mapbox_api_key # Assuming you've stored the API key in settings.py
-
     })
