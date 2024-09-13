@@ -20,10 +20,6 @@ def score_model(user_input):
     # Define the base data directory
     data_dir = os.path.join(settings.BASE_DIR, 'data')
 
-    media_dir = os.path.join(settings.BASE_DIR, 'media')
-
-    geojson_dir = os.path.join(media_dir, 'geoJSON')
-
     # Loading the house price dataset from the data folder
     melbourne_data = pd.read_csv(os.path.join(data_dir, 'MELBOURNE_HOUSE_PRICES_LESS_CLEAN.csv'))
 
@@ -84,9 +80,70 @@ def score_model(user_input):
     # Sort suburbs by the new total rank
     suburb_rank = suburb_rank.sort_values('TotalRank').reset_index(drop=True)
 
+    # Load the bus stop and train car park datasets
+    bus_stop_data = pd.read_csv(os.path.join(data_dir, 'ptv_metro_bus_stop_cleaned.csv'))
+    train_carpark_data = pd.read_csv(os.path.join(data_dir, 'ptv_train_carpark_cleaned.csv'))
+
+    # Example: Displaying first few rows to understand the structure
+    # print(bus_stop_data.head())
+    # print(train_carpark_data.head())
+
+    # Aggregate bus data by suburb
+    bus_service_summary = bus_stop_data.groupby('suburb').agg(
+        NumberOfBusStops=('stop_id', 'size'),  # Number of bus stops
+        UniqueBusRoutes=('routes_using_stop', lambda x: len(set(",".join(x).split(','))))  # Count of unique bus routes
+    ).reset_index()
+
+    # Merge bus data with the existing suburb rankings
+    suburb_rank = suburb_rank.merge(bus_service_summary, left_on='Suburb', right_on='suburb', how='left')
+
+    # Replace missing values with 0 for suburbs with no bus service
+    suburb_rank['NumberOfBusStops'].fillna(0, inplace=True)
+    suburb_rank['UniqueBusRoutes'].fillna(0, inplace=True)
+
+    # Assuming train_carpark_data contains 'suburb' and 'carpark_capacity' columns
+
+    # Aggregate train car park data by suburb (if needed)
+    carpark_summary = train_carpark_data.groupby('suburb').agg(
+        TotalCarparkCapacity=('commuter_capacity', 'sum')  # Total car park capacity in the suburb
+    ).reset_index()
+
+    # Merge car park data with the suburb ranking
+    suburb_rank = suburb_rank.merge(carpark_summary, left_on='Suburb', right_on='suburb', how='left')
+
+    # Replace missing values with 0 for suburbs with no train car parks
+    suburb_rank['TotalCarparkCapacity'].fillna(0, inplace=True)
+
+    # Rank suburbs based on bus services
+    suburb_rank['Rank_BusStops'] = suburb_rank['NumberOfBusStops'].rank(ascending=False, method='min')
+    suburb_rank['Rank_BusRoutes'] = suburb_rank['UniqueBusRoutes'].rank(ascending=False, method='min')
+
+    # Rank suburbs based on train car park capacity
+    suburb_rank['Rank_CarparkCapacity'] = suburb_rank['TotalCarparkCapacity'].rank(ascending=False, method='min')
+
+    # Adjust TotalRank if the user prefers bus travel
+    if user_input['prefer_bus']:
+        suburb_rank['TotalRank'] += (suburb_rank['Rank_BusStops'] + suburb_rank['Rank_BusRoutes'])
+
+    # Adjust TotalRank if the user prefers train car parks
+    if user_input['prefer_carpark']:
+        suburb_rank['TotalRank'] += suburb_rank['Rank_CarparkCapacity']
+        
+    # Recompute the TotalRank based on user preferences
+    suburb_rank = suburb_rank.sort_values('TotalRank').reset_index(drop=True)
+
     # Select the top 5 suburbs based on total rank
     top_5_suburbs = suburb_rank.head(5)
-    print(top_5_suburbs)
+    # print(top_5_suburbs)
+
+    # Select the top 5 suburbs based on total rank and explicitly create a copy
+    top_5_suburbs = suburb_rank.head(5).copy()
+
+    # Add a 'SerialNumber' column with values 1 through 5
+    top_5_suburbs['SerialNumber'] = range(1, len(top_5_suburbs) + 1)
+
+    # Preview the top 5 suburbs with the serial number
+    # print(top_5_suburbs[['Suburb', 'TotalRank', 'SerialNumber']])
 
     # Load the shapefile from the GDA2020 folder in the data directory
     shapefile_path = os.path.join(data_dir, 'GDA2020/vic_localities.shp')
@@ -97,7 +154,7 @@ def score_model(user_input):
         vic_localities_sf = vic_localities_sf.to_crs("EPSG:4326")
 
     # Preview the shapefile data
-    print(vic_localities_sf.head())
+    # print(vic_localities_sf.head())
 
     # Ensure both columns are uppercase and stripped of leading/trailing spaces
     vic_localities_sf['LOC_NAME'] = vic_localities_sf['LOC_NAME'].str.upper().str.strip()
@@ -112,17 +169,17 @@ def score_model(user_input):
     filtered_vic_localities_sf = vic_localities_sf[vic_localities_sf['LOC_NAME'].isin(top_suburb_names)]
 
     # Preview the filtered GeoDataFrame
-    print(filtered_vic_localities_sf)
+    # print(filtered_vic_localities_sf)
 
     # Merge the ranking data from top_5_suburbs with the filtered shapefile
     # Merge based on the common suburb name ('LOC_NAME' in shapefile and 'Suburb' in rank data)
     final_geo_df = filtered_vic_localities_sf.merge(top_5_suburbs, left_on='LOC_NAME', right_on='Suburb')
 
     # Drop the 'Suburb' column from the ranking DataFrame (since 'LOC_NAME' represents the same data)
-    final_geo_df = final_geo_df.drop(columns=['Suburb'])
+    final_geo_df = final_geo_df.drop(columns=['Suburb'])    
 
     # Preview the merged data to ensure that rank information is included
-    print(final_geo_df.head())
+    # print(final_geo_df.head())
 
     # Generate a timestamp
     timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
@@ -147,7 +204,7 @@ def score_model(user_input):
     try:
         # Upload the in-memory GeoJSON data to the Blob
         blob_client.upload_blob(geojson_buffer, overwrite=True)
-        print(f"GeoJSON uploaded successfully to {blob_url}")
+        # print(f"GeoJSON uploaded successfully to {blob_url}")
     except Exception as e:
         print(f"Error uploading GeoJSON to Blob: {str(e)}")
         raise
