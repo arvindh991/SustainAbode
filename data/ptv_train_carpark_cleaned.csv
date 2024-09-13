@@ -1,0 +1,513 @@
+commuter_capacity,station_name,suburb,postcode
+182,Keilor Plains,St Albans,3021
+186,Keilor Plains,St Albans,3021
+30,Keilor Plains,St Albans,3021
+18,Gowrie,Glenroy,3046
+34,Gowrie,Fawkner,3060
+26,Gowrie,Glenroy,3046
+20,Broadmeadows,Broadmeadows,3047
+40,Broadmeadows,Broadmeadows,3047
+150,Broadmeadows,Broadmeadows,3047
+307,Glenroy,Glenroy,3046
+136,Glenroy,Glenroy,3046
+53,Glenroy,Glenroy,3046
+106,Glenroy,Glenroy,3046
+16,Glenroy,Glenroy,3046
+36,Oak Park,Oak Park,3046
+40,Gowrie,Glenroy,3046
+82,Merlynston,Coburg North,3058
+32,Pascoe Vale,Pascoe Vale,3044
+37,Pascoe Vale,Pascoe Vale,3044
+53,Pascoe Vale,Pascoe Vale,3044
+28,Strathmore,Essendon,3040
+18,Strathmore,Essendon,3040
+26,Strathmore,Essendon,3040
+27,Strathmore,Essendon,3040
+28,Glenbervie,Essendon,3040
+35,Glenbervie,Essendon,3040
+220,Essendon,Essendon,3040
+229,Craigieburn,Essendon,3040
+55,Essendon,Essendon,3040
+0,Essendon,Moonee Ponds,3039
+7,Brunswick,Brunswick,3056
+36,Jewell,Brunswick,3056
+19,Moonee Ponds,Moonee Ponds,3039
+88,Moonee Ponds,Moonee Ponds,3039
+37,Ivanhoe,Ivanhoe,3079
+26,Eaglemont,Eaglemont,3084
+16,Eaglemont,Eaglemont,3084
+26,Darebin,Ivanhoe,3079
+345,Hawkstowe,South Morang,3752
+39,Hawkstowe,South Morang,3752
+12,Footscray,Footscray,3011
+81,Heatherdale,Mitcham,3132
+186,Mernda,Mernda,3754
+550,Mernda,Mernda,3754
+251,Mernda,Mernda,3754
+17,South Morang,South Morang,3752
+458,South Morang,South Morang,3752
+549,Middle Gorge,South Morang,3752
+434,South Morang,South Morang,3752
+160,Epping,Epping,3076
+58,Epping,Epping,3076
+35,Epping,Epping,3076
+10,Epping,Epping,3076
+9,Footscray,Footscray,3011
+238,,Rockbank,3335
+69,Heatherdale,Ringwood,3134
+223,Lalor,Lalor,3075
+194,Lalor,Lalor,3075
+116,Hurstbridge,Hurstbridge,3099
+0,Hurstbridge,Hurstbridge,3099
+80,Hurstbridge,Hurstbridge,3099
+70,Hurstbridge,Hurstbridge,3099
+53,Wattle Glen,Wattle Glen,3096
+30,Diamond Creek,Diamond Creek,3089
+4,Sth Kensington,West Melbourne,3003
+1,Sth Kensington,West Melbourne,3003
+1,Sth Kensington,West Melbourne,3003
+2,North Melbourne Siding,West Melbourne,3003
+2,North Melbourne Siding,West Melbourne,3003
+18,North Melbourne Siding,West Melbourne,3003
+52,North Melbourne Siding,West Melbourne,3003
+140,Footscray,Footscray,3011
+36,Tottenham,West Footscray,3012
+4,Tottenham,West Footscray,3012
+197,Tottenham,West Footscray,3012
+23,West Footscray,Footscray,3011
+132,West Footscray,Footscray,3011
+229,West Footscray,West Footscray,3012
+26,West Footscray,Footscray,3011
+312,St Albans,St Albans,3021
+232,St Albans,St Albans,3021
+6,St Albans,St Albans,3021
+340,Ginifer,St Albans,3021
+58,Albion,Sunshine,3020
+78,Albion,Sunshine,3020
+102,Albion,Albion,3020
+435,Albion,Sunshine,3020
+290,Sunshine,Sunshine,3020
+180,Sunshine,Sunshine,3020
+104,Sunshine,Sunshine,3020
+97,Sunshine,Sunshine,3020
+35,Sunshine,Sunshine,3020
+10,Nunawading,Nunawading,3131
+115,Plumpton,Rockbank,3335
+190,Melton,Cobblebank,3338
+127,Lilydale,Lilydale,3140
+24,Lilydale,Lilydale,3140
+50,Lilydale,Lilydale,3140
+330,Lilydale,Lilydale,3140
+43,Eltham,Eltham,3095
+108,Eltham,Eltham,3095
+26,Eltham,Eltham,3095
+99,Eltham,Eltham,3095
+121,Eltham,Eltham,3095
+449,Mooroolbark,Mooroolbark,3138
+9,Mooroolbark,Mooroolbark,3138
+7,Croydon,Croydon,3136
+85,Croydon,Croydon,3136
+31,Heatherdale,Ringwood,3134
+124,Croydon,Croydon,3136
+20,Croydon,Croydon,3136
+54,Croydon,Croydon,3136
+27,Ringwood,Ringwood,3134
+40,Ringwood East,Ringwood East,3135
+100,Ringwood East,Ringwood East,3135
+90,Ringwood East,Ringwood East,3135
+47,Ringwood East,Ringwood East,3135
+103,Ringwood East,Ringwood East,3135
+24,Ringwood East,Ringwood East,3135
+96,Ringwood East,Ringwood East,3135
+6,Ringwood,Ringwood,3134
+55,Ringwood,Ringwood,3134
+42,Ringwood,Ringwood,3134
+173,Ringwood,Ringwood,3134
+137,Heatherdale,Ringwood,3134
+200,Heatherdale,Ringwood,3134
+125,Sunbury,Sunbury,3429
+5,Sunbury,Sunbury,3429
+435,Sunbury,Sunbury,3429
+307,Diggers Rest,Diggers Rest,3427
+241,Diggers Rest,Diggers Rest,3427
+29,Calder Park,Plumpton,3335
+9,Craigieburn,Craigieburn,3064
+96,Craigieburn,Craigieburn,3064
+9,Craigieburn,Craigieburn,3064
+43,Craigieburn,Craigieburn,3064
+20,Craigieburn,Craigieburn,3064
+40,Craigieburn,Craigieburn,3064
+323,Craigieburn,Craigieburn,3064
+59,Craigieburn,Craigieburn,3064
+140,Roxburgh Park,Roxburgh Park,3064
+8,Chatham,Surrey Hills,3127
+34,Sandown Park,Noble Park,3174
+72,Roxburgh Park,Roxburgh Park,3064
+135,Roxburgh Park,Roxburgh Park,3064
+15,Upfield,Campbellfield,3061
+94,Upfield,Coolaroo,3048
+102,Upfield,Campbellfield,3061
+486,Coolaroo,Coolaroo,3048
+158,Watergardens,Taylors Lakes,3038
+6,Watergardens,Taylors Lakes,3038
+92,Watergardens,Taylors Lakes,3038
+30,Watergardens,Sydenham,3037
+10,Watergardens,Sydenham,3037
+416,Watergardens,Sydenham,3037
+20,Taylors Lake,Taylors Lakes,3038
+32,Keilor Plains,St Albans,3021
+268,Keilor Plains,St Albans,3021
+125,Canterbury,Canterbury,3126
+500,Sandown Park,Springvale,3171
+80,Coburg,Coburg,3058
+130,Greensborough,Greensborough,3088
+39,Greensborough,Greensborough,3088
+43,Greensborough,Greensborough,3088
+0,Greensborough,Greensborough,3088
+93,Montmorency,Montmorency,3094
+125,Watsonia,Watsonia,3087
+24,Watsonia,Watsonia,3087
+330,Watsonia,Watsonia,3087
+55,Watsonia,Watsonia,3087
+102,Macleod,Macleod,3085
+227,Rosanna,Rosanna,3084
+227,Rosanna,Rosanna,3084
+247,Heidelberg,Heidelberg,3084
+53,Heidelberg,Heidelberg,3084
+260,Ivanhoe,Ivanhoe,3079
+15,Ivanhoe,Ivanhoe,3079
+206,Syndal,Glen Waverley,3150
+24,Heathmont,Heathmont,3135
+88,Heathmont,Heathmont,3135
+393,Bayswater,Bayswater,3153
+507,Box Hill,Box Hill,3128
+26,Mont Albert,Mont Albert,3127
+141,Surrey Hills,Surrey Hills,3127
+190,Surrey Hills,Surrey Hills,3127
+129,Coburg,Coburg,3058
+21,Moreland,Coburg,3058
+11,Moreland,Brunswick,3056
+11,Moreland,Brunswick,3056
+6,Moreland,Brunswick,3056
+5,Northcote,Northcote,3070
+6,Merri,Northcote,3070
+75,Bell,Preston,3072
+97,Alphington,Alphington,3078
+22,Alphington,Alphington,3078
+60,Fairfield,Fairfield,3078
+14,Fairfield,Fairfield,3078
+16,Fairfield,Fairfield,3078
+12,Fairfield,Fairfield,3078
+4,Fairfield,Fairfield,3078
+17,Dennis,Northcote,3070
+19,Dennis,Northcote,3070
+5,Rushall,Fitzroy North,3068
+60,Clifton Hill,Clifton Hill,3068
+30,Clifton Hill,Clifton Hill,3068
+11,Hawthorn,Hawthorn,3122
+4,Burnley,Burnley,3121
+70,Kooyong,Kooyong,3144
+69,Tooronga,Malvern,3144
+50,Tooronga,Malvern,3144
+60,Tooronga,Malvern,3144
+10,Tooronga,Malvern,3144
+6,Caulfield,Caulfield East,3145
+3,Caulfield,Caulfield East,3145
+25,Caulfield,Caulfield East,3145
+100,Yarraman,Noble Park,3174
+80,Caulfield,Caulfield East,3145
+5,Caulfield,Caulfield East,3145
+97,Glenhuntly,Glen Huntly,3163
+64,Glenhuntly,Glen Huntly,3163
+14,Glenhuntly,Glen Huntly,3163
+156,Elsternwick,Elsternwick,3185
+75,Camberwell,Camberwell,3124
+22,East Camberwell,Camberwell,3124
+38,East Camberwell,Camberwell,3124
+25,Riversdale,Camberwell,3124
+139,Riversdale,Camberwell,3124
+120,Burwood,Glen Iris,3146
+54,Burwood,Glen Iris,3146
+10,Burwood,Glen Iris,3146
+2,Gardiner,Glen Iris,3146
+227,Gardiner,Glen Iris,3146
+105,Jordanville,Mount Waverley,3149
+50,Jordanville,Chadstone,3148
+115,Mount Waverley,Mount Waverley,3149
+50,,Mount Waverley,3149
+13,Mount Waverley,Mount Waverley,3149
+63,Mount Waverley,Mount Waverley,3149
+23,Mount Waverley,Mount Waverley,3149
+20,Glen Iris,Glen Iris,3146
+50,Glen Iris,Glen Iris,3146
+162,Darling,Malvern East,3145
+147,Darling,Malvern East,3145
+87,Ashburton,Ashburton,3147
+20,Ashburton,Ashburton,3147
+22,Ashburton,Ashburton,3147
+53,Ashburton,Ashburton,3147
+154,Keon Park,Thomastown,3074
+50,Ruthven,Reservoir,3073
+532,Mitcham,Mitcham,3132
+42,Mitcham,Mitcham,3132
+227,Mitcham,Mitcham,3132
+30,Nunawading,Nunawading,3131
+52,Nunawading,Nunawading,3131
+40,Nunawading,Nunawading,3131
+17,Nunawading,Nunawading,3131
+26,Nunawading,Nunawading,3131
+13,Nunawading,Nunawading,3131
+16,Nunawading,Nunawading,3131
+32,Blackburn,Blackburn,3130
+75,Blackburn,Blackburn,3130
+40,Laburnum,Blackburn,3130
+190,Thomastown,Thomastown,3074
+35,Thomastown,Thomastown,3074
+85,Thomastown,Thomastown,3074
+75,Ruthven,Reservoir,3073
+3,Reservoir,Reservoir,3073
+90,Reservoir,Reservoir,3073
+32,Reservoir,Reservoir,3073
+77,Reservoir,Reservoir,3073
+206,Reservoir,Reservoir,3073
+20,Reservoir,Reservoir,3073
+80,Regent,Reservoir,3073
+199,Regent,Reservoir,3073
+18,Regent,Reservoir,3073
+9,Regent,Reservoir,3073
+147,Preston,Preston,3072
+50,Preston,Preston,3072
+64,Preston,Preston,3072
+76,Fawkner,Hadfield,3046
+136,Merlynston,Coburg North,3058
+28,Batman,Coburg North,3058
+24,Batman,Coburg North,3058
+26,Sandown Park,Springvale,3171
+30,Moorabbin,Moorabbin,3189
+42,Highett,Highett,3190
+74,Highett,Highett,3190
+176,Cheltenham,Cheltenham,3192
+89,Cheltenham,Cheltenham,3192
+72,Cheltenham,Cheltenham,3192
+19,Cheltenham,Cheltenham,3192
+68,Cheltenham,Cheltenham,3192
+170,Brighton Beach,Brighton,3186
+73,North Brighton,Brighton,3186
+32,North Brighton,Brighton,3186
+120,Middle Brighton,Brighton,3186
+90,Hampton,Hampton,3188
+77,Hampton,Hampton,3188
+108,Sandringham,Sandringham,3191
+14,Sandringham,Sandringham,3191
+45,Glen Waverley,Glen Waverley,3150
+40,Glen Waverley,Glen Waverley,3150
+28,Westall,Clayton South,3169
+171,Glen Waverley,Glen Waverley,3150
+59,Glen Waverley,Glen Waverley,3150
+17,Glen Waverley,Glen Waverley,3150
+349,Syndal,Glen Waverley,3150
+30,Syndal,Glen Waverley,3150
+6,Tarneit,Tarneit,3029
+4,Tarneit,Tarneit,3029
+2,Tarneit,Tarneit,3029
+4,Tarneit,Tarneit,3029
+120,Aircraft,Laverton,3028
+500,Williams Landing,Williams Landing,3027
+150,Williams Landing,Point Cook,3030
+16,Williams Landing,Williams Landing,3027
+164,Hoppers Crossing,Hoppers Crossing,3029
+280,Hoppers Crossing,Werribee,3030
+70,Tarneit,Hoppers Crossing,3029
+119,Boronia,Boronia,3155
+96,Springvale,Springvale,3171
+64,Boronia,Boronia,3155
+46,Boronia,Boronia,3155
+73,Boronia,Boronia,3155
+92,Boronia,Boronia,3155
+79,Upper Ferntree Gully,Upper Ferntree Gully,3156
+0,Upper Ferntree Gully,Upper Ferntree Gully,3156
+8,Upper Ferntree Gully,Upper Ferntree Gully,3156
+124,Ferntree Gully,Ferntree Gully,3156
+92,Ferntree Gully,Ferntree Gully,3156
+72,Ferntree Gully,Ferntree Gully,3156
+68,Ferntree Gully,Ferntree Gully,3156
+20,Ferntree Gully,Ferntree Gully,3156
+25,Ferntree Gully,Ferntree Gully,3156
+191,Upper Ferntree Gully,Upper Ferntree Gully,3156
+30,Upper Ferntree Gully,Upper Ferntree Gully,3156
+37,Noble Park,Noble Park,3174
+48,Yarraman,Noble Park,3174
+50,Springvale,Springvale,3171
+71,Springvale,Springvale,3171
+201,Noble Park,Noble Park,3174
+99,Noble Park,Noble Park,3174
+2,Tarneit,Tarneit,3029
+5,Tarneit,Tarneit,3029
+2,Tarneit,Tarneit,3029
+107,Yarraman,Noble Park,3174
+10,Dandenong,Dandenong,3175
+50,Dandenong,Dandenong,3175
+92,Dandenong,Dandenong,3175
+34,Dandenong,Dandenong,3175
+10,Dandenong,Dandenong,3175
+133,Dandenong,Dandenong,3175
+129,Dandenong,Dandenong,3175
+342,Narre Warren,Narre Warren,3805
+375,Narre Warren,Narre Warren,3805
+122,Hallam,Hallam,3803
+249,Hallam,Hallam,3803
+219,Hallam,Hallam,3803
+130,Lynbrook,Lyndhurst,3975
+99,Lynbrook,Lynbrook,3975
+519,Merinda Park,Cranbourne North,3977
+20,Cranbourne,Cranbourne North,3977
+50,Cranbourne,Cranbourne North,3977
+28,Caulfield,Caulfield East,3145
+22,Westall,Clayton South,3169
+270,Cranbourne,Cranbourne,3977
+371,Cranbourne,Cranbourne,3977
+42,Cranbourne,Cranbourne,3977
+81,Carrum,Carrum,3197
+2,Carrum,Carrum,3197
+183,Seaford,Seaford,3198
+14,Seaford,Seaford,3198
+280,Seaford,Seaford,3198
+100,Carnegie,Carnegie,3163
+7,Westall,Clayton South,3169
+90,Ashburton,Ashburton,3147
+676,East Malvern,Malvern East,3145
+80,East Malvern,Malvern East,3145
+195,Holmesglen,Malvern East,3145
+50,Hughesdale,Hughesdale,3166
+50,Hughesdale,Hughesdale,3166
+2,Hughesdale,Hughesdale,3166
+159,Murrumbeena,Murrumbeena,3163
+36,Hughesdale,Murrumbeena,3163
+3,Hughesdale,Murrumbeena,3163
+43,Murrumbeena,Murrumbeena,3163
+120,Murrumbeena,Murrumbeena,3163
+3,Murrumbeena,Murrumbeena,3163
+117,Ormond,Ormond,3204
+34,Mckinnon,Mckinnon,3204
+17,Mckinnon,Mckinnon,3204
+50,Oakleigh,Oakleigh,3166
+23,Oakleigh,Oakleigh,3166
+61,Oakleigh,Oakleigh,3166
+99,Oakleigh,Oakleigh,3166
+85,Oakleigh,Oakleigh,3166
+26,Oakleigh,Oakleigh,3166
+205,Bentleigh,Bentleigh,3204
+48,Patterson,Bentleigh,3204
+126,Huntingdale,Oakleigh,3166
+135,Clayton,Clayton,3168
+196,Clayton,Clayton,3168
+274,Huntingdale,Oakleigh South,3167
+118,Huntingdale,Oakleigh South,3167
+139,Huntingdale,Oakleigh South,3167
+31,Westall,Clayton South,3169
+20,Westall,Clayton South,3169
+33,Westall,Clayton South,3169
+63,Westall,Springvale,3171
+50,Westall,Clayton South,3169
+20,Westall,Clayton South,3169
+122,Hoppers Crossing,Hoppers Crossing,3029
+130,Werribee,Werribee,3030
+144,Werribee,Werribee,3030
+438,Werribee,Werribee,3030
+78,Westona,Altona,3018
+7,Seaholme,Seaholme,3018
+340,Laverton,Laverton,3028
+24,Laverton,Laverton,3028
+153,Laverton,Laverton,3028
+33,Laverton,Laverton,3028
+28,Laverton,Laverton,3028
+60,Laverton,Laverton,3028
+47,Laverton,Laverton,3028
+104,Laverton,Laverton,3028
+218,Laverton,Laverton,3028
+25,Spotswood,Spotswood,3015
+14,Newport,Newport,3015
+12,Newport,Newport,3015
+32,Newport,Newport,3015
+7,Seaford,Seaford,3198
+2,Seaford,Seaford,3198
+5,Kananook,Seaford,3198
+20,Kananook,Seaford,3198
+134,Cardinia Road,Pakenham,3810
+194,Cardinia Road,Pakenham,3810
+300,Cardinia Road,Pakenham,3810
+20,Pakenham,Pakenham,3810
+15,Pakenham,Pakenham,3810
+112,Pakenham,Pakenham,3810
+0,Pakenham,Pakenham,3810
+217,Pakenham,Pakenham,3810
+31,Officer,Officer,3809
+162,Officer,Officer,3809
+413,Frankston,Frankston,3199
+0,Frankston,Frankston,3199
+0,Frankston,Frankston,3199
+15,Baxter,Baxter,3911
+30,Somerville,Somerville,3912
+46,Mordialloc,Mordialloc,3195
+10,Mordialloc,Mordialloc,3195
+55,Aspendale,Aspendale,3195
+23,Aspendale,Aspendale,3195
+34,Edithvale,Edithvale,3196
+198,Chelsea,Chelsea,3196
+35,Bonbeach,Bonbeach,3196
+2,Chelsea,Chelsea,3196
+161,Belgrave,Belgrave,3160
+9,Belgrave,Belgrave,3160
+84,,Garfield,3814
+150,Beaconsfield,Beaconsfield,3807
+279,Beaconsfield,Beaconsfield,3807
+352,Berwick,Berwick,3806
+490,Berwick,Berwick,3806
+125,Berwick,Berwick,3806
+84,Newport Siding,Newport,3015
+13,Williamstown,Williamstown,3016
+39,North Williamstown,Williamstown,3016
+62,Williamstown Beach,Williamstown,3016
+12,Williamstown Beach,Williamstown,3016
+40,Somerville,Somerville,3912
+20,Hastings,Hastings,3915
+50,Bittern,Bittern,3918
+8,Stony Point,Crib Point,3919
+10,Morradoo,Crib Point,3919
+20,Crib Point,Crib Point,3919
+102,Manor Lakes,Manor Lakes,3024
+263,Manor Lakes,Manor Lakes,3024
+6,Manor Lakes,Manor Lakes,3024
+4,Manor Lakes,Manor Lakes,3024
+4,Manor Lakes,Manor Lakes,3024
+9,Manor Lakes,Manor Lakes,3024
+5,Manor Lakes,Manor Lakes,3024
+15,Manor Lakes,Manor Lakes,3024
+4,Manor Lakes,Manor Lakes,3024
+2,Tarneit,Tarneit,3029
+245,Tarneit,Tarneit,3029
+150,Tarneit,Tarneit,3029
+1,Tarneit,Tarneit,3029
+2,Tarneit,Tarneit,3029
+3,Tarneit,Tarneit,3029
+2,Tarneit,Tarneit,3029
+2,Tarneit,Tarneit,3029
+4,Tarneit,Tarneit,3029
+1,Tarneit,Tarneit,3029
+1,Tarneit,Tarneit,3029
+52,Newport,Newport,3015
+200,Newport,Newport,3015
+4,Newport Siding,Newport,3015
+3,Kananook,Seaford,3198
+92,Kananook,Seaford,3198
+25,Kananook,Seaford,3198
+11,Kananook,Seaford,3198
+3,Mentone,Mentone,3194
+164,Mentone,Mentone,3194
+108,Mentone,Mentone,3194
+74,Mentone,Mentone,3194
+66,Mordialloc,Mordialloc,3195
+25,Mordialloc,Mordialloc,3195
+7,Mordialloc,Mordialloc,3195
+48,Mordialloc,Mordialloc,3195
+18,Mordialloc,Mordialloc,3195
