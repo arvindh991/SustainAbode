@@ -18,3 +18,7 @@ class UserInputForm(forms.Form):
 
     # Set the default to False for prefer_parks
     prefer_parks = forms.BooleanField(required=False, label='Prefer Parks', initial=False)
+
+    # Add new fields for user preferences for bus and carpark
+    prefer_bus = forms.BooleanField(required=False, label='Prefer Bus Service', initial=False)
+    prefer_carpark = forms.BooleanField(required=False, label='Prefer Train Carpark Availability', initial=False)
