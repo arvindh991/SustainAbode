@@ -8,7 +8,7 @@ from django.conf import settings
 
 def index(request):
 
-    mapbox_api_key = settings.MAPBOX_API_KEY  # Assuming you've stored the API key in settings.py
+    mapbox_api_key = settings.MAPBOX_API_KEY
     geojson_url = None
 
     if request.method == 'POST':
@@ -21,8 +21,8 @@ def index(request):
                 'distance': form.cleaned_data['distance'],
                 'affordable': form.cleaned_data['affordable'],
                 'prefer_parks': form.cleaned_data['prefer_parks'],
-                'prefer_bus': form.cleaned_data['prefer_bus'],  # New field for bus service preference
-                'prefer_carpark': form.cleaned_data['prefer_carpark'],  # New field for train carpark preference
+                'prefer_bus': form.cleaned_data['prefer_bus'],
+                'prefer_carpark': form.cleaned_data['prefer_carpark'],
             }
 
             print(user_input)
@@ -40,5 +40,5 @@ def index(request):
     return render(request, 'sustainScoreMap/sustainscore.html', {
         'form': form,
         'geojson_url': geojson_url,
-        'mapbox_api_key': mapbox_api_key # Assuming you've stored the API key in settings.py
+        'mapbox_api_key': mapbox_api_key
     })
