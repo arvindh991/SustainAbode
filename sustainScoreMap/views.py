@@ -5,7 +5,9 @@ from django.shortcuts import render
 from .forms import UserInputForm
 from .ml_model import score_model
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
 
+@login_required
 def index(request):
 
     mapbox_api_key = settings.MAPBOX_API_KEY  # Assuming you've stored the API key in settings.py
