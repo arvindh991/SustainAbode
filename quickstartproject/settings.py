@@ -49,7 +49,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'hello_azure',
 ]
 
 # Use Azure Blob Storage for media files
@@ -73,9 +72,6 @@ AZURE_CONTAINER_URL = f"{AZURE_ACCOUNT_URL}/{AZURE_CONTAINER}"
 
 # Fetch the Mapbox API key from environment variables
 MAPBOX_API_KEY = os.getenv('MAPBOX_API_KEY')
-
-LOGIN_URL = 'login/'  # This matches the name of your login URL
-LOGIN_REDIRECT_URL = '/'  # Where to redirect after successful login (optional)
 
 
 MIDDLEWARE = [
