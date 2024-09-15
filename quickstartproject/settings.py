@@ -34,7 +34,7 @@ DEBUG = True
 ALLOWED_HOSTS = [os.environ['WEBSITE_HOSTNAME']] if 'WEBSITE_HOSTNAME' in os.environ else []
 
 CSRF_TRUSTED_ORIGINS = [
-    'sustainabode-a9e2evf2fzafb3ad.eastus-01.azurewebsites.net'
+    'https://sustainabode-a9e2evf2fzafb3ad.eastus-01.azurewebsites.net'
 ]
 
 # Application definition
