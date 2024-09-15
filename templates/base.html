@@ -9,56 +9,229 @@
     <meta name="author" content="Sustain ABode">
     <title>{% block title %}Sustain ABode{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
-    <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
+    <link rel="shortcut icon" href="{% static 'logo.svg' %}">
     <script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
     <link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet' />
+
+    <!-- Custom styles for this template -->
+    <style>
+      body {
+        background-image: url('{% static 'background.jpeg' %}'); /* Use background.jpeg */
+        background-size: cover; /* Ensure the image covers the entire background */
+        background-position: center; /* Center the background image */
+        background-repeat: no-repeat; /* Prevent image repetition */
+        background-attachment: fixed; /* Fix the background image while scrolling */
+        color: #000;
+        font-family: 'Arial', sans-serif;
+        padding-top: 70px;
+        margin: 0;
+      }
+
+      /* Navbar */
+      .navbar {
+        background-color: rgba(220, 210, 176, 0.8); /* Transparent beige for Navbar */
+        margin-bottom: 0;
+      }
+
+      .navbar-brand img {
+        max-height: 40px;
+        margin-right: 10px;
+      }
+
+      /* Carousel Section */
+      .carousel-section {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        padding: 60px 20px;
+        margin-bottom: 120px;
+        border: none;
+        background-color: rgba(255, 255, 255, 0.7); /* Add transparency to section */
+      }
+
+      /* Call to action above carousel */
+      .carousel-section h3 {
+        font-size: 32px;
+        margin-bottom: 20px;
+        color: #000;
+        text-align: center;
+        text-transform: none;
+      }
+
+      /* Bootstrap fade transition for carousel */
+      .carousel-item {
+        transition: opacity 1s ease-in-out;
+        opacity: 0;
+        text-align: center;
+      }
+
+      .carousel-item.active {
+        opacity: 1;
+      }
+
+      .carousel-inner img {
+        width: 80%;
+        height: auto;
+        margin: 0 auto;
+        cursor: pointer;
+        display: block;
+      }
+
+      .carousel-position {
+        font-size: 14px;
+        color: #000;
+        margin-top: 10px;
+        text-align: center;
+      }
+
+      /* Section Styling */
+      .section {
+        padding: 80px 40px;
+        text-align: center;
+        border-radius: 10px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        margin-top: 120px;
+        margin-bottom: 120px;
+        background-color: rgba(255, 255, 255, 0.8); /* White with transparency */
+        position: relative;
+      }
+
+      .map-card {
+        margin: 40px auto;
+        max-width: 80%;
+      }
+
+      .map-img {
+        max-width: 100%;
+        height: auto;
+        border: 2px solid #000;
+        margin: 0 auto;
+      }
+
+      /* Compare map styling */
+      .compare-images {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+      }
+
+      .compare-images .card {
+        flex: 1;
+        text-align: center;
+      }
+
+      .compare-images img {
+        width: 60%;
+        height: auto;
+        margin: 0 auto;
+        display: block;
+        border-radius: 10px;
+        border: 2px solid #000;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .compare-text {
+        margin-top: 10px;
+        font-size: 16px;
+        color: #000;
+        text-align: left;
+      }
+
+      /* Scroll to the next section button */
+      .scroll-button {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #c1a77a;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 50px;
+        border: none;
+        cursor: pointer;
+      }
+
+      .scroll-button:hover {
+        background-color: #a99068;
+      }
+
+      /* Back to Top Button */
+      .back-to-top {
+        position: relative;
+        padding: 10px 20px;
+        font-size: 16px;
+        color: white;
+        background-color: #c1a77a;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 50px;
+      }
+
+      .back-to-top:hover {
+        background-color: #a99068;
+      }
+
+      /* Footer */
+      footer {
+        background-color: rgba(220, 210, 176, 0.8);
+        padding: 20px 0;
+        text-align: center;
+        font-size: 14px;
+        color: #000;
+      }
+
+      /* Left Justify Text in the Sustain Score Section */
+      .suburb-section .col-md-4 h2,
+      .suburb-section .col-md-4 p,
+      .suburb-section .col-md-4 a {
+        text-align: left;
+      }
+
+    </style>
   </head>
 
   <body>
 
-    <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top border-bottom">
-      <div class="container">
-        <a class="navbar-brand" href="{% url 'landing_page' %}">
-          <img src="{% static 'images/logo.jpeg' %}" alt="SustainABode Logo" width="30" height="30" class="d-inline-block align-top">
-          SustainABode
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-          <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvasNavbarLabel">SustainABode</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-          </div>
-          <div class="offcanvas-body">
-            <ul class="navbar-nav justify-content-end flex-grow-1">
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'sustainscoremap' %}">SustainScore</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'comparesuburbsmap' %}">Compare</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">About</a>
-              </li>
-            </ul>
-          </div>
-        </div>
+    <!-- Navigation Bar -->
+    <header>
+    <nav class="navbar navbar-expand-md navbar-light fixed-top">
+      <a class="navbar-brand" href="#">
+        <img src="{% static 'logo.svg' %}" alt="SustainABode Logo">
+        SustainABode
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'sustainscoremap' %}">SustainScore</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'comparesuburbsmap' %}">Compare</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">About</a>
+          </li>
+        </ul>
       </div>
     </nav>
+  </header>
 
+  <!-- Main Content Area -->
+  <main class="container">
+    {% block content %}{% endblock %}
+  </main>
 
-
-    <!-- Main Content Area -->
-    <main class="container">
-      {% block content %}{% endblock %}
-    </main>
-
-    <!-- FOOTER -->
-<footer class="container">
-  <p>&copy; 2024 SustainAbode, The Alchemists - TA29. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
-</footer>
-    <!-- Bootstrap core JavaScript -->
-    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <!-- FOOTER -->
+  <footer class="container">
+    <p>&copy; 2024 SustainAbode, The Alchemists - TA29. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+  </footer>
+    
+  <!-- Bootstrap core JavaScript -->
+  <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
   </body>
 </html>
