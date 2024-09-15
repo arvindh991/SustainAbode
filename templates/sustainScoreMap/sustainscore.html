@@ -1,29 +1,36 @@
 {% extends "base.html" %}
 
-{% load static %} <!-- Load the static tag library -->
+{% load static %}
 
 {% block title %}Home - SustainABode{% endblock %}
 
 {% block content %}
-
 <div class="container-fluid">
   <div class="row">
-    <!-- Render the form -->
-    <form method="POST">{% csrf_token %}
-      {{ form.as_p }}
-      <button type="submit">Submit</button>
-    </form>
-    <!-- Second column for map -->
-    <div class="container-fluid col-md-7">
-      <div id="map" style="width: 800px; height: 600px;"></div> <!-- Map container with specified width and height -->
+    <!-- First column for the filter form -->
+    <div class="col-md-4">  <!-- Adjust the width as needed (md-4 means it takes up 4 out of 12 columns on medium-sized screens and larger) -->
+      <form method="POST" class="mb-4">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+    
+    <!-- Second column for the map -->
+    <div class="col-md-8">
+      <div id="map" style="width: 100%; height: 600px; position: relative;">
+        <!-- Loading spinner -->
+        <div id="loading-spinner" class="spinner-overlay">
+          <div class="spinner"></div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
 <script>
-  mapboxgl.accessToken = '{{ mapbox_api_key }}'; <!-- Mapbox public access token -->
+  mapboxgl.accessToken = '{{ mapbox_api_key }}';
 
-  // Initialize the map with basic settings
   var map = new mapboxgl.Map({
     container: 'map', // ID of the container element
     style: 'mapbox://styles/mapbox/streets-v11', // Mapbox style URL
@@ -31,185 +38,89 @@
     zoom: 11 // Initial zoom level
   });
 
-  {% if geojson_url %}
+  // Show the spinner while the map loads
+  document.getElementById('loading-spinner').style.display = 'flex';
 
   map.on('load', function () {
-    // This function runs once the map has finished loading
+    {% if geojson_url %}
+    fetch('{{ geojson_url }}')
+      .then(response => response.json())
+      .then(geojsonData => {
+        document.getElementById('loading-spinner').style.display = 'none';
+        map.addSource('melbourne', { 'type': 'geojson', 'data': {{ geojson_url }} });
 
-    // Check if the geoJSON data is available
+        map.addLayer({
+          'id': 'melbourne-layer',
+          'type': 'fill', // Fill polygons with color
+          'source': 'melbourne', // Use the 'melbourne' GeoJSON source
+          'paint': {
+            'fill-color': [
+              'match',
+              ['to-number', ['get', 'SerialNumber']], // Use 'SerialNumber' for color mapping
+              1, '#1bac29',  // Color for SerialNumber 1 (Green)
+              2, '#74be79',  // Color for SerialNumber 2 (Light Green)
+              3, '#cfe873',  // Color for SerialNumber 3 (Yellow-Green)
+              4, '#d95b45',  // Color for SerialNumber 4 (Red-Orange)
+              5, '#e60a0a',  // Color for SerialNumber 5 (Dark Red)
+              '#ccc'  // Fallback color (grey)
+            ],
+            'fill-opacity': 0.7 // Set fill opacity for the polygons
+          }
+        });
 
+        map.addLayer({
+          'id': 'border-layer',
+          'type': 'line',
+          'source': 'melbourne',
+          'paint': {
+            'line-color': '#000',
+            'line-width': 1
+          }
+        });
 
-    // Add the GeoJSON data source to the map
-    map.addSource('melbourne', {
-      'type': 'geojson',
-      'data': '{{ geojson_url }}' // The URL to the geoJSON file
-    });
-
-    // Add a layer for displaying the neighborhoods, color-coded by their 'suscore' property
-    map.addLayer({
-      'id': 'melbourne-layer',
-      'type': 'fill', // Fill polygons with color
-      'source': 'melbourne', // Use the 'melbourne' GeoJSON source
-      'paint': {
-        'fill-color': [
-          'interpolate', // Interpolate colors based on 'suscore' values
-          ['linear'], 
-          ['to-number', ['get', 'suscore']], // Convert 'suscore' to a number for color mapping
-          1, '#FFEDA0',  // light yellow
-          2, '#FED976',  // yellow
-          3, '#FEB24C',  // orange
-          4, '#FD8D3C',  // red-orange
-          5, '#E31A1C'   // dark red
-        ],
-        'fill-opacity': 0.7 // Set fill opacity for the polygons
-      }
-    });
-
-    // Add a black border around each neighborhood polygon
-    map.addLayer({
-      'id': 'border-layer',
-      'type': 'line', // Line layer for borders
-      'source': 'melbourne', // Use the same 'melbourne' GeoJSON source
-      'paint': {
-        'line-color': '#000', // Black border color
-        'line-width': 1 // Border width
-      }
-    });
-
-    // Once the GeoJSON data is fully loaded, adjust the map bounds to fit all the features
-    map.on('sourcedata', function(e) {
-      if (e.isSourceLoaded && e.sourceId === 'melbourne') {
-          var bounds = new mapboxgl.LngLatBounds(); // Create a bounding box object
-
-          // Get all features from the 'melbourne' source and extend the bounds to include each feature
-          var features = map.querySourceFeatures('melbourne');
-          features.forEach(function(feature) {
-              var coordinates = feature.geometry.coordinates;
-              coordinates.forEach(function(coord) {
-                  bounds.extend(coord); // Extend the bounds to include the feature's coordinates
-              });
+        var bounds = new mapboxgl.LngLatBounds();
+        var features = map.querySourceFeatures('melbourne');
+        features.forEach(function (feature) {
+          var coordinates = feature.geometry.coordinates;
+          coordinates.forEach(function (coord) {
+            bounds.extend(coord);
           });
+        });
 
-          originalBounds = bounds; // Store the bounds globally to allow reset later
-
-          // Fit the map to the calculated bounds
-          map.fitBounds(bounds, {
-              padding: 20, // Padding around the map view
-              maxZoom: 11, // Maximum zoom level
-              duration: 1000 // Animation duration (1 second)
-          });
-      }
-    });
-
-    // Add a layer to display suburb names as text labels
-    map.addLayer({
-      'id': 'suburb-labels',
-      'type': 'symbol', // Use symbols for labels
-      'source': 'melbourne', // Use the same 'melbourne' GeoJSON source
-      'layout': {
-        'text-field': ['get', 'LOC_NAME'], // Get the suburb name from the 'LOC_NAME' property
-        'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'], // Font for the labels
-        'text-size': 12, // Font size
-        'text-anchor': 'center' // Anchor the text to the center of the polygon
-      },
-      'paint': {
-        'text-color': '#000', // Set text color to black
-        'text-halo-color': '#FFF', // White halo around the text for readability
-        'text-halo-width': 2 // Halo width
-      }
-    });
-
-    // Initialize a variable to keep track of the current popup
-    let currentPopup = null;
-
-    // Add a hover effect to the 'melbourne-layer' to show a popup with information
-    map.on('mouseenter', 'melbourne-layer', function (e) {
-        map.getCanvas().style.cursor = 'pointer'; // Change cursor to pointer on hover
-
-        // Get information from the hovered feature
-        var coordinates = e.lngLat;
-        var suburbName = e.features[0].properties.LOC_NAME;
-        var houseCount = e.features[0].properties.HouseCount;
-        var averagePrice = e.features[0].properties.AveragePrice;
-        var averageDistance = e.features[0].properties.AverageDistance;
-        var rank = e.features[0].properties.TotalRank;
-
-        // If there's already a popup, remove it
-        if (currentPopup) {
-            currentPopup.remove();
-        }
-
-        // Create a new popup with the suburb information
-        currentPopup = new mapboxgl.Popup({
-                closeButton: false, // Disable the close button
-                closeOnClick: false // Keep the popup open until manually closed or cursor leaves
-            })
-            .setLngLat(coordinates) // Set popup position
-            .setHTML('<h4>' + suburbName + '</h4>' +
-                     '<p>House Count: ' + houseCount + '</p>' +
-                     '<p>Average Price: $' + averagePrice.toFixed(2) + '</p>' +
-                     '<p>Average Distance: ' + averageDistance + ' km</p>' +
-                     '<p>Total Rank: ' + rank + '</p>') // Set HTML content
-            .addTo(map); // Add the popup to the map
-    });
-
-    // Remove the popup when the mouse leaves the feature
-    map.on('mouseleave', 'melbourne-layer', function () {
-        map.getCanvas().style.cursor = ''; // Reset cursor to default
-
-        // Remove the popup if it exists
-        if (currentPopup) {
-            currentPopup.remove();
-            currentPopup = null; // Clear the variable
-        }
-    });
-
-    // Custom reset button control to reset the map view to the original bounds
-    class ResetViewControl {
-      onAdd(map) {
-          this.map = map;
-          this.container = document.createElement('button'); // Create a button element
-          this.container.className = 'mapboxgl-ctrl reset-btn'; // Set button class
-          this.container.textContent = 'Reset View'; // Button text
-          this.container.onclick = function() {
-              // Reset the map to the original bounds
-              if (originalBounds) {
-                  map.fitBounds(originalBounds, {
-                      padding: 20, // Same padding used before
-                      maxZoom: 11, // Same maxZoom
-                      duration: 1000 // Same duration
-                  });
-              }
-          };
-          return this.container; // Return the button element
-      }
-
-      onRemove() {
-          this.container.parentNode.removeChild(this.container); // Remove the button element
-          this.map = undefined;
-      }
-  }
-
-  // Add the reset view button control to the map
-  map.addControl(new ResetViewControl(), 'top-right'); // Add the control to the top-right corner
-
+        map.fitBounds(bounds, { padding: 20, maxZoom: 11, duration: 1000 });
+      })
+      .catch(error => console.error("Error loading GeoJSON:", error));
+    {% endif %}
   });
-
-{% endif %}
 </script>
 
-<!-- Optional: Style the reset button with custom CSS -->
+<!-- Optional: Style for the spinner -->
 <style>
-  .reset-btn {
-    background-color: #f8f9fa; /* Light background */
-    border: 1px solid #000; /* Black border */
-    padding: 5px 10px; /* Padding for button */
-    cursor: pointer; /* Pointer cursor on hover */
-    font-size: 14px; /* Font size */
+  .spinner-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.7);
+    z-index: 9999;
   }
-  
-  .reset-btn:hover {
-    background-color: #ddd; /* Darker background on hover */
+
+  .spinner {
+    border: 8px solid #f3f3f3;
+    border-top: 8px solid #3498db;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1.5s linear infinite;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
   }
 </style>
 
