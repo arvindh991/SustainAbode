@@ -38,11 +38,7 @@
   {% if geojson_url %}
 
   map.on('load', function () {
-    // This function runs once the map has finished loading
-
-    // Check if the geoJSON data is available
-
-
+  
     // Add the GeoJSON data source to the map
     map.addSource('melbourne', {
       'type': 'geojson',
@@ -50,7 +46,7 @@
     });
 
    // Add a layer for displaying the neighborhoods, color-coded by their 'SerialNumber' property
-   map.addLayer({
+    map.addLayer({
     'id': 'melbourne-layer',
     'type': 'fill', // Fill polygons with color
     'source': 'melbourne', // Use the 'melbourne' GeoJSON source
@@ -67,7 +63,8 @@
       ],
       'fill-opacity': 0.7 // Set fill opacity for the polygons
     }
-  });
+    });
+
     // Add a black border around each neighborhood polygon
     map.addLayer({
       'id': 'border-layer',
@@ -196,7 +193,7 @@
   // Add the reset view button control to the map
   map.addControl(new ResetViewControl(), 'top-right'); // Add the control to the top-right corner
 
-  });
+});
 
 {% endif %}
 </script>
