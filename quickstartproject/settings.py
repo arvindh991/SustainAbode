@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 import os
 from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -31,7 +34,7 @@ DEBUG = True
 ALLOWED_HOSTS = [os.environ['WEBSITE_HOSTNAME']] if 'WEBSITE_HOSTNAME' in os.environ else []
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://sustainabode-a9e2evf2fzafb3ad.australiasoutheast-01.azurewebsites.net'
+    'sustainabode-a9e2evf2fzafb3ad.eastus-01.azurewebsites.net'
 ]
 
 # Application definition
