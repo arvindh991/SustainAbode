@@ -12,23 +12,23 @@
   <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
     <div class="carousel-inner">
       <div class="carousel-item active">
-        <img src="{% static 'frame1.png' %}">
+        <img src="{% static 'images/frame1.png' %}">
         <div class="carousel-position">1</div>
       </div>
       <div class="carousel-item">
-        <img src="{% static 'frame2.png' %}">
+        <img src="{% static 'images/frame2.png' %}">
         <div class="carousel-position">2</div>
       </div>
       <div class="carousel-item">
-        <img src="{% static 'frame3.png' %}">
+        <img src="{% static 'images/frame3.png' %}">
         <div class="carousel-position">3</div>
       </div>
       <div class="carousel-item">
-        <img src="{% static 'frame4.png' %}">
+        <img src="{% static 'images/frame4.png' %}">
         <div class="carousel-position">4</div>
       </div>
       <div class="carousel-item">
-        <img src="{% static 'frame5.png' %}">
+        <img src="{% static 'images/frame5.png' %}">
         <div class="carousel-position">5</div>
       </div>
       
@@ -80,9 +80,7 @@
       <p class="compare-text">Comparison 2</p>
     </div>
   </div>
-  <button class="btn btn-custom mt-4">
-    <a href="{% url 'comparesuburbsmap' %}" class="btn btn-custom">Compare</a>
-  </button>
+    <a href="{% url 'comparesuburbsmap' %}" class="btn btn-custom mt-4">Compare</a>
 </section>
 
 {% endblock %}
