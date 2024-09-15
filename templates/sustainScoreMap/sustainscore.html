@@ -47,8 +47,9 @@
       .then(response => response.json())
       .then(geojsonData => {
         document.getElementById('loading-spinner').style.display = 'none';
-        map.addSource('melbourne', { 'type': 'geojson', 'data': {{ geojson_url }} });
+        map.addSource('melbourne', { 'type': 'geojson', 'data': geojsonData });
 
+        // Add a layer for displaying the neighborhoods, color-coded by their 'SerialNumber' property
         map.addLayer({
           'id': 'melbourne-layer',
           'type': 'fill', // Fill polygons with color
