@@ -9,14 +9,14 @@
     <meta name="author" content="Sustain ABode">
     <title>{% block title %}Sustain ABode{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
-    <link rel="shortcut icon" href="{% static 'logo.svg' %}">
+    <link rel="shortcut icon" href="{% static 'images/logo.svg' %}">
     <script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
     <link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet' />
 
     <!-- Custom styles for this template -->
     <style>
       body {
-        background-image: url('{% static 'background.jpeg' %}'); /* Use background.jpeg */
+        background-image: url('{% static 'images/background.jpeg' %}'); /* Use background.jpeg */
         background-size: cover; /* Ensure the image covers the entire background */
         background-position: center; /* Center the background image */
         background-repeat: no-repeat; /* Prevent image repetition */
@@ -199,7 +199,7 @@
     <header>
     <nav class="navbar navbar-expand-md navbar-light fixed-top">
       <a class="navbar-brand" href="#">
-        <img src="{% static 'logo.svg' %}" alt="SustainABode Logo">
+        <img src="{% static 'images/logo.svg' %}" alt="SustainABode Logo">
         SustainABode
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
