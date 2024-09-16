@@ -12,6 +12,7 @@ def index(request):
     mapbox_api_key = settings.MAPBOX_API_KEY
     geojson_url = None
     top_suburbs = []
+    suburb_reports = {}
     if request.method == 'POST':
         form = UserInputForm(request.POST)
         if form.is_valid():
@@ -28,8 +29,6 @@ def index(request):
 
         # Call the ML model to get the GeoJSON and top suburbs
         geojson_url, top_suburbs = score_model(user_input)
-
-        report_urls = {}
     
         # For each suburb, generate the URLs for the reports (piechart, price_distribution, etc.)
         for suburb in top_suburbs:
@@ -42,7 +41,7 @@ def index(request):
             }
 
             # Add the URLs to the main report_urls dictionary with suburb as the key
-            report_urls[suburb] = suburb_report_urls
+            suburb_reports[suburb] = suburb_report_urls
 
     else:
         form = UserInputForm()
@@ -51,5 +50,5 @@ def index(request):
         'form': form,
         'geojson_url': geojson_url,
         'mapbox_api_key': mapbox_api_key,
-        'suburb_reports': report_urls
+        'suburb_reports': suburb_reports
     })
