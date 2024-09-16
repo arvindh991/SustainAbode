@@ -26,8 +26,13 @@
   <!-- Container to display selected suburb name and reports -->
   <div class="mt-4" id="suburb-report-container" style="display: none;">
     <h3 id="suburb-name"></h3>
-    <div id="suburb-reports"></div>
+
+    <!-- New Row for Reports (Pie chart and Price Distribution stacked vertically) -->
+    <div class="row" id="suburb-reports">
+      <!-- Reports will be injected here -->
+    </div>
   </div>
+
 </div>
 
 <script>
@@ -60,11 +65,11 @@
           'interpolate', // Interpolate colors based on 'SerialNumber' values
           ['linear'], 
           ['get', 'SerialNumber'], // Get the 'SerialNumber' property from the GeoJSON
-          1, '#FFEDA0',  // Color for SerialNumber 1 (light yellow)
-          2, '#FED976',  // Color for SerialNumber 2 (yellow)
-          3, '#FEB24C',  // Color for SerialNumber 3 (orange)
-          4, '#FD8D3C',  // Color for SerialNumber 4 (red-orange)
-          5, '#E31A1C'   // Color for SerialNumber 5 (dark red)
+          1, '#1bac29',  // Color for SerialNumber 1 (light yellow)
+          2, '#74be79',  // Color for SerialNumber 2 (yellow)
+          3, '#cfe873',  // Color for SerialNumber 3 (orange)
+          4, '#d95b45',  // Color for SerialNumber 4 (red-orange)
+          5, '#e60a0a'   // Color for SerialNumber 5 (dark red)
         ],
         'fill-opacity': 0.7 // Set fill opacity for the polygons
       }
@@ -204,7 +209,6 @@
     });
    
   });
-
   // Suburb reports passed from Django
   var suburbReports = {{ suburb_reports|safe }};
 
@@ -219,11 +223,15 @@
       var reportContainer = document.getElementById('suburb-reports');
       reportContainer.innerHTML = ''; // Clear any previous reports
 
-      // Generate image tags for each report
+      // Generate image tags for each report and place them one below the other
       for (var reportType in reports) {
         var reportUrl = reports[reportType];
-        var imgTag = `<img src="${reportUrl}" alt="${reportType} report for ${suburbName}" class="img-fluid mb-3">`;
-        reportContainer.innerHTML += imgTag;
+
+        // Create a new full-width column for each report (using Bootstrap's col-12 class for stacking)
+        var colDiv = `<div class="col-12">
+                        <img src="${reportUrl}" alt="${reportType} report for ${suburbName}" class="img-fluid mb-3">
+                      </div>`;
+        reportContainer.innerHTML += colDiv;
       }
 
       document.getElementById('suburb-report-container').style.display = 'block';
