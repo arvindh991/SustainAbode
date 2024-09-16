@@ -16,7 +16,7 @@
         <button type="submit" class="btn btn-primary">Submit</button>
       </form>
     </div>
-    
+
     <!-- Second column for the map -->
     <div class="col-md-8">
       <div id="map" style="width: 100%; height: 600px; position: relative;"></div>
@@ -27,12 +27,11 @@
   <div class="mt-4" id="suburb-report-container" style="display: none;">
     <h3 id="suburb-name"></h3>
 
-    <!-- New Row for Reports (Pie chart and Price Distribution stacked vertically) -->
+    <!-- New Row for Reports (Pie chart and Price Distribution side by side) -->
     <div class="row" id="suburb-reports">
       <!-- Reports will be injected here -->
     </div>
   </div>
-
 </div>
 
 <script>
@@ -111,13 +110,15 @@
       }
     });
 
-    // Add a layer to display suburb names as text labels
     map.addLayer({
       'id': 'suburb-labels',
       'type': 'symbol', // Use symbols for labels
       'source': 'melbourne', // Use the same 'melbourne' GeoJSON source
       'layout': {
-        'text-field': ['get', 'LOC_NAME'], // Get the suburb name from the 'LOC_NAME' property
+        'text-field': [
+          'concat',  // Concatenate the rank with the suburb name
+          '#', ['get', 'SerialNumber'], ' ', ['get', 'LOC_NAME']
+        ],
         'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'], // Font for the labels
         'text-size': 12, // Font size
         'text-anchor': 'center' // Anchor the text to the center of the polygon
@@ -209,34 +210,36 @@
     });
    
   });
-  // Suburb reports passed from Django
-  var suburbReports = {{ suburb_reports|safe }};
 
-  // Function to display the reports for a selected suburb
-  function displaySuburbReports(suburbName) {
-    var suburbKey = suburbName.replace(/\s/g, '_'); // Replace spaces with underscores to match the keys in suburbReports
-    var reports = suburbReports[suburbKey]; // Fetch reports using the modified suburb name
-
-    if (reports) {
-      document.getElementById('suburb-name').innerText = suburbName;
-
-      var reportContainer = document.getElementById('suburb-reports');
-      reportContainer.innerHTML = ''; // Clear any previous reports
-
-      // Generate image tags for each report and place them one below the other
-      for (var reportType in reports) {
-        var reportUrl = reports[reportType];
-
-        // Create a new full-width column for each report (using Bootstrap's col-12 class for stacking)
-        var colDiv = `<div class="col-12">
-                        <img src="${reportUrl}" alt="${reportType} report for ${suburbName}" class="img-fluid mb-3">
-                      </div>`;
-        reportContainer.innerHTML += colDiv;
+  <script>
+    // Suburb reports passed from Django
+    var suburbReports = {{ suburb_reports|safe }};
+  
+    // Function to display the reports for a selected suburb
+    function displaySuburbReports(suburbName) {
+      var suburbKey = suburbName.replace(/\s/g, '_'); // Replace spaces with underscores to match the keys in suburbReports
+      var reports = suburbReports[suburbKey]; // Fetch reports using the modified suburb name
+  
+      if (reports) {
+        document.getElementById('suburb-name').innerText = suburbName;
+  
+        var reportContainer = document.getElementById('suburb-reports');
+        reportContainer.innerHTML = ''; // Clear any previous reports
+  
+        // Generate image tags for each report and place them side by side
+        for (var reportType in reports) {
+          var reportUrl = reports[reportType];
+  
+          // Create a new column for each report (using Bootstrap's col-md-6 class)
+          var colDiv = `<div class="col-md-6">
+                          <img src="${reportUrl}" alt="${reportType} report for ${suburbName}" class="img-fluid mb-3">
+                        </div>`;
+          reportContainer.innerHTML += colDiv;
+        }
+  
+        document.getElementById('suburb-report-container').style.display = 'block';
       }
-
-      document.getElementById('suburb-report-container').style.display = 'block';
     }
-  }
 
 {% endif %}
 </script>
