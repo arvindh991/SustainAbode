@@ -22,10 +22,16 @@
       <div id="map" style="width: 100%; height: 600px; position: relative;"></div>
     </div>
   </div>
+
+  <!-- Container to display selected suburb name and reports -->
+  <div class="mt-4" id="suburb-report-container" style="display: none;">
+    <h3 id="suburb-name"></h3>
+    <div id="suburb-reports"></div>
+  </div>
 </div>
 
 <script>
-  mapboxgl.accessToken = '{{ mapbox_api_key }}'; <!-- Mapbox public access token -->
+  mapboxgl.accessToken = '{{ mapbox_api_key }}'; // Mapbox public access token
 
   // Initialize the map with basic settings
   var map = new mapboxgl.Map({
@@ -38,31 +44,30 @@
   {% if geojson_url %}
 
   map.on('load', function () {
-  
     // Add the GeoJSON data source to the map
     map.addSource('melbourne', {
       'type': 'geojson',
       'data': '{{ geojson_url }}' // The URL to the geoJSON file
     });
 
-   // Add a layer for displaying the neighborhoods, color-coded by their 'SerialNumber' property
+    // Add a layer for displaying the neighborhoods, color-coded by their 'SerialNumber' property
     map.addLayer({
-    'id': 'melbourne-layer',
-    'type': 'fill', // Fill polygons with color
-    'source': 'melbourne', // Use the 'melbourne' GeoJSON source
-    'paint': {
-      'fill-color': [
-        'interpolate', // Interpolate colors based on 'SerialNumber' values
-        ['linear'], 
-        ['get', 'SerialNumber'], // Get the 'SerialNumber' property from the GeoJSON
-        1, '#FFEDA0',  // Color for SerialNumber 1 (light yellow)
-        2, '#FED976',  // Color for SerialNumber 2 (yellow)
-        3, '#FEB24C',  // Color for SerialNumber 3 (orange)
-        4, '#FD8D3C',  // Color for SerialNumber 4 (red-orange)
-        5, '#E31A1C'   // Color for SerialNumber 5 (dark red)
-      ],
-      'fill-opacity': 0.7 // Set fill opacity for the polygons
-    }
+      'id': 'melbourne-layer',
+      'type': 'fill', // Fill polygons with color
+      'source': 'melbourne', // Use the 'melbourne' GeoJSON source
+      'paint': {
+        'fill-color': [
+          'interpolate', // Interpolate colors based on 'SerialNumber' values
+          ['linear'], 
+          ['get', 'SerialNumber'], // Get the 'SerialNumber' property from the GeoJSON
+          1, '#FFEDA0',  // Color for SerialNumber 1 (light yellow)
+          2, '#FED976',  // Color for SerialNumber 2 (yellow)
+          3, '#FEB24C',  // Color for SerialNumber 3 (orange)
+          4, '#FD8D3C',  // Color for SerialNumber 4 (red-orange)
+          5, '#E31A1C'   // Color for SerialNumber 5 (dark red)
+        ],
+        'fill-opacity': 0.7 // Set fill opacity for the polygons
+      }
     });
 
     // Add a black border around each neighborhood polygon
@@ -205,7 +210,8 @@
 
   // Function to display the reports for a selected suburb
   function displaySuburbReports(suburbName) {
-    var reports = suburbReports[suburbName];
+    var suburbKey = suburbName.replace(/\s/g, '_'); // Replace spaces with underscores to match the keys in suburbReports
+    var reports = suburbReports[suburbKey]; // Fetch reports using the modified suburb name
 
     if (reports) {
       document.getElementById('suburb-name').innerText = suburbName;
