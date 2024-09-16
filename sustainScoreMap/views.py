@@ -6,7 +6,6 @@ from .forms import UserInputForm
 from .ml_model import score_model
 from django.conf import settings
 from .reports import generate_and_save_reports_for_suburb
-import os
 import pandas as pd
 
 def index(request):
@@ -29,10 +28,10 @@ def index(request):
             }
 
         # Call the ML model to get the GeoJSON and top suburbs
-        geojson_url, top_suburbs, geo_df = score_model(user_input)
+        geojson_url, top_suburbs, geo_df, melbourne_data = score_model(user_input)
 
         for suburb in top_suburbs:
-            suburb_reports[suburb] = generate_and_save_reports_for_suburb(suburb, geo_df)
+            suburb_reports[suburb] = generate_and_save_reports_for_suburb(suburb, geo_df, melbourne_data)
 
     else:
         form = UserInputForm()

@@ -68,13 +68,13 @@ def generate_score_breakdown(suburb_data):
         normalized_scores = {k: (v / total_score) * 100 for k, v in score_breakdown.items()}
 
     # Return the breakdown and normalized scores
-    return score_breakdown, normalized_scores
+    return normalized_scores
 
 
 def generate_piechart_image(suburb_name, geo_df):
     # Generate the pie chart and save to an in-memory buffer
     selected_suburb_data = geo_df[geo_df['LOC_NAME'] == suburb_name.upper()].iloc[0]
-    score_breakdown, normalized_scores = generate_score_breakdown(selected_suburb_data)
+    normalized_scores = generate_score_breakdown(selected_suburb_data)
 
     labels_mapping = {
         'House Count': 'Available houses within price range',
@@ -100,16 +100,17 @@ def generate_piechart_image(suburb_name, geo_df):
     buffer.seek(0)
     plt.close(fig)  # Close the figure to prevent it from showing
 
-    return buffer.getvalue()  # Return the image buffer data
+    # Get the image data from the buffer before closing it
+    image_data = buffer.getvalue()
+
+    # Close the buffer to release memory
+    buffer.close()
+
+    # Return the image data
+    return image_data  # Return the image buffer data
 
 
 def generate_price_distribution_image(suburb_name, melbourne_data):
-
-    # Define the base data directory
-    data_dir = os.path.join(settings.BASE_DIR, 'data')
-
-    # Loading the house price dataset from the data folder
-    melbourne_data = pd.read_csv(os.path.join(data_dir, 'MELBOURNE_HOUSE_PRICES_LESS_CLEAN.csv'))
 
     # Generate the price distribution histogram and save to an in-memory buffer
     suburb_data = melbourne_data[melbourne_data['Suburb'].str.upper() == suburb_name.upper()]['Price'].dropna()
@@ -158,10 +159,18 @@ def generate_price_distribution_image(suburb_name, melbourne_data):
     buffer.seek(0)
     plt.close(fig)  # Close the figure to prevent it from showing
 
-    return buffer.getvalue()
+    # Get the image data from the buffer before closing it
+    image_data = buffer.getvalue()
+
+    # Close the buffer to release memory
+    buffer.close()
+
+    # Return the image data
+    return image_data  # Return the image buffer data
+
 
 # Function to generate and save reports for a given suburb
-def generate_and_save_reports_for_suburb(suburb_name, geo_df):
+def generate_and_save_reports_for_suburb(suburb_name, geo_df, melbourne_data):
     report_urls = {}
 
     # Pie chart report
@@ -170,7 +179,7 @@ def generate_and_save_reports_for_suburb(suburb_name, geo_df):
     report_urls['piechart'] = piechart_url
 
     # House price distribution report (histogram)
-    histogram_image = generate_price_distribution_image(suburb_name)
+    histogram_image = generate_price_distribution_image(suburb_name, melbourne_data)
     histogram_url = save_report_to_blob(histogram_image, suburb_name, 'price_distribution')
     report_urls['price_distribution'] = histogram_url
 

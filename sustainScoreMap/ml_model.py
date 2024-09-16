@@ -205,8 +205,10 @@ def score_model(user_input):
         # Upload the in-memory GeoJSON data to the Blob
         blob_client.upload_blob(geojson_buffer, overwrite=True)
         # print(f"GeoJSON uploaded successfully to {blob_url}")
+        # Close the buffer to release memory
+        geojson_buffer.close()
     except Exception as e:
         print(f"Error uploading GeoJSON to Blob: {str(e)}")
         raise
 
-    return blob_url, top_suburb_names, final_geo_df   # Return the GeoJSON path
+    return blob_url, top_suburb_names, final_geo_df, melbourne_data   # Return the GeoJSON path
