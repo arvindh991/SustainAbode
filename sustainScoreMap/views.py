@@ -31,14 +31,8 @@ def index(request):
         # Call the ML model to get the GeoJSON and top suburbs
         geojson_url, top_suburbs, geo_df = score_model(user_input)
 
-        # Define the base data directory
-        data_dir = os.path.join(settings.BASE_DIR, 'data')
-
-        # Loading the house price dataset from the data folder
-        melbourne_data = pd.read_csv(os.path.join(data_dir, 'MELBOURNE_HOUSE_PRICES_LESS_CLEAN.csv'))
-
         for suburb in top_suburbs:
-            suburb_reports[suburb] = generate_and_save_reports_for_suburb(suburb, geo_df, melbourne_data)
+            suburb_reports[suburb] = generate_and_save_reports_for_suburb(suburb, geo_df)
 
     else:
         form = UserInputForm()
