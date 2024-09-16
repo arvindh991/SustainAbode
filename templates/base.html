@@ -9,11 +9,10 @@
     <meta name="author" content="Sustain ABode">
     <title>{% block title %}Sustain ABode{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
-    <link rel="shortcut icon" href="{% static 'images/logo.svg' %}">
+    <link rel="shortcut icon" href="{% static 'images/logo.svg' %}" sizes="128x128">
     <script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
     <link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet' />
 
-    <!-- Custom styles for this template -->
     <style>
       body {
         background-image: url('{% static 'images/background.jpeg' %}'); /* Use background.jpeg */
@@ -100,13 +99,13 @@
 
       .map-card {
         margin: 40px auto;
-        max-width: 80%;
+        max-width: 100%; /* Increased to fill the container */
       }
 
       .map-img {
         max-width: 100%;
         height: auto;
-        border: 2px solid #000;
+        border: 4px solid #000; /* Thicker black borders */
         margin: 0 auto;
       }
 
@@ -123,20 +122,34 @@
       }
 
       .compare-images img {
-        width: 60%;
+        width: 100%; /* Increased width to fill the container */
         height: auto;
         margin: 0 auto;
         display: block;
         border-radius: 10px;
-        border: 2px solid #000;
+        border: 4px solid #000; /* Thicker black border */
         box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
       }
 
       .compare-text {
-        margin-top: 10px;
+        display: none; /* Hide the comparison text */
+      }
+
+      /* Button styling */
+      .btn-custom {
+        background-color: #4caf50; /* Custom green color */
+        color: white;
+        border: none;
+        border-radius: 50px; /* Makes the button rounded */
+        padding: 12px 24px;
         font-size: 16px;
-        color: #000;
-        text-align: left;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+      }
+
+      .btn-custom:hover {
+        background-color: #45a049; /* Darker green on hover */
+        color: white;
       }
 
       /* Scroll to the next section button */
@@ -190,17 +203,50 @@
         text-align: left;
       }
 
+      /* Carousel text styling */
+      .carousel-border {
+        border-top: 3px solid #000;
+        background-color: #fff;
+        width: 80%;
+        margin: 0 auto;
+        padding: 10px;
+        font-size: 18px;
+        font-weight: bold;
+        text-align: center;
+      }
+
+      .typed-text {
+        font-size: 18px;
+        font-weight: bold;
+        white-space: normal; /* Allow wrapping */
+        overflow: visible; /* Ensure content overflows to the next line */
+      }
+
+      .cursor {
+        display: inline-block;
+        font-size: 18px;
+        animation: blink 0.7s steps(1) infinite;
+      }
+
+      .card {
+        background-color: transparent; /* Make background transparent */
+        border: none; /* Remove any border */
+        padding: 0; /* Remove extra padding */
+      }
+
+      @keyframes blink {
+        0% { opacity: 1; }
+        50% { opacity: 0; }
+        100% { opacity: 1; }
+      }
     </style>
   </head>
 
-  <body>
-
-    <!-- Navigation Bar -->
-    <header>
+  <header>
     <nav class="navbar navbar-expand-md navbar-light fixed-top">
-      <a class="navbar-brand" href="#">
-        <img src="{% static 'images/logo.svg' %}" alt="SustainABode Logo">
-        SustainABode
+      <a class="navbar-brand" href="{% url 'landing_page' %}">
+          <img src="{% static 'images/logo.svg' %}" alt="SustainABode Logo" style="height: 120px; width: auto; margin-left: 20px;">
+          SustainABode
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -220,6 +266,7 @@
       </div>
     </nav>
   </header>
+  
 
   <!-- Main Content Area -->
   <main class="container">
@@ -232,6 +279,57 @@
   </footer>
     
   <!-- Bootstrap core JavaScript -->
-  <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+  <!-- Custom JavaScript to Handle Click-based Carousel Slide with Fade -->
+  <script>
+    document.querySelectorAll('.carousel-clickable').forEach(function(image) {
+      image.addEventListener('click', function() {
+        $('#carouselExampleIndicators').carousel('next'); // Trigger next slide on click
+      });
+    });
+
+    const texts = [
+      "Realizing the need to buy a house that aligns with their sustainable values and lifestyle.",
+      "Starts looking for potential suburbs and shortlisting their priorities.",
+      "Frustrated and overwhelmed that they can't find centralized data about all the indicators which makes them indecisive.",
+      "Comes across SUSTAINABODE which not only helps them by providing centralized data regarding various indicators but also personalized insights to make informed decisions.",
+      "Finds their happily ever after, thanks to SustainAbode."
+    ];
+
+    function typeText(elementId, text, delay = 50) {
+      let i = 0;
+      const element = document.getElementById(elementId);
+      element.innerHTML = "";
+      const interval = setInterval(() => {
+        element.innerHTML += text[i];
+        i++;
+        if (i === text.length) {
+          clearInterval(interval);
+        }
+      }, delay);
+    }
+
+    // Trigger typing effect on active slide
+    function triggerTypingEffect() {
+      const activeSlide = document.querySelector('.carousel-item.active');
+      const textId = activeSlide.querySelector('.typed-text').id;
+      const index = Array.from(activeSlide.parentNode.children).indexOf(activeSlide);
+      typeText(textId, texts[index]);
+    }
+
+    // Initialize typing effect on first load
+    document.addEventListener('DOMContentLoaded', () => {
+      triggerTypingEffect();
+    });
+
+    // Re-trigger typing effect on slide change
+    $('#carouselExampleIndicators').on('slid.bs.carousel', function () {
+      triggerTypingEffect();
+    });
+  </script>
+
   </body>
 </html>

@@ -12,26 +12,35 @@
   <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
     <div class="carousel-inner">
       <div class="carousel-item active">
-        <img src="{% static 'images/frame1.png' %}">
-        <div class="carousel-position">1</div>
+        <img src="{% static 'images/frame1.png' %}" alt="First Image" class="carousel-clickable">
+        <div class="carousel-border">
+          <div class="typed-text" id="typed-text-1"></div>
+        </div>
       </div>
       <div class="carousel-item">
-        <img src="{% static 'images/frame2.png' %}">
-        <div class="carousel-position">2</div>
+        <img src="{% static 'images/frame2.png' %}" alt="Second Image" class="carousel-clickable">
+        <div class="carousel-border">
+          <div class="typed-text" id="typed-text-2"></div>
+        </div>
       </div>
       <div class="carousel-item">
-        <img src="{% static 'images/frame3.png' %}">
-        <div class="carousel-position">3</div>
+        <img src="{% static 'images/frame3.png' %}" alt="Third Image" class="carousel-clickable">
+        <div class="carousel-border">
+          <div class="typed-text" id="typed-text-3"></div>
+        </div>
       </div>
       <div class="carousel-item">
-        <img src="{% static 'images/frame4.png' %}">
-        <div class="carousel-position">4</div>
+        <img src="{% static 'images/frame4.png' %}" alt="Fourth Image" class="carousel-clickable">
+        <div class="carousel-border">
+          <div class="typed-text" id="typed-text-4"></div>
+        </div>
       </div>
       <div class="carousel-item">
-        <img src="{% static 'images/frame5.png' %}">
-        <div class="carousel-position">5</div>
+        <img src="{% static 'images/frame5.png' %}" alt="Fifth Image" class="carousel-clickable">
+        <div class="carousel-border">
+          <div class="typed-text" id="typed-text-5"></div>
+        </div>
       </div>
-      
     </div>
     <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -44,6 +53,8 @@
   </div>
   <button class="scroll-button" onclick="document.getElementById('suburb-section').scrollIntoView({behavior: 'smooth'})">Next: Explore Suburb Sustainability Scores</button>
 </section>
+Scores</button>
+</section>
 
 <!-- Suburb-Wise Sustainability Score Section -->
 <section class="section suburb-section" id="suburb-section">
@@ -51,7 +62,7 @@
     <div class="row align-items-center">
       <div class="col-md-8">
         <div class="map-card">
-          <img src="" alt="Sustainability Map" class="img-fluid map-img">
+          <img src="{% static 'images/sustainability_map.png' %}" alt="Sustainability Map" class="img-fluid map-img">
         </div>
       </div>
       <div class="col-md-4">
@@ -72,15 +83,15 @@
   </div>
   <div class="compare-images">
     <div class="card">
-      <img src="" alt="Map Comparison 1" class="img-fluid">
-      <p class="compare-text">Comparison 1</p>
+      <img src="{% static 'images/comparemap1.png' %}" alt="Map Comparison 1" class="img-fluid">
     </div>
     <div class="card">
-      <img src="" alt="Map Comparison 2" class="img-fluid">
-      <p class="compare-text">Comparison 2</p>
+      <img src="{% static 'images/comparemap2.png' %}" alt="Map Comparison 2" class="img-fluid">
     </div>
   </div>
-    <a href="{% url 'comparesuburbsmap' %}" class="btn btn-custom mt-4">Compare</a>
+  <button class="btn btn-custom mt-4">
+    <a href="{% url 'comparesuburbsmap' %}" class="btn btn-custom">Compare</a>
+  </button>
 </section>
 
 {% endblock %}
