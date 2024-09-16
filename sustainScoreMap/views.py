@@ -5,12 +5,15 @@ from django.shortcuts import render
 from .forms import UserInputForm
 from .ml_model import score_model
 from django.conf import settings
+from .reports import generate_and_save_reports_for_suburb
+import os
+import pandas as pd
 
 def index(request):
 
     mapbox_api_key = settings.MAPBOX_API_KEY
     geojson_url = None
-
+    suburb_reports = {}
     if request.method == 'POST':
         form = UserInputForm(request.POST)
         if form.is_valid():
@@ -25,14 +28,15 @@ def index(request):
                 'prefer_carpark': form.cleaned_data['prefer_carpark'],
             }
 
-            print(user_input)
+        # Call the ML model to get the GeoJSON and top suburbs
+        geojson_url, top_suburbs = score_model(user_input)
 
-            # Call the ML model and get the GeoJSON file
-            geojson_url = score_model(user_input)
+        # For each suburb, generate the reports and store the URLs
+        geo_df = None  # Load or generate the GeoDataFrame
+        melbourne_data = pd.read_csv(os.path.join(settings.BASE_DIR, 'data/MELBOURNE_HOUSE_PRICES_LESS_CLEAN.csv'))
 
-            print("I have received an output from the ML_model")
-
-            print(f"Here is where my file is stored {geojson_url}")
+        for suburb in top_suburbs:
+            suburb_reports[suburb] = generate_and_save_reports_for_suburb(suburb, geo_df, melbourne_data)
 
     else:
         form = UserInputForm()
