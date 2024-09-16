@@ -31,8 +31,11 @@ def index(request):
         # Call the ML model to get the GeoJSON and top suburbs
         geojson_url, top_suburbs, geo_df = score_model(user_input)
 
-        # For each suburb, generate the reports and store the URLs
-        melbourne_data = pd.read_csv(os.path.join(settings.BASE_DIR, 'data/MELBOURNE_HOUSE_PRICES_LESS_CLEAN.csv'))
+        # Define the base data directory
+        data_dir = os.path.join(settings.BASE_DIR, 'data')
+
+        # Loading the house price dataset from the data folder
+        melbourne_data = pd.read_csv(os.path.join(data_dir, 'MELBOURNE_HOUSE_PRICES_LESS_CLEAN.csv'))
 
         for suburb in top_suburbs:
             suburb_reports[suburb] = generate_and_save_reports_for_suburb(suburb, geo_df, melbourne_data)
@@ -43,5 +46,6 @@ def index(request):
     return render(request, 'sustainScoreMap/sustainscore.html', {
         'form': form,
         'geojson_url': geojson_url,
-        'mapbox_api_key': mapbox_api_key
+        'mapbox_api_key': mapbox_api_key,
+        'suburb_reports': suburb_reports
     })
