@@ -41,7 +41,7 @@ def index(request):
             }
 
             # Add the URLs to the main report_urls dictionary with suburb as the key
-            suburb_reports[suburb] = suburb_report_urls
+            suburb_reports[suburb_with_underscore] = suburb_report_urls
 
     else:
         form = UserInputForm()
