@@ -5,14 +5,13 @@ from django.shortcuts import render
 from .forms import UserInputForm
 from .ml_model import score_model
 from django.conf import settings
-from .reports import generate_and_save_reports_for_suburb
 import pandas as pd
 
 def index(request):
 
     mapbox_api_key = settings.MAPBOX_API_KEY
     geojson_url = None
-    suburb_reports = {}
+    top_suburbs = []
     if request.method == 'POST':
         form = UserInputForm(request.POST)
         if form.is_valid():
@@ -28,10 +27,22 @@ def index(request):
             }
 
         # Call the ML model to get the GeoJSON and top suburbs
-        geojson_url, top_suburbs, geo_df, melbourne_data = score_model(user_input)
+        geojson_url, top_suburbs = score_model(user_input)
 
+        report_urls = {}
+    
+        # For each suburb, generate the URLs for the reports (piechart, price_distribution, etc.)
         for suburb in top_suburbs:
-            suburb_reports[suburb] = generate_and_save_reports_for_suburb(suburb, geo_df, melbourne_data)
+            # Replace whitespace with underscores in the suburb name
+            suburb_with_underscore = suburb.replace(' ', '_')
+
+            suburb_report_urls = {
+                'piechart': f"{settings.AZURE_CONTAINER_URL}/piechart_{suburb_with_underscore}.png",
+                'price_distribution': f"{settings.AZURE_CONTAINER_URL}/price_distribution_{suburb_with_underscore}.png"
+            }
+
+            # Add the URLs to the main report_urls dictionary with suburb as the key
+            report_urls[suburb] = suburb_report_urls
 
     else:
         form = UserInputForm()
@@ -40,5 +51,5 @@ def index(request):
         'form': form,
         'geojson_url': geojson_url,
         'mapbox_api_key': mapbox_api_key,
-        'suburb_reports': suburb_reports
+        'suburb_reports': report_urls
     })

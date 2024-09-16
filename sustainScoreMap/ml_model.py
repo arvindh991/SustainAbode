@@ -211,4 +211,4 @@ def score_model(user_input):
         print(f"Error uploading GeoJSON to Blob: {str(e)}")
         raise
 
-    return blob_url, top_suburb_names, final_geo_df, melbourne_data   # Return the GeoJSON path
+    return blob_url, top_suburb_names   # Return the GeoJSON path
