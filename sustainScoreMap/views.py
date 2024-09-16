@@ -29,10 +29,9 @@ def index(request):
             }
 
         # Call the ML model to get the GeoJSON and top suburbs
-        geojson_url, top_suburbs = score_model(user_input)
+        geojson_url, top_suburbs, geo_df = score_model(user_input)
 
         # For each suburb, generate the reports and store the URLs
-        geo_df = None  # Load or generate the GeoDataFrame
         melbourne_data = pd.read_csv(os.path.join(settings.BASE_DIR, 'data/MELBOURNE_HOUSE_PRICES_LESS_CLEAN.csv'))
 
         for suburb in top_suburbs:
