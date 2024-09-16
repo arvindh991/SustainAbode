@@ -174,31 +174,50 @@
         }
     });
 
-    // Custom reset button control to reset the map view to the original bounds
-    class ResetViewControl {
-      onAdd(map) {
-          this.map = map;
-          this.container = document.createElement('button'); // Create a button element
-          this.container.className = 'mapboxgl-ctrl reset-btn'; // Set button class
-          this.container.textContent = 'Reset View'; // Button text
-          this.container.onclick = function() {
-              // Reset the map to the original bounds
-              if (originalBounds) {
-                  map.fitBounds(originalBounds, {
-                      padding: 20, // Same padding used before
-                      maxZoom: 11, // Same maxZoom
-                      duration: 1000 // Same duration
-                  });
-              }
-          };
-          return this.container; // Return the button element
-      }
+// Custom reset button control to reset the map view to the original bounds
+class ResetViewControl {
+  onAdd(map) {
+      this.map = map;
+      this.container = document.createElement('div');
+      this.container.className = 'mapboxgl-ctrl reset-btn-container';
 
-      onRemove() {
-          this.container.parentNode.removeChild(this.container); // Remove the button element
-          this.map = undefined;
-      }
-   }
+      // Reset button
+      const resetButton = document.createElement('button');
+      resetButton.className = 'reset-btn';
+      resetButton.textContent = 'Reset View';
+      resetButton.onclick = function() {
+          if (originalBounds) {
+              map.fitBounds(originalBounds, {
+                  padding: 20,
+                  maxZoom: 11,
+                  duration: 1000
+              });
+          }
+      };
+
+      // Legend container
+      const legend = document.createElement('div');
+      legend.className = 'map-legend';
+      legend.innerHTML = `
+        <div class="legend-item"><span style="background-color: #1bac29;"></span>Serial #1</div>
+        <div class="legend-item"><span style="background-color: #74be79;"></span>Serial #2</div>
+        <div class="legend-item"><span style="background-color: #cfe873;"></span>Serial #3</div>
+        <div class="legend-item"><span style="background-color: #d95b45;"></span>Serial #4</div>
+        <div class="legend-item"><span style="background-color: #e60a0a;"></span>Serial #5</div>
+      `;
+
+      // Append the reset button and legend to the container
+      this.container.appendChild(resetButton);
+      this.container.appendChild(legend);
+
+      return this.container;
+  }
+
+  onRemove() {
+      this.container.parentNode.removeChild(this.container);
+      this.map = undefined;
+  }
+}
 
     // Add the reset view button control to the map
     map.addControl(new ResetViewControl(), 'top-right'); // Add the control to the top-right corner
