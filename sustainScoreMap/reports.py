@@ -1,9 +1,11 @@
 import os
+import matplotlib
+# Set the backend to 'Agg' to prevent any GUI from being used
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import base64
 from io import BytesIO
 from azure.storage.blob import BlobServiceClient
-from datetime import datetime
 from django.conf import settings
 import pandas as pd
 
@@ -96,13 +98,13 @@ def generate_piechart_image(suburb_name, geo_df):
 
     plt.tight_layout()  # Ensure the layout fits well
 
-    # Save to an in-memory buffer
+    # Save to an in-memory buffer (DO NOT SHOW THE PLOT)
     buffer = BytesIO()
     plt.savefig(buffer, format='png')
     buffer.seek(0)
-    plt.close(fig)
+    plt.close(fig)  # Close the figure to prevent it from showing
 
-    return buffer.getvalue()
+    return buffer.getvalue()  # Return the image buffer data
 
 
 def generate_price_distribution_image(suburb_name, melbourne_data):
@@ -147,11 +149,11 @@ def generate_price_distribution_image(suburb_name, melbourne_data):
 
     plt.tight_layout()  # Adjust layout
 
-    # Save to an in-memory buffer
+    # Save to an in-memory buffer (DO NOT SHOW THE PLOT)
     buffer = BytesIO()
     plt.savefig(buffer, format='png')
     buffer.seek(0)
-    plt.close(fig)
+    plt.close(fig)  # Close the figure to prevent it from showing
 
     return buffer.getvalue()
 
