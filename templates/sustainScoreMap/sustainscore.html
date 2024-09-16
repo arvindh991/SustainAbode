@@ -188,12 +188,41 @@
           this.container.parentNode.removeChild(this.container); // Remove the button element
           this.map = undefined;
       }
+   }
+
+    // Add the reset view button control to the map
+    map.addControl(new ResetViewControl(), 'top-right'); // Add the control to the top-right corner
+
+    map.on('click', 'melbourne-layer', function (e) {
+      var suburbName = e.features[0].properties.LOC_NAME;
+      displaySuburbReports(suburbName);
+    });
+   
+  });
+
+  // Suburb reports passed from Django
+  var suburbReports = {{ suburb_reports|safe }};
+
+  // Function to display the reports for a selected suburb
+  function displaySuburbReports(suburbName) {
+    var reports = suburbReports[suburbName];
+
+    if (reports) {
+      document.getElementById('suburb-name').innerText = suburbName;
+
+      var reportContainer = document.getElementById('suburb-reports');
+      reportContainer.innerHTML = ''; // Clear any previous reports
+
+      // Generate image tags for each report
+      for (var reportType in reports) {
+        var reportUrl = reports[reportType];
+        var imgTag = `<img src="${reportUrl}" alt="${reportType} report for ${suburbName}" class="img-fluid mb-3">`;
+        reportContainer.innerHTML += imgTag;
+      }
+
+      document.getElementById('suburb-report-container').style.display = 'block';
+    }
   }
-
-  // Add the reset view button control to the map
-  map.addControl(new ResetViewControl(), 'top-right'); // Add the control to the top-right corner
-
-});
 
 {% endif %}
 </script>
