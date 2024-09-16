@@ -211,47 +211,50 @@
    
   });
 
-  <script>
-    function displaySuburbReports(suburbName) {
-      // Title case the suburb name and replace spaces with underscores to match the keys in suburbReports
-      var suburbKey = suburbName.toLowerCase().replace(/\b\w/g, function(letter) {
-        return letter.toUpperCase();
-      }).replace(/\s/g, '_'); // This will convert 'my suburb' to 'My_Suburb'
-    
-      var reports = suburbReports[suburbKey]; // Fetch reports using the modified suburb name
-    
-      // Log the suburbKey and reports for debugging
-      console.log('Selected Suburb:', suburbName);
-      console.log('Suburb Key:', suburbKey);
-      console.log('Reports:', reports);
-    
-      if (reports) {
-        document.getElementById('suburb-name').innerText = suburbName;
-    
-        var reportContainer = document.getElementById('suburb-reports');
-        reportContainer.innerHTML = ''; // Clear any previous reports
-    
-        // Generate image tags for each report and place them side by side
-        for (var reportType in reports) {
-          var reportUrl = reports[reportType];
-          
-          if (reportUrl) {
-            // Create a new column for each report (using Bootstrap's col-md-6 class)
-            var colDiv = `<div class="col-12 col-md-6">
-                            <img src="${reportUrl}" alt="${reportType} report for ${suburbName}" class="img-fluid mb-3">
-                          </div>`;
-            reportContainer.innerHTML += colDiv;
-          } else {
-            console.warn(`Missing report URL for ${reportType} in ${suburbName}`);
-          }
+  // Suburb reports passed from Django
+  var suburbReports = {{ suburb_reports|safe }};
+
+  // Function to display the reports for a selected suburb
+  function displaySuburbReports(suburbName) {
+    // Title case the suburb name and replace spaces with underscores to match the keys in suburbReports
+    var suburbKey = suburbName.toLowerCase().replace(/\b\w/g, function(letter) {
+      return letter.toUpperCase();
+    }).replace(/\s/g, '_'); // This will convert 'my suburb' to 'My_Suburb'
+
+    var reports = suburbReports[suburbKey]; // Fetch reports using the modified suburb name
+
+    // Log the suburbKey and reports for debugging
+    console.log('Selected Suburb:', suburbName);
+    console.log('Suburb Key:', suburbKey);
+    console.log('Reports:', reports);
+
+    if (reports) {
+      document.getElementById('suburb-name').innerText = suburbName;
+
+      var reportContainer = document.getElementById('suburb-reports');
+      reportContainer.innerHTML = ''; // Clear any previous reports
+
+      // Generate image tags for each report and place them side by side
+      for (var reportType in reports) {
+        var reportUrl = reports[reportType];
+
+        if (reportUrl) {
+          // Create a new column for each report (using Bootstrap's col-md-6 class)
+          var colDiv = `<div class="col-12 col-md-6">
+                          <img src="${reportUrl}" alt="${reportType} report for ${suburbName}" class="img-fluid mb-3">
+                        </div>`;
+          reportContainer.innerHTML += colDiv;
+        } else {
+          console.warn(`Missing report URL for ${reportType} in ${suburbName}`);
         }
-    
-        document.getElementById('suburb-report-container').style.display = 'block';
-      } else {
-        console.error('No reports found for suburb:', suburbName);
       }
+
+      document.getElementById('suburb-report-container').style.display = 'block';
+    } else {
+      console.error('No reports found for suburb:', suburbName);
     }
-    
+  }
+
 {% endif %}
 </script>
 
