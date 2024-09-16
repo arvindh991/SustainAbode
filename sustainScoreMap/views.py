@@ -33,7 +33,7 @@ def index(request):
         # For each suburb, generate the URLs for the reports (piechart, price_distribution, etc.)
         for suburb in top_suburbs:
             # Replace whitespace with underscores in the suburb name
-            suburb_with_underscore = suburb.replace(' ', '_')
+            suburb_with_underscore = suburb.title().replace(' ', '_')
 
             suburb_report_urls = {
                 'piechart': f"{settings.AZURE_CONTAINER_URL}/piechart_{suburb_with_underscore}.png",
