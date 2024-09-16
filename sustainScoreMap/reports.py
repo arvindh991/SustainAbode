@@ -1,9 +1,5 @@
 import os
-import matplotlib
-# Set the backend to 'Agg' to prevent any GUI from being used
-matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-import base64
 from io import BytesIO
 from azure.storage.blob import BlobServiceClient
 from django.conf import settings
@@ -108,6 +104,13 @@ def generate_piechart_image(suburb_name, geo_df):
 
 
 def generate_price_distribution_image(suburb_name, melbourne_data):
+
+    # Define the base data directory
+    data_dir = os.path.join(settings.BASE_DIR, 'data')
+
+    # Loading the house price dataset from the data folder
+    melbourne_data = pd.read_csv(os.path.join(data_dir, 'MELBOURNE_HOUSE_PRICES_LESS_CLEAN.csv'))
+
     # Generate the price distribution histogram and save to an in-memory buffer
     suburb_data = melbourne_data[melbourne_data['Suburb'].str.upper() == suburb_name.upper()]['Price'].dropna()
 
@@ -158,7 +161,7 @@ def generate_price_distribution_image(suburb_name, melbourne_data):
     return buffer.getvalue()
 
 # Function to generate and save reports for a given suburb
-def generate_and_save_reports_for_suburb(suburb_name, geo_df, melbourne_data):
+def generate_and_save_reports_for_suburb(suburb_name, geo_df):
     report_urls = {}
 
     # Pie chart report
@@ -167,7 +170,7 @@ def generate_and_save_reports_for_suburb(suburb_name, geo_df, melbourne_data):
     report_urls['piechart'] = piechart_url
 
     # House price distribution report (histogram)
-    histogram_image = generate_price_distribution_image(suburb_name, melbourne_data)
+    histogram_image = generate_price_distribution_image(suburb_name)
     histogram_url = save_report_to_blob(histogram_image, suburb_name, 'price_distribution')
     report_urls['price_distribution'] = histogram_url
 
