@@ -1,8 +1,8 @@
 import os
 from pathlib import Path
-# from dotenv import load_dotenv
+from dotenv import load_dotenv
 
-# load_dotenv()
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     # my_apps
     'sustainScoreMap',
     'compareSuburbsMap',
+    'lockdown',
 
     # default_apps
     "whitenoise.runserver_nostatic",
@@ -58,6 +59,15 @@ AZURE_CONTAINER_URL = f"{AZURE_ACCOUNT_URL}/{AZURE_CONTAINER}"
 # Fetch the Mapbox API key from environment variables
 MAPBOX_API_KEY = os.getenv('MAPBOX_API_KEY')
 
+# Enables lockdown globally
+LOCKDOWN_ENABLED = True  
+
+# Passwords that will allow access
+LOCKDOWN_PASSWORDS = (os.getenv('LOCKDOWN_PASSWORD'),)
+
+# The default form for password authentication
+LOCKDOWN_FORM = 'lockdown.forms.LockdownForm'
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -69,6 +79,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'lockdown.middleware.LockdownMiddleware',
 ]
 
 ROOT_URLCONF = 'quickstartproject.urls'
