@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load static %}  <!-- This line is necessary to load static files -->
+
+{% block title %}About SustainAbode{% endblock %}
+
+{% block content %}
+
+<!-- About Section -->
+<section class="about-section">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md-12">
+        <!-- Main Title -->
+        <div style="background-color: rgba(220, 220, 220, 0.9); padding: 20px; border-radius: 10px; text-align: center;">
+          <h1>About SustainAbode</h1>
+          <p>Empowering you to find sustainable living spaces that align with your values.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Info Section with speech bubble and cards -->
+<section class="info-section" style="margin-top: 40px;">
+  <div class="container">
+    <div class="row">
+      <!-- Left Side: Speech Bubble -->
+      <div class="col-md-6">
+        <div class="speech-bubble" style="position: relative; padding: 20px; background: #fff; border: 2px solid black; border-radius: 50px; margin: 20px; font-size: 18px; line-height: 1.5;">
+          <h3>At SustainAbode, we believe in helping individuals and families find neighborhoods that resonate with their sustainable living goals. Our platform provides insights into key factors like transportation, green spaces, education quality, and housing affordability to help you make an informed decision about where to live.</h3>
+        </div>
+      </div>
+      
+      <!-- Right Side: Two Cards -->
+      <div class="col-md-6 d-flex justify-content-between">
+        <!-- First Card: Sustainability Scores -->
+        <div class="card" style="width: 48%; text-align: center; padding: 10px; background-color: #E0E0E0;">
+          <h3>Sustainability Scores</h3>
+          <p>Highlight how the scores are calculated using real-time data on public transport, green spaces, and housing.</p>
+          <img src="{% static 'images/sustainability_map.png' %}" alt="Sustainability Map" class="img-fluid" style="margin-bottom: 10px;">
+          <a href="{% url 'sustainscoremap' %}" class="btn btn-custom">Explore Now</a>
+        </div>
+        
+        <!-- Second Card: Suburb Comparisons -->
+        <div class="card" style="width: 48%; text-align: center; padding: 10px; background-color: #E0E0E0;">
+          <h3>Suburb Comparisons</h3>
+          <p>Lets you compare two suburbs side-by-side, helping you make informed decisions based on transport, green spaces, housing, and sustainability scores.</p>
+          <div style="display: flex; justify-content: space-around;">
+            <img src="{% static 'images/comparemap1.png' %}" alt="Compare Map 1" class="img-fluid" style="margin-bottom: 10px; width: 45%;">
+            <img src="{% static 'images/comparemap2.png' %}" alt="Compare Map 2" class="img-fluid" style="margin-bottom: 10px; width: 45%;">
+          </div>
+          <a href="{% url 'comparesuburbsmap' %}" class="btn btn-custom">Explore Now</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CSS for Uniform Buttons -->
+<style>
+  .btn-custom {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    display: inline-block;
+    width: 80%; /* Ensures uniform width for both buttons */
+    margin: 0 auto;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn-custom:hover {
+    background-color: #45a049;
+    color: white;
+  }
+</style>
+
+{% endblock %}

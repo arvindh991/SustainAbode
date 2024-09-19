@@ -8,18 +8,21 @@
 
 <div class="container-fluid">
   <div class="row">
-    <!-- First column for the filter form -->
-    <div class="col-md-4">
+    <!-- First column for the filter form with border and background -->
+    <div class="col-md-4 bordered-panel">
       <form method="POST" class="mb-4">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-custom">Submit</button> <!-- Changed button style to green -->
       </form>
     </div>
 
     <!-- Second column for the map -->
     <div class="col-md-8">
-      <div id="map" style="width: 100%; height: 600px; position: relative;"></div>
+      <div id="map-container" class="bordered-section"> <!-- Class for map border -->
+        <p id="instruction-text" class="bordered-text"><strong>Hover over a suburb to see the score, and click on the score to see the report.</strong></p>
+        <div id="map" style="width: 100%; height: 600px; position: relative;"></div>
+      </div>
     </div>
   </div>
 
@@ -51,7 +54,7 @@
     // Add the GeoJSON data source to the map
     map.addSource('melbourne', {
       'type': 'geojson',
-      'data': '{{ geojson_url }}' // The URL to the geoJSON file
+      'data': '{% static geojson_url %}' // The URL to the geoJSON file
     });
 
     // Add a layer for displaying the neighborhoods, color-coded by their 'SerialNumber' property
@@ -85,31 +88,6 @@
       }
     });
 
-    // Once the GeoJSON data is fully loaded, adjust the map bounds to fit all the features
-    map.on('sourcedata', function(e) {
-      if (e.isSourceLoaded && e.sourceId === 'melbourne') {
-          var bounds = new mapboxgl.LngLatBounds(); // Create a bounding box object
-
-          // Get all features from the 'melbourne' source and extend the bounds to include each feature
-          var features = map.querySourceFeatures('melbourne');
-          features.forEach(function(feature) {
-              var coordinates = feature.geometry.coordinates;
-              coordinates.forEach(function(coord) {
-                  bounds.extend(coord); // Extend the bounds to include the feature's coordinates
-              });
-          });
-
-          originalBounds = bounds; // Store the bounds globally to allow reset later
-
-          // Fit the map to the calculated bounds
-          map.fitBounds(bounds, {
-              padding: 20, // Padding around the map view
-              maxZoom: 11, // Maximum zoom level
-              duration: 1000 // Animation duration (1 second)
-          });
-      }
-    });
-
     map.addLayer({
       'id': 'suburb-labels',
       'type': 'symbol', // Use symbols for labels
@@ -130,9 +108,6 @@
       }
     });
 
-    // Initialize a variable to keep track of the current popup
-    let currentPopup = null;
-
     // Add a hover effect to the 'melbourne-layer' to show a popup with information
     map.on('mouseenter', 'melbourne-layer', function (e) {
         map.getCanvas().style.cursor = 'pointer'; // Change cursor to pointer on hover
@@ -145,13 +120,8 @@
         var averageDistance = e.features[0].properties.AverageDistance;
         var rank = e.features[0].properties.TotalRank;
 
-        // If there's already a popup, remove it
-        if (currentPopup) {
-            currentPopup.remove();
-        }
-
         // Create a new popup with the suburb information
-        currentPopup = new mapboxgl.Popup({
+        new mapboxgl.Popup({
                 closeButton: false, // Disable the close button
                 closeOnClick: false // Keep the popup open until manually closed or cursor leaves
             })
@@ -164,112 +134,80 @@
             .addTo(map); // Add the popup to the map
     });
 
-    // Remove the popup when the mouse leaves the feature
-    map.on('mouseleave', 'melbourne-layer', function () {
-        map.getCanvas().style.cursor = ''; // Reset cursor to default
-
-        // Remove the popup if it exists
-        if (currentPopup) {
-            currentPopup.remove();
-            currentPopup = null; // Clear the variable
-        }
-    });
-
-    // Custom reset button control to reset the map view to the original bounds
-    class ResetViewControl {
-      onAdd(map) {
-          this.map = map;
-          this.container = document.createElement('button'); // Create a button element
-          this.container.className = 'mapboxgl-ctrl reset-btn'; // Set button class
-          this.container.textContent = 'Reset View'; // Button text
-          this.container.onclick = function() {
-              // Reset the map to the original bounds
-              if (originalBounds) {
-                  map.fitBounds(originalBounds, {
-                      padding: 20, // Same padding used before
-                      maxZoom: 11, // Same maxZoom
-                      duration: 1000 // Same duration
-                  });
-              }
-          };
-          return this.container; // Return the button element
-      }
-
-      onRemove() {
-          this.container.parentNode.removeChild(this.container); // Remove the button element
-          this.map = undefined;
-      }
-   }
-
-    // Add the reset view button control to the map
-    map.addControl(new ResetViewControl(), 'top-right'); // Add the control to the top-right corner
-
     map.on('click', 'melbourne-layer', function (e) {
       var suburbName = e.features[0].properties.LOC_NAME;
       displaySuburbReports(suburbName);
     });
-   
+
   });
 
-  // Suburb reports passed from Django
   var suburbReports = {{ suburb_reports|safe }};
 
-  // Function to display the reports for a selected suburb
   function displaySuburbReports(suburbName) {
-    // Title case the suburb name and replace spaces with underscores to match the keys in suburbReports
     var suburbKey = suburbName.toLowerCase().replace(/\b\w/g, function(letter) {
       return letter.toUpperCase();
-    }).replace(/\s/g, '_'); // This will convert 'my suburb' to 'My_Suburb'
+    }).replace(/\s/g, '_');
 
-    var reports = suburbReports[suburbKey]; // Fetch reports using the modified suburb name
-
-    // Log the suburbKey and reports for debugging
-    console.log('Selected Suburb:', suburbName);
-    console.log('Suburb Key:', suburbKey);
-    console.log('Reports:', reports);
+    var reports = suburbReports[suburbKey];
 
     if (reports) {
       document.getElementById('suburb-name').innerText = suburbName;
 
       var reportContainer = document.getElementById('suburb-reports');
-      reportContainer.innerHTML = ''; // Clear any previous reports
+      reportContainer.innerHTML = ''; 
 
-      // Generate image tags for each report and place them side by side
       for (var reportType in reports) {
         var reportUrl = reports[reportType];
 
         if (reportUrl) {
-          // Create a new column for each report (using Bootstrap's col-md-6 class)
           var colDiv = `<div class="col-12 col-md-6">
                           <img src="${reportUrl}" alt="${reportType} report for ${suburbName}" class="img-fluid mb-3">
                         </div>`;
           reportContainer.innerHTML += colDiv;
-        } else {
-          console.warn(`Missing report URL for ${reportType} in ${suburbName}`);
         }
       }
 
       document.getElementById('suburb-report-container').style.display = 'block';
-    } else {
-      console.error('No reports found for suburb:', suburbName);
     }
   }
 
 {% endif %}
 </script>
 
-<!-- Optional: Style the reset button with custom CSS -->
+<!-- Optional: Style the borders and other custom elements -->
 <style>
-  .reset-btn {
-    background-color: #f8f9fa; /* Light background */
-    border: 1px solid #000; /* Black border */
-    padding: 5px 10px; /* Padding for button */
-    cursor: pointer; /* Pointer cursor on hover */
-    font-size: 14px; /* Font size */
+  .bordered-section {
+    border: 4px solid white; /* Thicker white border */
+    padding: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   }
-  
-  .reset-btn:hover {
-    background-color: #ddd; /* Darker background on hover */
+
+  .bordered-text {
+    border: 1px solid #000; /* Black border around the text */
+    padding: 5px;
+    background-color: #f8f9fa; /* Light background */
+  }
+
+  .bordered-panel {
+    border: 2px solid #ccc;
+    background-color: #f8f9fa;
+    padding: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+  }
+
+  .btn-custom {
+    background-color: #1bac29; /* Matching green color from the landing page */
+    border: none;
+    color: white;
+    padding: 10px 10  px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+
+  .btn-custom:hover {
+    background-color: #139c24; /* Slightly darker green on hover */
   }
 </style>
 
