@@ -1,0 +1,4 @@
+name: sustainabode
+dependencies:
+  - python=3.12
+  - pip
