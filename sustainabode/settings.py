@@ -8,7 +8,7 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY').strip()
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -42,28 +42,28 @@ DEFAULT_FILE_STORAGE = 'storages.backends.azure_storage.AzureStorage'
 
 # Azure Storage settings
 # Storage account name
-AZURE_ACCOUNT_NAME = os.getenv('AZURE_STORAGE_NAME')
+AZURE_ACCOUNT_NAME = os.getenv('AZURE_STORAGE_NAME').strip()
 
 # Storage account URL
 AZURE_ACCOUNT_URL = f"https://{AZURE_ACCOUNT_NAME}.blob.core.windows.net"
 
 # Access key for the storage account
-AZURE_ACCOUNT_KEY = os.getenv('AZURE_STORAGE_KEY')
+AZURE_ACCOUNT_KEY = os.getenv('AZURE_STORAGE_KEY').strip()
 
 # Container name
-AZURE_CONTAINER = os.getenv('AZURE_STORAGE_CONTAINER')
+AZURE_CONTAINER = os.getenv('AZURE_STORAGE_CONTAINER').strip()
 
 # Custom domain for media
 AZURE_CONTAINER_URL = f"{AZURE_ACCOUNT_URL}/{AZURE_CONTAINER}"  
 
 # Fetch the Mapbox API key from environment variables
-MAPBOX_API_KEY = os.getenv('MAPBOX_API_KEY')
+MAPBOX_API_KEY = os.getenv('MAPBOX_API_KEY').strip()
 
 # # Enables lockdown globally
 # LOCKDOWN_ENABLED = True  
 
 # # Passwords that will allow access
-# LOCKDOWN_PASSWORDS = (os.getenv('LOCKDOWN_PASSWORD'),)
+# LOCKDOWN_PASSWORDS = (os.getenv('LOCKDOWN_PASSWORD').strip(),)
 
 # # The default form for password authentication
 # LOCKDOWN_FORM = 'lockdown.forms.LockdownForm'
