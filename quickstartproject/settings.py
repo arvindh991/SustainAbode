@@ -82,7 +82,7 @@ MIDDLEWARE = [
     # 'lockdown.middleware.LockdownMiddleware',
 ]
 
-ROOT_URLCONF = 'quickstartproject.urls'
+ROOT_URLCONF = 'sustainabode.urls'
 
 TEMPLATES = [
     {
@@ -101,7 +101,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'quickstartproject.wsgi.application'
+WSGI_APPLICATION = 'sustainabode.wsgi.application'
 
 
 # Database
