@@ -13,10 +13,10 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY').strip()
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [os.environ['WEBSITE_HOSTNAME']] if 'WEBSITE_HOSTNAME' in os.environ else []
+ALLOWED_HOSTS = [os.environ['WEBSITE_HOSTNAME'].strip()] if 'WEBSITE_HOSTNAME' in os.environ else []
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://sustainabode-a9e2evf2fzafb3ad.eastus-01.azurewebsites.net'
+    os.environ['WEBSITE_HOSTNAME'].strip(),
 ]
 
 # Application definition
