@@ -63,14 +63,14 @@ AZURE_CONTAINER_URL = f"{AZURE_ACCOUNT_URL}/{AZURE_CONTAINER}"
 # Fetch the Mapbox API key from environment variables
 MAPBOX_API_KEY = os.getenv('MAPBOX_API_KEY').strip()
 
-# # Enables lockdown globally
-# LOCKDOWN_ENABLED = True  
+# Enables lockdown globally (True by default)
+LOCKDOWN_ENABLED = True  
 
 # # Passwords that will allow access
-# LOCKDOWN_PASSWORDS = (os.getenv('LOCKDOWN_PASSWORD').strip(),)
+LOCKDOWN_PASSWORDS = (os.getenv('LOCKDOWN_PASSWORD').strip(),)
 
-# # The default form for password authentication
-# LOCKDOWN_FORM = 'lockdown.forms.LockdownForm'
+# The default form for password authentication
+LOCKDOWN_FORM = 'lockdown.forms.LockdownForm'
 
 
 MIDDLEWARE = [
@@ -83,7 +83,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # 'lockdown.middleware.LockdownMiddleware',
+    'lockdown.middleware.LockdownMiddleware',
 ]
 
 ROOT_URLCONF = 'sustainabode.urls'
