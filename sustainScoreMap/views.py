@@ -7,6 +7,9 @@ from .ml_model import score_model
 from django.conf import settings
 import pandas as pd
 
+import logging
+logger = logging.getLogger(__name__)
+
 def index(request):
 
     mapbox_api_key = settings.MAPBOX_API_KEY
@@ -42,6 +45,11 @@ def index(request):
 
             # Add the URLs to the main report_urls dictionary with suburb as the key
             suburb_reports[suburb_with_underscore] = suburb_report_urls
+    
+        logger.info(f"Top suburbs: {top_suburbs}")
+        logger.info(f"Suburb reports: {suburb_reports}")
+        logger.info(f"GeoJSON URL: {geojson_url}")
+        logger.info(f"mapbox_api_key: {mapbox_api_key}")
 
     else:
         form = UserInputForm()

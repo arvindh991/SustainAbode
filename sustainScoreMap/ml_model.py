@@ -7,6 +7,9 @@ from azure.storage.blob import BlobServiceClient
 import os
 from datetime import datetime  # For generating timestamps
 
+import logging
+logger = logging.getLogger(__name__)
+
 # # Example of user inputs (these would be dynamic in a real application)
 #     user_input = {
 #         'type': 'h',  # house or unit
@@ -98,8 +101,10 @@ def score_model(user_input):
     suburb_rank = suburb_rank.merge(bus_service_summary, left_on='Suburb', right_on='suburb', how='left')
 
     # Replace missing values with 0 for suburbs with no bus service
-    suburb_rank['NumberOfBusStops'].fillna(0, inplace=True)
-    suburb_rank['UniqueBusRoutes'].fillna(0, inplace=True)
+    #suburb_rank['NumberOfBusStops'].fillna(0, inplace=True)
+    suburb_rank['NumberOfBusStops'] = suburb_rank['NumberOfBusStops'].fillna(0)
+    #suburb_rank['UniqueBusRoutes'].fillna(0, inplace=True)
+    suburb_rank['UniqueBusRoutes'] = suburb_rank['UniqueBusRoutes'].fillna(0)
 
     # Assuming train_carpark_data contains 'suburb' and 'carpark_capacity' columns
 
@@ -112,7 +117,8 @@ def score_model(user_input):
     suburb_rank = suburb_rank.merge(carpark_summary, left_on='Suburb', right_on='suburb', how='left')
 
     # Replace missing values with 0 for suburbs with no train car parks
-    suburb_rank['TotalCarparkCapacity'].fillna(0, inplace=True)
+    #suburb_rank['TotalCarparkCapacity'].fillna(0, inplace=True)
+    suburb_rank['TotalCarparkCapacity'] = suburb_rank['TotalCarparkCapacity'].fillna(0)
 
     # Rank suburbs based on bus services
     suburb_rank['Rank_BusStops'] = suburb_rank['NumberOfBusStops'].rank(ascending=False, method='min')
@@ -179,7 +185,7 @@ def score_model(user_input):
     final_geo_df = final_geo_df.drop(columns=['Suburb'])    
 
     # Preview the merged data to ensure that rank information is included
-    # print(final_geo_df.head())
+    logger.info(final_geo_df.head())
 
     # Generate a timestamp
     timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
@@ -204,7 +210,7 @@ def score_model(user_input):
     try:
         # Upload the in-memory GeoJSON data to the Blob
         blob_client.upload_blob(geojson_buffer, overwrite=True)
-        # print(f"GeoJSON uploaded successfully to {blob_url}")
+        logger.info(f"GeoJSON uploaded successfully to {blob_url}")
         # Close the buffer to release memory
         geojson_buffer.close()
     except Exception as e:
