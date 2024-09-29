@@ -14,6 +14,8 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY').strip()
 DEBUG = True
 
 ALLOWED_HOSTS = [os.environ['WEBSITE_HOSTNAME'].strip()] if 'WEBSITE_HOSTNAME' in os.environ else []
+if 'HOST_IP' in os.environ:
+    ALLOWED_HOSTS += [os.environ['HOST_IP'].strip()]
 
 CSRF_TRUSTED_ORIGINS = [
     os.environ['WEBSITE_HOSTNAME'].strip(),
