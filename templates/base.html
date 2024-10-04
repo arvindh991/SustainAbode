@@ -1,6 +1,7 @@
-<!doctype html>
-<html lang="en">
-  <head>
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+
+<head>
     {% load static %} <!-- Load the static tag library -->
 
     <meta charset="utf-8">
@@ -8,356 +9,75 @@
     <meta name="description" content="Sustain ABode - Your Path to a Greener Future">
     <meta name="author" content="Sustain ABode">
     <title>{% block title %}Sustain ABode{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="shortcut icon" href="{% static 'images/logo.svg' %}" sizes="128x128">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand+SC&display=swap" rel="stylesheet">
     <script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
     <link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet' />
+    <meta name="theme-color" content="#712cf9">
 
-    <style>
-      body {
-        background-image: url('{% static 'images/background.jpeg' %}'); /* Use background.jpeg */
-        background-size: cover; /* Ensure the image covers the entire background */
-        background-position: center; /* Center the background image */
-        background-repeat: no-repeat; /* Prevent image repetition */
-        background-attachment: fixed; /* Fix the background image while scrolling */
-        color: #000;
-        font-family: 'Arial', sans-serif;
-        padding-top: 70px;
-        margin: 0;
-      }
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
 
-      /* Navbar */
-      .navbar {
-        background-color: rgba(220, 210, 176, 0.8); /* Transparent beige for Navbar */
-        margin-bottom: 0;
-      }
+</head>
 
-      .navbar-brand img {
-        max-height: 40px;
-        margin-right: 10px;
-      }
+<body>
 
-      /* Carousel Section */
-      .carousel-section {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        position: relative;
-        padding: 60px 20px;
-        margin-bottom: 120px;
-        border: none;
-        background-color: rgba(255, 255, 255, 0.7); /* Add transparency to section */
-      }
+    <div class="container">
+        <header class="d-flex flex-wrap justify-content-between py-3 mb-4 border-bottom">
+            <div class="d-flex align-items-center">
+                <a href="/" class="d-flex align-items-center mb-3 mb-md-0 link-body-emphasis text-decoration-none">
+                    <svg class="bi me-2" width="40" height="32">
+                        <use xlink:href="#bootstrap"></use>
+                    </svg>
+                </a>
+                <ul class="nav nav-pills">
+                    <li class="nav-item"><a href="{% url 'landing_page' %}" class="nav-link active" aria-current="page">Home</a></li>
+                </ul>
+            </div>
+            <ul class="nav nav-pills">
+                <li class="nav-item"><a href="{% url 'sustainscoremap' %}" class="nav-link">Custom Score</a></li>
+                <li class="nav-item"><a href="{% url 'sustainscoremap' %}" class="nav-link">Compare</a></li>
+                <li class="nav-item"><a href="{% url 'about_page' %}" class="nav-link">About</a></li>
+            </ul>
+        </header>
+    </div>
 
-      /* Call to action above carousel */
-      .carousel-section h3 {
-        font-size: 32px;
-        margin-bottom: 20px;
-        color: #000;
-        text-align: center;
-        text-transform: none;
-      }
 
-      /* Bootstrap fade transition for carousel */
-      .carousel-item {
-        transition: opacity 1s ease-in-out;
-        opacity: 0;
-        text-align: center;
-      }
-
-      .carousel-item.active {
-        opacity: 1;
-      }
-
-      .carousel-inner img {
-        width: 80%;
-        height: auto;
-        margin: 0 auto;
-        cursor: pointer;
-        display: block;
-      }
-
-      .carousel-position {
-        font-size: 14px;
-        color: #000;
-        margin-top: 10px;
-        text-align: center;
-      }
-
-      /* Section Styling */
-      .section {
-        padding: 80px 40px;
-        text-align: center;
-        border-radius: 10px;
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-        margin-top: 120px;
-        margin-bottom: 120px;
-        background-color: rgba(255, 255, 255, 0.8); /* White with transparency */
-        position: relative;
-      }
-
-      .map-card {
-        margin: 40px auto;
-        max-width: 100%; /* Increased to fill the container */
-      }
-
-      .map-img {
-        max-width: 100%;
-        height: auto;
-        border: 4px solid #000; /* Thicker black borders */
-        margin: 0 auto;
-      }
-
-      /* Compare map styling */
-      .compare-images {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 20px;
-      }
-
-      .compare-images .card {
-        flex: 1;
-        text-align: center;
-      }
-
-      .compare-images img {
-        width: 100%; /* Increased width to fill the container */
-        height: auto;
-        margin: 0 auto;
-        display: block;
-        border-radius: 10px;
-        border: 4px solid #000; /* Thicker black border */
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-      }
-
-      .compare-text {
-        display: none; /* Hide the comparison text */
-      }
-
-      /* Button styling */
-      .btn-custom {
-        background-color: #4caf50; /* Custom green color */
-        color: white;
-        border: none;
-        border-radius: 50px; /* Makes the button rounded */
-        padding: 12px 24px;
-        font-size: 16px;
-        font-weight: bold;
-        transition: background-color 0.3s ease;
-      }
-
-      .btn-custom:hover {
-        background-color: #45a049; /* Darker green on hover */
-        color: white;
-      }
-
-      /* Scroll to the next section button */
-      .scroll-button {
-        position: absolute;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        background-color: #c1a77a;
-        color: white;
-        padding: 10px 20px;
-        border-radius: 50px;
-        border: none;
-        cursor: pointer;
-      }
-
-      .scroll-button:hover {
-        background-color: #a99068;
-      }
-
-      /* Back to Top Button */
-      .back-to-top {
-        position: relative;
-        padding: 10px 20px;
-        font-size: 16px;
-        color: white;
-        background-color: #c1a77a;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        margin-top: 50px;
-      }
-
-      .back-to-top:hover {
-        background-color: #a99068;
-      }
-
-      /* Footer */
-      footer {
-        background-color: rgba(220, 210, 176, 0.8);
-        padding: 20px 0;
-        text-align: center;
-        font-size: 14px;
-        color: #000;
-      }
-
-      /* Left Justify Text in the Sustain Score Section */
-      .suburb-section .col-md-4 h2,
-      .suburb-section .col-md-4 p,
-      .suburb-section .col-md-4 a {
-        text-align: left;
-      }
-
-      /* Carousel text styling */
-      .carousel-border {
-        border-top: 3px solid #000;
-        background-color: #fff;
-        width: 80%;
-        margin: 0 auto;
-        padding: 10px;
-        font-size: 18px;
-        font-weight: bold;
-        text-align: center;
-      }
-
-      .typed-text {
-        font-size: 18px;
-        font-weight: bold;
-        white-space: normal; /* Allow wrapping */
-        overflow: visible; /* Ensure content overflows to the next line */
-      }
-
-      .cursor {
-        display: inline-block;
-        font-size: 18px;
-        animation: blink 0.7s steps(1) infinite;
-      }
-
-      .card {
-        background-color: transparent; /* Make background transparent */
-        border: none; /* Remove any border */
-        padding: 0; /* Remove extra padding */
-      }
-
-      @keyframes blink {
-        0% { opacity: 1; }
-        50% { opacity: 0; }
-        100% { opacity: 1; }
-      }
-    </style>
-  </head>
-
-  <header>
-    <nav class="navbar navbar-expand-md navbar-light" style="background-color: transparent; padding: 10px 0; width: 100%;">
-      <div style="position: relative;">
-        <!-- Adjusted Curved background element -->
-        <div style="
-            background-color: #4D624D; 
-            height: 100px; 
-            width: 550px; /* Increased width */
-            position: absolute; 
-            top: 0; 
-            left: 0;
-            border-radius: 0 60px 60px 0; /* Kept the same proportions for a wider look */
-            z-index: -1;"></div>
-        
-        <!-- Logo and Slogan -->
-        <a class="navbar-brand" href="{% url 'landing_page' %}" style="display: flex; align-items: center; position: relative; z-index: 2; padding-left: 30px;">
-          <img src="{% static 'images/logo.svg' %}" alt="SustainAbode Logo" style="height: 70px; margin-right: 10px;">
-          <div>
-            <div style="color: white; font-weight: bold; font-size: 36px; font-family: 'Georgia', serif; line-height: 1;">SustainAbode</div>
-            <div style="color: #e6d8b1; font-size: 16px; font-family: 'Georgia', serif;">Explore suburbs that align with your sustainable values..</div>
-          </div>
-        </a>
-      </div>
-      
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      
-      <div class="collapse navbar-collapse justify-content-end" id="navbarCollapse" style="z-index: 2;">
-        <ul class="navbar-nav ml-auto" style="align-items: center;">
-          <li class="nav-item">
-            <a class="nav-link" href="" style="color: black; font-weight: bold; background-color: white; border-radius: 50px; padding: 10px 20px; margin-left: 15px;">Compare Now</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'sustainscoremap' %}" style="color: black; font-weight: bold; background-color: white; border-radius: 50px; padding: 10px 20px; margin-left: 15px;">SustainScore</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'about_page' %}" style="color: black; font-weight: bold; background-color: white; border-radius: 50px; padding: 10px 20px; margin-left: 15px;">About</a>
-          </li>
-        </ul>
-      </div>
-    </nav>
-  </header>
-
-  
-  
-  
-  <!-- Add padding to prevent content overlap with navbar -->
-  <div style="padding-top: 50px;"></div>
-  
-  
-  
-  
-
-  <!-- Main Content Area -->
   <main class="container">
     {% block content %}{% endblock %}
   </main>
 
 <!-- FOOTER -->
-<footer class="container" style="padding: 20px 0; text-align: center; font-size: 14px; color: #000; background-color: transparent;">
-  <p>&copy; 2024 SustainAbode, The Alchemists - TA29. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
-</footer>
+ <footer>
+        <div class="b-example-divider" style="background-color: #2f5b4c;"></div>
 
-  <!-- Bootstrap core JavaScript -->
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+        <div class=""container px-4 py-5>
+            <div class="col-lg-6 mx-auto full-width-bg d-flex flex-column" style="background-color: #2f5b4c;">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p style="color: white; font-size: 2rem;">Connect with us</p>
+                            <p style="color: white; font-size: 2rem;">SustainAbode</p>
+                            <p style="color: white; font-size: 1rem;">Team 29</p>
+                            <p style="color: white; font-size: 2rem;">A perfect balance between living and sustainability</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p style="color: white; font-size: 2rem;">Our Team</p>
+                            <p style="color: white; font-size: 1.8rem;">Shofi Tanim</p>
+                            <p style="color: white; font-size: 1.8rem;">Shafaq Javaid</p>
+                            <p style="color: white; font-size: 1.8rem;">Bhavna</p>
+                            <p style="color: white; font-size: 1.8rem;">Edwin Jose</p>
+                            <p style="color: white; font-size: 1.8rem;">Raghavan Arvindh</p>
+                        </div>
+                    </div>
+                </div>
+            </div>        
+        </div>
+ </footer>
 
-  <!-- Custom JavaScript to Handle Click-based Carousel Slide with Fade -->
-  <script>
-    document.querySelectorAll('.carousel-clickable').forEach(function(image) {
-      image.addEventListener('click', function() {
-        $('#carouselExampleIndicators').carousel('next'); // Trigger next slide on click
-      });
-    });
-
-    const texts = [
-      "Realizing the need to buy a house that aligns with their sustainable values and lifestyle.",
-      "Starts looking for potential suburbs and shortlisting their priorities.",
-      "Frustrated and overwhelmed that they can't find centralized data about all the indicators which makes them indecisive.",
-      "Comes across SUSTAINABODE which not only helps them by providing centralized data regarding various indicators but also personalized insights to make informed decisions.",
-      "Finds their happily ever after, thanks to SustainAbode."
-    ];
-
-    function typeText(elementId, text, delay = 50) {
-      let i = 0;
-      const element = document.getElementById(elementId);
-      element.innerHTML = "";
-      const interval = setInterval(() => {
-        element.innerHTML += text[i];
-        i++;
-        if (i === text.length) {
-          clearInterval(interval);
-        }
-      }, delay);
-    }
-
-    // Trigger typing effect on active slide
-    function triggerTypingEffect() {
-      const activeSlide = document.querySelector('.carousel-item.active');
-      const textId = activeSlide.querySelector('.typed-text').id;
-      const index = Array.from(activeSlide.parentNode.children).indexOf(activeSlide);
-      typeText(textId, texts[index]);
-    }
-
-    // Initialize typing effect on first load
-    document.addEventListener('DOMContentLoaded', () => {
-      triggerTypingEffect();
-    });
-
-    // Re-trigger typing effect on slide change
-    $('#carouselExampleIndicators').on('slid.bs.carousel', function () {
-      triggerTypingEffect();
-    });
-  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
   </body>
 </html>

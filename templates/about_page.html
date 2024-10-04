@@ -5,78 +5,47 @@
 
 {% block content %}
 
-<!-- About Section -->
-<section class="about-section">
-  <div class="container">
-    <div class="row align-items-center">
-      <div class="col-md-12">
-        <!-- Main Title -->
-        <div style="background-color: rgba(220, 220, 220, 0.9); padding: 20px; border-radius: 10px; text-align: center;">
-          <h1>About SustainAbode</h1>
-          <p>Empowering you to find sustainable living spaces that align with your values.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+<div class="container" style="background-color: #76A458;">
 
-<!-- Info Section with speech bubble and cards -->
-<section class="info-section" style="margin-top: 40px;">
-  <div class="container">
-    <div class="row">
-      <!-- Left Side: Speech Bubble -->
-      <div class="col-md-6">
-        <div class="speech-bubble" style="position: relative; padding: 20px; background: #fff; border: 2px solid black; border-radius: 50px; margin: 20px; font-size: 18px; line-height: 1.5;">
-          <h3>At SustainAbode, we believe in helping individuals and families find neighborhoods that resonate with their sustainable living goals. Our platform provides insights into key factors like transportation, green spaces, education quality, and housing affordability to help you make an informed decision about where to live.</h3>
+    <!-- New text box above the existing rows -->
+    <div class="row justify-content-center"> <!-- Adjusted margin-bottom -->
+        <div class="col-12 text-center">
+            <div style="background-color: #426833; border-radius: 15px; padding: 20px; margin-top: 20px;">
+                <h1 class="display-5 fw-bold text-body-emphasis lh-1 text-center" style="color: #ffbd59 !important;">What do we do?</h1>
+                <p class="lead1" style="font-size: 1.2rem; color: white;">Welcome to SustainAbode. We offer a solution that creates the perfect balance between your home budget, personal preferences, and sustainable living in harmony with nature.</p>
+            </div>
         </div>
-      </div>
-      
-      <!-- Right Side: Two Cards -->
-      <div class="col-md-6 d-flex justify-content-between">
-        <!-- First Card: Sustainability Scores -->
-        <div class="card" style="width: 48%; text-align: center; padding: 10px; background-color: #E0E0E0;">
-          <h3>Sustainability Scores</h3>
-          <p>Highlight how the scores are calculated using real-time data on public transport, green spaces, and housing.</p>
-          <img src="{% static 'images/sustainability_map.png' %}" alt="Sustainability Map" class="img-fluid" style="margin-bottom: 10px;">
-          <a href="{% url 'sustainscoremap' %}" class="btn btn-custom">Explore Now</a>
-        </div>
-        
-        <!-- Second Card: Suburb Comparisons -->
-        <div class="card" style="width: 48%; text-align: center; padding: 10px; background-color: #E0E0E0;">
-          <h3>Suburb Comparisons</h3>
-          <p>Lets you compare two suburbs side-by-side, helping you make informed decisions based on transport, green spaces, housing, and sustainability scores.</p>
-          <div style="display: flex; justify-content: space-around;">
-            <img src="{% static 'images/comparemap1.png' %}" alt="Compare Map 1" class="img-fluid" style="margin-bottom: 10px; width: 45%;">
-            <img src="{% static 'images/comparemap2.png' %}" alt="Compare Map 2" class="img-fluid" style="margin-bottom: 10px; width: 45%;">
-          </div>
-          <a href="{% url 'comparesuburbsmap' %}" class="btn btn-custom">Explore Now</a>
-        </div>
-      </div>
     </div>
-  </div>
-</section>
 
-<!-- CSS for Uniform Buttons -->
-<style>
-  .btn-custom {
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    border-radius: 50px;
-    padding: 12px 24px;
-    font-size: 16px;
-    font-weight: bold;
-    text-align: center;
-    display: inline-block;
-    width: 80%; /* Ensures uniform width for both buttons */
-    margin: 0 auto;
-    transition: background-color 0.3s ease;
-  }
-  
-  .btn-custom:hover {
-    background-color: #45a049;
-    color: white;
-  }
-</style>
+    <!-- Existing row -->
+    <div class="row align-items-center full-width-bg" style="background-color: #76A458;">
+        <div class="col-10 col-sm-8 col-lg-6">
+            <img src="{% static 'img/about_img_01.png' %}" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" loading="lazy">
+        </div>
+        <div class="col-lg-6">
+            <div style="background-color: #426833; border-radius: 15px; margin-right: 10px;">
+                <h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3 text-center" style="color: #ffbd59 !important;">How we make a difference</h1>
+                <p class="lead1" style="font-size: 1.2rem; color: white;">Our mission is to guide users with a housing solution where individuals can discover, purchase, and customize their ideal home in areas that reflect their lifestyle, while fostering a deep connection to nature. We are committed to sustainability, offering homes that balance affordability with environmental responsibility by integrating access to green spaces, public transport, and polution-conscious planning. Our vision is to empower our users to build homes that not only nurture their mental well-being but also contribute to a healthier planet. Together, we help shape communities where homes are a sanctuary of peace, sustainability, and environmental stewardship.</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!--
+<div class="container" style="background-color: #76A458;">
+
+<div class="row align-items-center g-5 py-5 full-width-bg" style="background-color: #76A458;">
+    <div class="col-10 col-sm-8 col-lg-6">
+        <img src="{% static 'img/about_img_01.png' %}" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" loading="lazy">
+    </div>
+    <div class="col-lg-6">
+        <div style="background-color: #426833; border-radius: 15px; margin-right: 10px;">
+            <h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3 text-center" style="color: #ffbd59 !important;">How we make a difference</h1>
+            <p class="lead1" style="font-size: 1.2rem; color: white;">Our mission is to guide users with a housing solution where individuals can discover, purchase, and customize their ideal home in areas that reflect their lifestyle, while fostering a deep connection to nature. We are committed to sustainability, offering homes that balance affordability with environmental responsibility by integrating access to green spaces, public transport, and polution-conscious planning. Our vision is to empower our users to build homes that not only nurture their mental well-being but also contribute to a healthier planet. Together, we help shape communities where homes are a sanctuary of peace, sustainability, and environmental stewardship.</p>
+        <div>
+    </div>
+</div>
+-->
 
 {% endblock %}
