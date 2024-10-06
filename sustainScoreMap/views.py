@@ -28,6 +28,8 @@ def index(request):
                 'prefer_parks': form.cleaned_data['prefer_parks'],
                 'prefer_bus': form.cleaned_data['prefer_bus'],
                 'prefer_carpark': form.cleaned_data['prefer_carpark'],
+                'prefer_good_air_quality_low_co2_emission': form.cleaned_data['prefer_good_air_quality_low_co2_emission'],
+                'prefer_less_crime': form.cleaned_data['prefer_less_crime'],
             }
 
         # Call the ML model to get the GeoJSON and top suburbs

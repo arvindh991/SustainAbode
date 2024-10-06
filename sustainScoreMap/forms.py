@@ -22,3 +22,7 @@ class UserInputForm(forms.Form):
     # Add new fields for user preferences for bus and carpark
     prefer_bus = forms.BooleanField(required=False, label='Prefer Bus Service', initial=False)
     prefer_carpark = forms.BooleanField(required=False, label='Prefer Train Carpark Availability', initial=False)
+
+    # Add new fields for user preferences for air quality and co2 emissions
+    prefer_good_air_quality_low_co2_emission = forms.BooleanField(required=False, label='Prefer Low CO2', initial=False)
+    prefer_less_crime = forms.BooleanField(required=False, label='Prefer Less Crime', initial=False)

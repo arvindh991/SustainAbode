@@ -17,6 +17,10 @@ logger = logging.getLogger(__name__)
 #         'distance': 10,  # preferred distance # make sure user does not input any number less than 5
 #         'affordable': True,  # if affordability should be maximized # preferred input: True/False
 #         'prefer_parks': False  # if park preferences are included # preferred input: True/False
+#         'prefer_bus': True,
+#         'prefer_carpark': True,
+#         'prefer_good_air_quality_low_co2_emission': True,
+#         'prefer_less_crime': True
 #     }
 
 def score_model(user_input):
@@ -134,7 +138,47 @@ def score_model(user_input):
     # Adjust TotalRank if the user prefers train car parks
     if user_input['prefer_carpark']:
         suburb_rank['TotalRank'] += suburb_rank['Rank_CarparkCapacity']
-        
+
+
+    ### ADD STUFF HERE
+    co2_emission_data = pd.read_csv(os.path.join(data_dir, 'total_co2_emission_by_suburb.csv'))
+    suburb_names = co2_emission_data['suburb'].tolist()
+
+    # Check if the user prefers low CO2 emission suburbs
+    if user_input.get('prefer_good_air_quality_low_co2_emission', True):  # Ensure the key exists and is set to True
+        # Reduce 20 from TotalRank for suburbs that match with the suburb_names list
+        suburb_rank.loc[suburb_rank['Suburb'].isin(suburb_names), 'TotalRank'] -= 20
+    
+    # Load the cleaned crime score data
+    crime_score_data = pd.read_csv(os.path.join(data_dir, 'cleaned_suburb_crime_score.csv'))
+
+    # Ensure both datasets have standardized suburb names (uppercase and stripped of extra spaces)
+    suburb_rank['Suburb'] = suburb_rank['Suburb'].str.upper().str.strip()
+    crime_score_data['Suburb Name'] = crime_score_data['Suburb Name'].str.upper().str.strip()
+
+    # Merge the crime score data with the existing suburb_rank DataFrame
+    suburb_rank = suburb_rank.merge(crime_score_data, left_on='Suburb', right_on='Suburb Name', how='left')
+
+    # Check for missing crime scores and fill with a high value (for missing data assume high crime score)
+    suburb_rank['CrimeScore'].fillna(suburb_rank['CrimeScore'].max() + 1, inplace=True)
+
+    # Normalize the crime score to a smaller scale (e.g., 0-100 range)
+    crime_max = suburb_rank['CrimeScore'].max()
+    crime_min = suburb_rank['CrimeScore'].min()
+
+    # Normalized crime score in a range (e.g., 0 to 15)
+    suburb_rank['NormalizedCrimeScore'] = 20 * (suburb_rank['CrimeScore'] - crime_min) / (crime_max - crime_min)
+
+    # Track the original TotalRank for later comparison
+    suburb_rank['OriginalTotalRank'] = suburb_rank['TotalRank']
+
+    # Adjust the TotalRank based on the normalized crime score if the user prefers less crime
+    if user_input.get('prefer_less_crime', True):
+        suburb_rank['TotalRank'] -= suburb_rank['NormalizedCrimeScore']  # Subtract normalized crime score to favor lower crime suburbs
+
+    # Calculate how much the rank has changed due to crime score influence
+    suburb_rank['RankChangeDueToCrime'] = suburb_rank['OriginalTotalRank'] - suburb_rank['TotalRank']
+
     # Recompute the TotalRank based on user preferences
     suburb_rank = suburb_rank.sort_values('TotalRank').reset_index(drop=True)
 
