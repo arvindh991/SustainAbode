@@ -13,13 +13,13 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY').strip()
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['sustainabode.xyz']
 if 'WEBSITE_HOSTNAME' in os.environ:
     ALLOWED_HOSTS += [os.environ['WEBSITE_HOSTNAME'].strip()]
 if 'HOST_IP' in os.environ:
     ALLOWED_HOSTS += [os.environ['HOST_IP'].strip()]
 
-CSRF_TRUSTED_ORIGINS = []
+CSRF_TRUSTED_ORIGINS = ['http://sustainabode.xyz']
 if 'WEBSITE_HOSTNAME' in os.environ:
     CSRF_TRUSTED_ORIGINS += [os.environ['WEBSITE_HOSTNAME'].strip()]
 
