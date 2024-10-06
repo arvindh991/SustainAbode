@@ -20,6 +20,41 @@
 
     <link rel="stylesheet" href="{% static 'styles.css' %}">
 
+    <style>
+        /* Add Carousel Specific Styling Here */
+        .carousel-item {
+            transition: opacity 1s ease-in-out;
+            opacity: 0;
+            text-align: center;
+        }
+
+        .carousel-item.active {
+            opacity: 1;
+        }
+
+        .carousel-border {
+            border-top: 3px solid #000;
+            background-color: #fff;
+            width: 80%;
+            margin: 0 auto;
+            padding: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .typed-text {
+            font-size: 18px;
+            font-weight: bold;
+            white-space: normal;
+            overflow: visible;
+        }
+
+        /* Pushing the carousel section further down */
+        .carousel-section {
+            margin-top: 100px; /* Adjust the value to push it further down */
+        }
+    </style>
 </head>
 
 <body>
@@ -44,16 +79,18 @@
         </header>
     </div>
 
+   
 
-  <main class="container">
-    {% block content %}{% endblock %}
-  </main>
+    <!-- Main Content Area -->
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
 
-<!-- FOOTER -->
- <footer>
+    <!-- FOOTER -->
+    <footer>
         <div class="b-example-divider" style="background-color: #2f5b4c;"></div>
 
-        <div class=""container px-4 py-5>
+        <div class="container px-4 py-5">
             <div class="col-lg-6 mx-auto full-width-bg d-flex flex-column" style="background-color: #2f5b4c;">
                 <div class="container">
                     <div class="row">
@@ -75,9 +112,58 @@
                 </div>
             </div>        
         </div>
- </footer>
+    </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
-  </body>
+    <!-- Custom JavaScript to Handle Click-based Carousel Slide with Fade -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        document.querySelectorAll('.carousel-clickable').forEach(function(image) {
+            image.addEventListener('click', function() {
+                $('#carouselExampleIndicators').carousel('next'); // Trigger next slide on click
+            });
+        });
+
+        const texts = [
+            "Realizing the need to buy a house that aligns with their sustainable values and lifestyle.",
+            "Starts looking for potential suburbs and shortlisting their priorities.",
+            "Frustrated and overwhelmed that they can't find centralized data about all the indicators which makes them indecisive.",
+            "Comes across SUSTAINABODE which not only helps them by providing centralized data regarding various indicators but also personalized insights to make informed decisions.",
+            "Finds their happily ever after, thanks to SustainAbode."
+        ];
+
+        function typeText(elementId, text, delay = 50) {
+            let i = 0;
+            const element = document.getElementById(elementId);
+            element.innerHTML = "";
+            const interval = setInterval(() => {
+                element.innerHTML += text[i];
+                i++;
+                if (i === text.length) {
+                    clearInterval(interval);
+                }
+            }, delay);
+        }
+
+        // Trigger typing effect on active slide
+        function triggerTypingEffect() {
+            const activeSlide = document.querySelector('.carousel-item.active');
+            const textId = activeSlide.querySelector('.typed-text').id;
+            const index = Array.from(activeSlide.parentNode.children).indexOf(activeSlide);
+            typeText(textId, texts[index]);
+        }
+
+        // Initialize typing effect on first load
+        document.addEventListener('DOMContentLoaded', () => {
+            triggerTypingEffect();
+        });
+
+        // Re-trigger typing effect on slide change
+        $('#carouselExampleIndicators').on('slid.bs.carousel', function () {
+            triggerTypingEffect();
+        });
+    </script>
+
+</body>
 </html>
