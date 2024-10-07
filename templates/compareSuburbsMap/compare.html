@@ -282,6 +282,7 @@
       var reportContainer = document.getElementById(id_suburbreports);
       reportContainer.innerHTML = ''; // Clear any previous reports
 
+      /*
       // Generate image tags for each report and place them side by side
       for (var reportType in reports) {
         var reportUrl = reports[reportType];
@@ -296,6 +297,7 @@
           console.warn(`Missing report URL for ${reportType} in ${suburbName}`);
         }
       }
+      */
 
       let report_types = ['crime', 'offenses', 'air'];
       let parameter_id = ['Suburb Selector', 'Suburb Selector', 'Suburb Name'];
