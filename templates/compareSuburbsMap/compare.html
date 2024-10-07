@@ -23,71 +23,33 @@
     </div>
   </div>
 
-  <!-- Container to display selected suburb name and reports -->
-  <div class="mt-4" id="suburb-report-container" style="display: none;">
-    <h3 id="suburb-name"></h3>
-
-    <!-- New Row for Reports (Pie chart and Price Distribution side by side) -->
-    <div class="row" id="suburb-reports">
-      <!-- Reports will be injected here -->
-    </div>
-  </div>
+  <script type="module" src="https://public.tableau.com/javascripts/api/tableau.embedding.3.latest.min.js"></script>
 
   <div class="mt-4">
       <div class="row">
+
         <div class="col-md-6">
           <label for="suburb1">Select Suburb</label>
           <select id="suburb1" name="suburb1"><option>Dropdown Items</option></select>
           <h3 id="suburb1-name"></h3>
           <div class="container mt-2" id="suburb1-reports">
           </div>
-
-          <div class='tableauPlaceholder' id='viz1' style='position: relative'>
-            <object class='tableauViz' style='display:none;'>
-            <param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' />
-            <param name='embed_code_version' value='3' />
-            <param name='site_root' value='' />
-            <param name='name' value='test_workbook_17281234047560&#47;Sheet1' />
-            <param name='tabs' value='no' />
-            <param name='toolbar' value='yes' />
-            <param name='animate_transition' value='yes' />
-            <param name='display_spinner' value='yes' />
-            <param name='display_overlay' value='yes' />
-            <param name='display_count' value='yes' />
-            <param name='language' value='en-GB' />
-            <param name='filter' value='publish=yes' />
-            <param name='Suburb+Selector' value='Dixie' />
-            </object>
+          <div class="container mt-2" id="suburb1-tableau">
+          <tableau-viz id="viz1" src="https://public.tableau.com/views/test_workbook_17281234047560/Sheet1">
           </div>
-
-
         </div>
+
         <div class="col-md-6">
           <label for="suburb2">Select Suburb</label>
           <select id="suburb2" name="suburb2"><option>Dropdown Items</option></select>
           <h3 id="suburb2-name"></h3>
           <div class="container mt-2" id="suburb2-reports">
           </div>
-
-          <div class='tableauPlaceholder' id='viz2' style='position: relative'>
-            <object class='tableauViz' style='display:none;'>
-            <param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' />
-            <param name='embed_code_version' value='3' />
-            <param name='site_root' value='' />
-            <param name='name' value='test_workbook_17281234047560&#47;Sheet1' />
-            <param name='tabs' value='no' />
-            <param name='toolbar' value='yes' />
-            <param name='animate_transition' value='yes' />
-            <param name='display_spinner' value='yes' />
-            <param name='display_overlay' value='yes' />
-            <param name='display_count' value='yes' />
-            <param name='language' value='en-GB' />
-            <param name='filter' value='publish=yes' />
-            <param name='Suburb+Selector' value='Ada' />
-            </object>
+          <div class="container mt-2" id="suburb2-tableau">
+          <tableau-viz id="viz2" src="https://public.tableau.com/views/test_workbook_17281234047560/Sheet1">
           </div>
-
         </div>
+
     </div>
   </div>
 
@@ -311,11 +273,12 @@
         }
       }
 
-      var iframe = document.getElementById(id_viz).getElementsByTagName('object')[0];
-      iframe.setAttribute('param', 'Suburb+Selector');
-      iframe.setAttribute('value', suburbName);
+      let viz = document.getElementById(id_viz);
+      viz.workbook.changeParameterValueAsync("Suburb Selector", suburbKey);
+      //let sheet = viz.workbook.activeSheet;
+      //sheet.applyFilterAsync('Suburb Filter', [suburbKey], "replace");
+      //sheet.applyFilterAsync('Suburb Name', [suburbKey], "replace");
 
-      document.getElementById('suburb-report-container').style.display = 'block';
     } else {
       console.error('No reports found for suburb:', suburbName);
     }
@@ -350,22 +313,6 @@
     var dropdown2Value = document.getElementById('suburb2').value;
 
     if (dropdown1Value && dropdown2Value && (dropdown1Value != 'Dropdown Items') && ( dropdown2Value != 'Dropdown Items')) {
-      var divElement = document.getElementById('viz1');
-      var vizElement = divElement.getElementsByTagName('object')[0];
-      vizElement.style.width = '100%';
-      vizElement.style.height = (divElement.offsetWidth * 0.75) + 'px';
-      var scriptElement = document.createElement('script');
-      scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';
-      vizElement.parentNode.insertBefore(scriptElement, vizElement);
-
-      var divElement = document.getElementById('viz2');
-      var vizElement = divElement.getElementsByTagName('object')[0];
-      vizElement.style.width = '100%';
-      vizElement.style.height = (divElement.offsetWidth * 0.75) + 'px';
-      var scriptElement = document.createElement('script');
-      scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';
-      vizElement.parentNode.insertBefore(scriptElement, vizElement);
-
       displaySuburbReports(dropdown1Value, 'suburb1-name', 'suburb1-reports', 'viz1');
       displaySuburbReports(dropdown2Value, 'suburb2-name', 'suburb2-reports', 'viz2');
     }
