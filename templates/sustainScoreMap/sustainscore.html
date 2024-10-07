@@ -26,6 +26,8 @@
     </div>
   </div>
 
+  <script type="module" src="https://public.tableau.com/javascripts/api/tableau.embedding.3.latest.min.js"></script>
+
   <!-- Container to display selected suburb name and reports -->
   <div class="mt-4" id="suburb-report-container" style="display: none;">
     <h3 id="suburb-name"></h3>
@@ -35,6 +37,30 @@
       <!-- Reports will be injected here -->
     </div>
   </div>
+
+  <div class="container mt-2">
+  <div class="row">
+    <div class="col-md-6 mx-auto">
+      <div class="container mt-2">
+      <tableau-viz id="viz1-crime" src="https://public.tableau.com/views/test_workbook_17281234047560/Sheet1" height="300px"></tableau-viz>
+      </div>
+      <div class="container mt-2">
+      <tableau-viz id="viz1-offenses" src="https://public.tableau.com/views/freq_offences/Sheet3" height="300px"></tableau-viz>
+      </div>
+      <div class="container mt-2">
+      <tableau-viz id="viz1-price" src="https://public.tableau.com/views/PriceTrend_17281462763150/Sheet2" height="300px"></tableau-viz>
+      </div>
+      <div class="container mt-2">
+      <tableau-viz id="viz1-air" src="https://public.tableau.com/views/AirQuality_17281484496810/Sheet4" height="300px"></tableau-viz>
+      </div>
+      <div class="container mt-2">
+      <tableau-viz id="viz1-accidents" src="https://public.tableau.com/views/Accident_17281512246590/Sheet5" height="300px"></tableau-viz>
+      </div>
+    </div>
+  </div>  
+  </div>
+
+
 </div>
 </div>
 
@@ -251,6 +277,16 @@
         } else {
           console.warn(`Missing report URL for ${reportType} in ${suburbName}`);
         }
+      }
+
+      let id_viz = 'viz1';
+      let report_types = ['crime', 'offenses', 'air'];
+      let parameter_id = ['Suburb Selector', 'Suburb Selector', 'Suburb Name'];
+
+      for (let i = 0; i < report_types.length; i++) {
+        let my_id_viz = id_viz + '-' + report_types[i];
+        let viz = document.getElementById(my_id_viz);
+        viz.workbook.changeParameterValueAsync(parameter_id[i], suburbKey);
       }
 
       document.getElementById('suburb-report-container').style.display = 'block';
