@@ -16,6 +16,7 @@ def index(request):
     geojson_url = None
     top_suburbs = []
     suburb_reports = {}
+    suburb_list = ""
     if request.method == 'POST':
         form = UserInputForm(request.POST)
         if form.is_valid():
@@ -52,6 +53,7 @@ def index(request):
         logger.info(f"Suburb reports: {suburb_reports}")
         logger.info(f"GeoJSON URL: {geojson_url}")
         logger.info(f"mapbox_api_key: {mapbox_api_key}")
+        suburb_list = ", ".join(f"'{x}'" for x in top_suburbs)
 
     else:
         form = UserInputForm()
@@ -60,5 +62,6 @@ def index(request):
         'form': form,
         'geojson_url': geojson_url,
         'mapbox_api_key': mapbox_api_key,
-        'suburb_reports': suburb_reports
+        'suburb_reports': suburb_reports,
+        'suburb_list': suburb_list,
     })
