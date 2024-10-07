@@ -9,7 +9,7 @@
     <div class="col-lg-6 mx-auto full-width-bg d-flex justify-content-center align-items-start position-relative" style="background-image: url('{% static 'img/landing_img_01.png' %}');">
         <div class="d-grid gap-2 d-sm-flex justify-content-sm-center position-absolute"
             style="top: 70%; transform: translateY(-50%);">
-            <button type="button" class="btn btn-primary btn-lg px-4 gap-3">Discover More</button>
+            <a href="#carouselExampleIndicators" class="btn btn-primary btn-lg px-4 gap-3">Discover More</a>
         </div>
     </div>
 
@@ -75,7 +75,7 @@
             <h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3" style="color: #254D54 !important;">Suburb-Wise Sustainability Score</h1>
             <p class="lead1">Find the suburb that best fits your criteria of sustainable living. Our SustainScore evaluates neighborhoods based on key sustainability indicators.</p>
             <div class="d-grid gap-2 d-md-flex justify-content-center">
-                <button type="button" class="btn btn-primary btn-lg px-4 me-md-2">Go</button>
+                <a href="{% url 'sustainscoremap' %}" class="btn btn-primary btn-lg px-4 gap-3">Go</a>
             </div>
         </div>
     </div>
@@ -88,7 +88,8 @@
             <h1 class="pb-2 text-center" style="font-size: 4rem; color: white;">Knowledge Center</h1>
             <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
                 <div class="col">
-                    <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" style="background-image: url('unsplash-photo-1.jpg');">
+                    <a href="https://metropole.com.au/10-most-expensive-suburbs-in-melbourne/" target="_blank">
+                    <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" style="background-image: url('{% static 'img/unsplash-photo-1.jpg' %}');">
                         <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
                             <h3 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Most Expensive Suburbs</h3>
                             <ul class="d-flex list-unstyled mt-auto">
@@ -98,9 +99,11 @@
                             </ul>
                         </div>
                     </div>
+                    </a>
                 </div>
                 <div class="col">
-                    <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" style="background-image: url('unsplash-photo-2.jpg');">
+                    <a href="https://www.9news.com.au/melbourne-police" target="_blank">
+                    <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" style="background-image: url('{% static 'img/unsplash-photo-2.jpg' %}');">
                         <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
                             <h3 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Latest Crime News</h3>
                             <ul class="d-flex list-unstyled mt-auto">
@@ -110,9 +113,11 @@
                             </ul>
                         </div>
                     </div>
+                    </a>
                 </div>
                 <div class="col">
-                    <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" style="background-image: url('unsplash-photo-3.jpg');">
+                    <a href="https://www.racv.com.au/travel-experiences/holiday-planning/real-time-traffic-information.html" target="_blank">
+                    <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" style="background-image: url('{% static 'img/unsplash-photo-3.jpg' %}');">
                         <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
                             <h3 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Road Rages and Melbourne</h3>
                             <ul class="d-flex list-unstyled mt-auto">
@@ -122,6 +127,7 @@
                             </ul>
                         </div>
                     </div>
+                    </a>
                 </div>
             </div>
         </div>
