@@ -1,21 +1,22 @@
 # sustainScoreMap/views.py
 
-from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .forms import UserInputForm
 from .ml_model import score_model
 from django.conf import settings
-import pandas as pd
 
-import logging
-logger = logging.getLogger(__name__)
+# sustainScoreMap/views.py
+
+from django.shortcuts import render, redirect
+from .forms import UserInputForm
+from .ml_model import score_model
+from django.conf import settings
 
 def index(request):
-
     mapbox_api_key = settings.MAPBOX_API_KEY
     geojson_url = None
-    top_suburbs = []
-    suburb_reports = {}
+    suburbs = []
+
     if request.method == 'POST':
         form = UserInputForm(request.POST)
         if form.is_valid():
@@ -28,30 +29,19 @@ def index(request):
                 'prefer_parks': form.cleaned_data['prefer_parks'],
                 'prefer_bus': form.cleaned_data['prefer_bus'],
                 'prefer_carpark': form.cleaned_data['prefer_carpark'],
-                'prefer_good_air_quality_low_co2_emission': form.cleaned_data['prefer_good_air_quality_low_co2_emission'],
-                'prefer_less_crime': form.cleaned_data['prefer_less_crime'],
             }
 
-        # Call the ML model to get the GeoJSON and top suburbs
-        geojson_url, top_suburbs = score_model(user_input)
-    
-        # For each suburb, generate the URLs for the reports (piechart, price_distribution, etc.)
-        for suburb in top_suburbs:
-            # Replace whitespace with underscores in the suburb name
-            suburb_with_underscore = suburb.title().replace(' ', '_')
+            # Save the form data in the session to prepopulate later
+            request.session['user_input'] = user_input
 
-            suburb_report_urls = {
-                'piechart': f"{settings.AZURE_CONTAINER_URL}/piechart_{suburb_with_underscore}.png",
-                'price_distribution': f"{settings.AZURE_CONTAINER_URL}/price_distribution_{suburb_with_underscore}.png"
-            }
+            # Call the ML model to get the GeoJSON and top suburbs
+            geojson_url, suburbs = score_model(user_input)
 
-            # Add the URLs to the main report_urls dictionary with suburb as the key
-            suburb_reports[suburb_with_underscore] = suburb_report_urls
-    
-        logger.info(f"Top suburbs: {top_suburbs}")
-        logger.info(f"Suburb reports: {suburb_reports}")
-        logger.info(f"GeoJSON URL: {geojson_url}")
-        logger.info(f"mapbox_api_key: {mapbox_api_key}")
+            # Store the suburbs and geojson_url in session for later use
+            request.session['suburb_list'] = suburbs
+            request.session['geojson_url'] = geojson_url
+
+            print("#################### SESSION DATA STORED ####################")
 
     else:
         form = UserInputForm()
@@ -60,5 +50,17 @@ def index(request):
         'form': form,
         'geojson_url': geojson_url,
         'mapbox_api_key': mapbox_api_key,
-        'suburb_reports': suburb_reports
+        'suburbs': suburbs
     })
+
+
+# separate view to handle the "Compare Now" redirection logic without regenerating the geoJSON
+def compare_redirect(request):
+    # Ensure that the session data is still available
+    if 'suburb_list' in request.session and 'geojson_url' in request.session:
+        request.session['from_sustainscore'] = True  # Set flag
+        print("#################### SESSION Flag set to TRUE ####################")
+        return redirect('comparesuburbsmap')  # Redirect to the compare page
+    else:
+        print("#################### No session data :( ####################")
+        return redirect('index')  # If session data is missing, redirect to sustainScore page

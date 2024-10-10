@@ -5,64 +5,153 @@
 {% block title %}SustainScore - SustainABode{% endblock %}
 
 {% block content %}
+<style>
+    {% comment %} body {
+        background-image: url('{% static "images/16.png" %}');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    } {% endcomment %}
 
+    .container-fluid {
+        background-color: transparent;
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+    /* Style for the filter box */
+  .filter-box {
+      background-color:  #76A458;
+      padding: 20px;
+      border: 2px solid #ccc;
+      border-radius: 15px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  } 
+
+  /* Style for the map box */
+  .map-box {
+      border: 2px solid #ccc;
+      border-radius: 15px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  }
+</style>
 
 <div class="container" style="background-color: #76A458;">
+  <h3> Submit your preferences and select a suburb on the map for more information </h3>
 
 <div class="container-fluid">
   <div class="row">
     <!-- First column for the filter form -->
-    <div class="col-md-4">
+    <div class="col-md-4 filter-box"> <!-- Applied the filter-box class -->
+      <h6><b>Filter Preferences</b></h6> <!-- Added heading here -->
       <form method="POST" class="mb-4">
         {% csrf_token %}
-        {{ form.as_p }}
+    
+        <!-- House Type -->
+        <div class="form-group mb-3">
+            <label for="house_type">House Type</label>
+            <select class="form-control" id="house_type" name="house_type" title="Choose whether you want a house or a unit.">
+                <option value="h" selected>House</option>
+                <option value="u">Unit</option>
+            </select>
+        </div>
+    
+        <!-- Number of Rooms -->
+        <div class="form-group mb-3">
+            <label for="rooms">Number of Rooms</label>
+            <input type="number" class="form-control" id="rooms" name="rooms" value="3" min="1" max="10" title="Select the number of rooms you need.">
+        </div>
+    
+        <!-- Suburb Distance -->
+        <div class="form-group mb-3">
+            <label for="distance">Suburb distance from CBD (KM)</label>
+            <input type="number" class="form-control" id="distance" name="distance" value="10" min="5" max="50" title="Input how far you want to live from the CBD.">
+        </div>
+    
+        <!-- Affordable Housing Checkbox -->
+        <div class="mb-3">
+            <label class="form-check-label" for="affordable">Prioritise suburbs with affordable house prices:</label>
+            <input class="form-check-input ms-2" type="checkbox" id="affordable" name="affordable" title="This filter helps identify suburbs with affordable housing.">
+        </div>
+    
+        <!-- Prefer Parks Checkbox -->
+        <div class="mb-3">
+            <label class="form-check-label" for="prefer_parks">I prefer to go for walks in Parks:</label>
+            <input class="form-check-input ms-2" type="checkbox" id="prefer_parks" name="prefer_parks" title="This filter shows suburbs with larger park areas than average.">
+        </div>
+    
+        <!-- Frequent Bus Services Checkbox -->
+        <div class="mb-3">
+            <label class="form-check-label" for="prefer_bus">Prioritise suburbs with frequent bus services:</label>
+            <input class="form-check-input ms-2" type="checkbox" id="prefer_bus" name="prefer_bus" title="Select this filter to prioritize suburbs with more bus stations.">
+        </div>
+    
+        <!-- Car Parking Near Train Stations Checkbox -->
+        <div class="mb-3">
+            <label class="form-check-label" for="prefer_carpark">I prefer to park my car near train stations:</label>
+            <input class="form-check-input ms-2" type="checkbox" id="prefer_carpark" name="prefer_carpark" title="Select this filter to prioritize suburbs with more parking spaces near train stations.">
+        </div>
+    
+        <!-- Low CO2 Emission Checkbox -->
+        <div class="mb-3">
+            <label class="form-check-label" for="prefer_good_air_quality_low_co2_emission">Prioritise suburbs with low carbon dioxide emission:</label>
+            <input class="form-check-input ms-2" type="checkbox" id="prefer_good_air_quality_low_co2_emission" name="prefer_good_air_quality_low_co2_emission" title="Select this filter to find suburbs with the best air quality.">
+        </div>
+    
+        <!-- Low Crime Rate Checkbox -->
+        <div class="mb-3">
+            <label class="form-check-label" for="prefer_less_crime">Suburbs where frequency of crimes are lower:</label>
+            <input class="form-check-input ms-2" type="checkbox" id="prefer_less_crime" name="prefer_less_crime" title="Select this filter to prioritize suburbs with lower crime rates.">
+        </div>
+    
+        <!-- Submit Button -->
         <button type="submit" class="btn btn-primary">Submit</button>
       </form>
     </div>
 
     <!-- Second column for the map -->
-    <div class="col-md-8">
-      <div id="map" style="width: 100%; height: 600px; position: relative; margin: 20px; border-radius: 15px;"></div>
+    <div class="col-md-8 ">
+      <div class="map-box" id="map" style="width: 100%; height: 650px; position: relative;"></div>
     </div>
   </div>
+</div>
 
-  <script type="module" src="https://public.tableau.com/javascripts/api/tableau.embedding.3.latest.min.js"></script>
-
-  <!-- Container to display selected suburb name and reports -->
-  <div class="mt-4" id="suburb-report-container" style="display: none;">
-    <h3 id="suburb-name"></h3>
-
-    <!-- New Row for Reports (Pie chart and Price Distribution side by side) -->
-    <div class="row" id="suburb-reports">
-      <!-- Reports will be injected here -->
-    </div>
+{% if geojson_url %}
+<!-- Compare Now Button -->
+<div class="row mt-4">
+  <div class="col-md-12 text-center">
+    <h3> Compare the Recommended Suburbs <h3>
+    <a href="{% url 'compare_redirect' %}" class="btn btn-success">Compare Now</a>
   </div>
+</div>
+{% endif %}
 
-  <div class="container mt-2">
+<div id="visualization-container" class="container mt-4" style="display: none;">
+  <h3> More information <h3>
   <div class="row">
-    <div class="col-md-6 mx-auto">
-      <div class="container mt-2">
-      <tableau-viz id="viz1-crime" src="https://public.tableau.com/views/test_workbook_17281234047560/Sheet1" height="300px"></tableau-viz>
+      <div class="col-md-12 mx-auto">
+          <div class="container mt-2">
+              <tableau-viz id="viz1-crime" src="https://public.tableau.com/views/test_workbook_17281234047560/Sheet1" height="300px"></tableau-viz>
+          </div>
+          <div class="container mt-2">
+              <tableau-viz id="viz1-offenses" src="https://public.tableau.com/views/freq_offences/Sheet3" height="300px"></tableau-viz>
+          </div>
+          <div class="container mt-2">
+              <tableau-viz id="viz1-price" src="https://public.tableau.com/views/House_price_trends/Sheet2?:language=en-US&publish=yes&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link" height="300px"></tableau-viz>
+          </div>
+          <div class="container mt-2">
+              <tableau-viz id="viz1-air" src="https://public.tableau.com/views/AirQuality_17281484496810/Sheet4" height="300px"></tableau-viz>
+          </div>
+          <div class="container mt-2">
+              <tableau-viz id="viz1-accidents" src="https://public.tableau.com/views/Accident_17281512246590/Sheet5?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link" height="300px"></tableau-viz>
+          </div>
       </div>
-      <div class="container mt-2">
-      <tableau-viz id="viz1-offenses" src="https://public.tableau.com/views/freq_offences/Sheet3" height="300px"></tableau-viz>
-      </div>
-      <div class="container mt-2">
-      <tableau-viz id="viz1-price" src="https://public.tableau.com/views/PriceTrend_17281462763150/Sheet2" height="300px"></tableau-viz>
-      </div>
-      <div class="container mt-2">
-      <tableau-viz id="viz1-air" src="https://public.tableau.com/views/AirQuality_17281484496810/Sheet4" height="300px"></tableau-viz>
-      </div>
-      <div class="container mt-2">
-      <tableau-viz id="viz1-accidents" src="https://public.tableau.com/views/Accident_17281512246590/Sheet5" height="300px"></tableau-viz>
-      </div>
-    </div>
-  </div>  
   </div>
-
-
 </div>
 </div>
+
+<script type="module" src="https://public.tableau.com/javascripts/api/tableau.embedding.3.latest.min.js"></script>
 
 <script>
   mapboxgl.accessToken = '{{ mapbox_api_key }}'; // Mapbox public access token
@@ -81,7 +170,7 @@
     // Add the GeoJSON data source to the map
     map.addSource('melbourne', {
       'type': 'geojson',
-      'data': '{{ geojson_url }}' // The URL to the geoJSON file
+      'data': '{% static geojson_url %}' // The URL to the geoJSON file
     });
 
     // Add a layer for displaying the neighborhoods, color-coded by their 'SerialNumber' property
@@ -231,73 +320,59 @@
       }
    }
 
-    // Add the reset view button control to the map
-    map.addControl(new ResetViewControl(), 'top-right'); // Add the control to the top-right corner
+   map.on('click', 'melbourne-layer', function (e) {
+    var suburbName = e.features[0].properties.LOC_NAME;
+    var suburbKey = suburbName.toLowerCase().replace(/\b\w/g, function (letter) {
+        return letter.toUpperCase();
+    }).replace(/\s/g, '_');
 
-    map.on('click', 'melbourne-layer', function (e) {
-      var suburbName = e.features[0].properties.LOC_NAME;
-      displaySuburbReports(suburbName);
+    // Display visualization container
+    const visualizationContainer = document.getElementById('visualization-container');
+    visualizationContainer.style.display = 'block';
+
+    // Scroll to the visualization container
+    visualizationContainer.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
     });
-   
-  });
 
-  // Suburb reports passed from Django
-  var suburbReports = {{ suburb_reports|safe }};
+    // Update Tableau visualizations with the selected suburb key
+    let id_viz = 'viz1';
+    let report_types = ['crime', 'price', 'offenses', 'air', 'accidents'];
+    let parameter_id = ['Suburb Selector', 'Suburb Selector', 'Suburb Selector', 'Suburb Name', 'Suburb Selector'];
 
-  // Function to display the reports for a selected suburb
-  function displaySuburbReports(suburbName) {
-    // Title case the suburb name and replace spaces with underscores to match the keys in suburbReports
-    var suburbKey = suburbName.toLowerCase().replace(/\b\w/g, function(letter) {
-      return letter.toUpperCase();
-    }).replace(/\s/g, '_'); // This will convert 'my suburb' to 'My_Suburb'
-
-    var reports = suburbReports[suburbKey]; // Fetch reports using the modified suburb name
-
-    // Log the suburbKey and reports for debugging
-    console.log('Selected Suburb:', suburbName);
-    console.log('Suburb Key:', suburbKey);
-    console.log('Reports:', reports);
-
-    if (reports) {
-      document.getElementById('suburb-name').innerText = suburbName;
-
-      var reportContainer = document.getElementById('suburb-reports');
-      reportContainer.innerHTML = ''; // Clear any previous reports
-
-      /*
-      // Generate image tags for each report and place them side by side
-      for (var reportType in reports) {
-        var reportUrl = reports[reportType];
-
-        if (reportUrl) {
-          // Create a new column for each report (using Bootstrap's col-md-6 class)
-          var colDiv = `<div class="col-12 col-md-6">
-                          <img src="${reportUrl}" alt="${reportType} report for ${suburbName}" class="img-fluid mb-3">
-                        </div>`;
-          reportContainer.innerHTML += colDiv;
-        } else {
-          console.warn(`Missing report URL for ${reportType} in ${suburbName}`);
-        }
-      }
-      */
-
-      let id_viz = 'viz1';
-      let report_types = ['crime', 'offenses', 'air'];
-      let parameter_id = ['Suburb Selector', 'Suburb Selector', 'Suburb Name'];
-
-      for (let i = 0; i < report_types.length; i++) {
+    for (let i = 0; i < report_types.length; i++) {
         let my_id_viz = id_viz + '-' + report_types[i];
-        let viz = document.getElementById(my_id_viz);
-        viz.workbook.changeParameterValueAsync(parameter_id[i], suburbKey);
-      }
+        let vizElement = document.getElementById(my_id_viz);
 
-      document.getElementById('suburb-report-container').style.display = 'block';
-    } else {
-      console.error('No reports found for suburb:', suburbName);
+        if (vizElement) {
+            // Use Tableau Embedding API to get the visualization object
+            tableau.VizManager.getVizs().forEach(viz => {
+                if (viz._vizDiv.id === my_id_viz) {
+                    viz.getWorkbook().changeParameterValueAsync(parameter_id[i], suburbKey)
+                        .catch(function (error) {
+                            console.error('Error updating visualization:', error);
+                        });
+                }
+            });
+        }
     }
-  }
+});
 
-{% endif %}
+
+
+});
+  {% endif %}
+</script>
+
+<!-- Enable tooltips for fields with title attributes using Bootstrap -->
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[title]'));
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+  });
 </script>
 
 <!-- Optional: Style the reset button with custom CSS -->

@@ -1,23 +1,39 @@
 # compareSuburbsMap/views.py
 
-from django.http import HttpResponse
 from django.shortcuts import render
 from sustainScoreMap.forms import UserInputForm
 from sustainScoreMap.ml_model import score_model
 from django.conf import settings
-import pandas as pd
 
-import logging
-logger = logging.getLogger(__name__)
-
-def index(request):
-
-    mapbox_api_key = settings.MAPBOX_API_KEY
+def compare_view(request):
+    # Default settings
     geojson_url = None
-    top_suburbs = []
-    suburb_reports = {}
-    suburb_list = ""
+    suburb_list = []
+    mapbox_api_key = settings.MAPBOX_API_KEY
+
+    # Prepopulate form if user comes from sustainscore
+    if request.session.get('from_sustainscore', False):
+        # Retrieve the saved data from the session (set in sustainscore view)
+        suburb_list = request.session.get('suburb_list', [])
+        geojson_url = request.session.get('geojson_url', None)
+        user_input = request.session.get('user_input', {})
+
+        # Pre-populate the form with saved user_input data
+        form = UserInputForm(initial=user_input)
+
+        print("#################### SESSION DATA RETRIEVED ####################")
+
+        # Reset the flag to indicate the user has moved away from sustainscore page
+        request.session['from_sustainscore'] = False
+
+    else:
+        # When visiting the page for the first time directly (not from sustainscore), render an empty form
+        form = UserInputForm()
+
+    # Handle form resubmission on the compare page
     if request.method == 'POST':
+        print("#################### FORM RESUBMITTED ON COMPARE PAGE ####################")
+
         form = UserInputForm(request.POST)
         if form.is_valid():
             # Extract cleaned data from the form
@@ -29,39 +45,14 @@ def index(request):
                 'prefer_parks': form.cleaned_data['prefer_parks'],
                 'prefer_bus': form.cleaned_data['prefer_bus'],
                 'prefer_carpark': form.cleaned_data['prefer_carpark'],
-                'prefer_good_air_quality_low_co2_emission': form.cleaned_data['prefer_good_air_quality_low_co2_emission'],
-                'prefer_less_crime': form.cleaned_data['prefer_less_crime'],
             }
 
-        # Call the ML model to get the GeoJSON and top suburbs
-        geojson_url, top_suburbs = score_model(user_input)
-    
-        # For each suburb, generate the URLs for the reports (piechart, price_distribution, etc.)
-        for suburb in top_suburbs:
-            # Replace whitespace with underscores in the suburb name
-            suburb_with_underscore = suburb.title().replace(' ', '_')
-
-            suburb_report_urls = {
-                'piechart': f"{settings.AZURE_CONTAINER_URL}/piechart_{suburb_with_underscore}.png",
-                'price_distribution': f"{settings.AZURE_CONTAINER_URL}/price_distribution_{suburb_with_underscore}.png"
-            }
-
-            # Add the URLs to the main report_urls dictionary with suburb as the key
-            suburb_reports[suburb_with_underscore] = suburb_report_urls
-    
-        logger.info(f"Top suburbs: {top_suburbs}")
-        logger.info(f"Suburb reports: {suburb_reports}")
-        logger.info(f"GeoJSON URL: {geojson_url}")
-        logger.info(f"mapbox_api_key: {mapbox_api_key}")
-        suburb_list = ", ".join(f"'{x}'" for x in top_suburbs)
-
-    else:
-        form = UserInputForm()
+            # Call the ML model to get new GeoJSON and suburb list
+            geojson_url, suburb_list = score_model(user_input)
 
     return render(request, 'compareSuburbsMap/compare.html', {
         'form': form,
         'geojson_url': geojson_url,
         'mapbox_api_key': mapbox_api_key,
-        'suburb_reports': suburb_reports,
-        'suburb_list': suburb_list,
+        'suburb_list': suburb_list
     })

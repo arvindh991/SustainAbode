@@ -7,9 +7,6 @@ from azure.storage.blob import BlobServiceClient
 import os
 from datetime import datetime  # For generating timestamps
 
-import logging
-logger = logging.getLogger(__name__)
-
 # # Example of user inputs (these would be dynamic in a real application)
 #     user_input = {
 #         'type': 'h',  # house or unit
@@ -17,15 +14,14 @@ logger = logging.getLogger(__name__)
 #         'distance': 10,  # preferred distance # make sure user does not input any number less than 5
 #         'affordable': True,  # if affordability should be maximized # preferred input: True/False
 #         'prefer_parks': False  # if park preferences are included # preferred input: True/False
-#         'prefer_bus': True,
-#         'prefer_carpark': True,
-#         'prefer_good_air_quality_low_co2_emission': True,
-#         'prefer_less_crime': True
 #     }
 
 def score_model(user_input):
     # Define the base data directory
     data_dir = os.path.join(settings.BASE_DIR, 'data')
+
+    # Define the base data directory
+    static_dir = os.path.join(settings.BASE_DIR, 'static')
 
     # Loading the house price dataset from the data folder
     melbourne_data = pd.read_csv(os.path.join(data_dir, 'MELBOURNE_HOUSE_PRICES_LESS_CLEAN.csv'))
@@ -105,10 +101,8 @@ def score_model(user_input):
     suburb_rank = suburb_rank.merge(bus_service_summary, left_on='Suburb', right_on='suburb', how='left')
 
     # Replace missing values with 0 for suburbs with no bus service
-    #suburb_rank['NumberOfBusStops'].fillna(0, inplace=True)
-    suburb_rank['NumberOfBusStops'] = suburb_rank['NumberOfBusStops'].fillna(0)
-    #suburb_rank['UniqueBusRoutes'].fillna(0, inplace=True)
-    suburb_rank['UniqueBusRoutes'] = suburb_rank['UniqueBusRoutes'].fillna(0)
+    suburb_rank['NumberOfBusStops'].fillna(0, inplace=True)
+    suburb_rank['UniqueBusRoutes'].fillna(0, inplace=True)
 
     # Assuming train_carpark_data contains 'suburb' and 'carpark_capacity' columns
 
@@ -121,8 +115,7 @@ def score_model(user_input):
     suburb_rank = suburb_rank.merge(carpark_summary, left_on='Suburb', right_on='suburb', how='left')
 
     # Replace missing values with 0 for suburbs with no train car parks
-    #suburb_rank['TotalCarparkCapacity'].fillna(0, inplace=True)
-    suburb_rank['TotalCarparkCapacity'] = suburb_rank['TotalCarparkCapacity'].fillna(0)
+    suburb_rank['TotalCarparkCapacity'].fillna(0, inplace=True)
 
     # Rank suburbs based on bus services
     suburb_rank['Rank_BusStops'] = suburb_rank['NumberOfBusStops'].rank(ascending=False, method='min')
@@ -138,47 +131,7 @@ def score_model(user_input):
     # Adjust TotalRank if the user prefers train car parks
     if user_input['prefer_carpark']:
         suburb_rank['TotalRank'] += suburb_rank['Rank_CarparkCapacity']
-
-
-    ### ADD STUFF HERE
-    co2_emission_data = pd.read_csv(os.path.join(data_dir, 'total_co2_emission_by_suburb.csv'))
-    suburb_names = co2_emission_data['suburb'].tolist()
-
-    # Check if the user prefers low CO2 emission suburbs
-    if user_input.get('prefer_good_air_quality_low_co2_emission', True):  # Ensure the key exists and is set to True
-        # Reduce 20 from TotalRank for suburbs that match with the suburb_names list
-        suburb_rank.loc[suburb_rank['Suburb'].isin(suburb_names), 'TotalRank'] -= 20
-    
-    # Load the cleaned crime score data
-    crime_score_data = pd.read_csv(os.path.join(data_dir, 'cleaned_suburb_crime_score.csv'))
-
-    # Ensure both datasets have standardized suburb names (uppercase and stripped of extra spaces)
-    suburb_rank['Suburb'] = suburb_rank['Suburb'].str.upper().str.strip()
-    crime_score_data['Suburb Name'] = crime_score_data['Suburb Name'].str.upper().str.strip()
-
-    # Merge the crime score data with the existing suburb_rank DataFrame
-    suburb_rank = suburb_rank.merge(crime_score_data, left_on='Suburb', right_on='Suburb Name', how='left')
-
-    # Check for missing crime scores and fill with a high value (for missing data assume high crime score)
-    suburb_rank['CrimeScore'].fillna(suburb_rank['CrimeScore'].max() + 1, inplace=True)
-
-    # Normalize the crime score to a smaller scale (e.g., 0-100 range)
-    crime_max = suburb_rank['CrimeScore'].max()
-    crime_min = suburb_rank['CrimeScore'].min()
-
-    # Normalized crime score in a range (e.g., 0 to 15)
-    suburb_rank['NormalizedCrimeScore'] = 20 * (suburb_rank['CrimeScore'] - crime_min) / (crime_max - crime_min)
-
-    # Track the original TotalRank for later comparison
-    suburb_rank['OriginalTotalRank'] = suburb_rank['TotalRank']
-
-    # Adjust the TotalRank based on the normalized crime score if the user prefers less crime
-    if user_input.get('prefer_less_crime', True):
-        suburb_rank['TotalRank'] -= suburb_rank['NormalizedCrimeScore']  # Subtract normalized crime score to favor lower crime suburbs
-
-    # Calculate how much the rank has changed due to crime score influence
-    suburb_rank['RankChangeDueToCrime'] = suburb_rank['OriginalTotalRank'] - suburb_rank['TotalRank']
-
+        
     # Recompute the TotalRank based on user preferences
     suburb_rank = suburb_rank.sort_values('TotalRank').reset_index(drop=True)
 
@@ -229,36 +182,43 @@ def score_model(user_input):
     final_geo_df = final_geo_df.drop(columns=['Suburb'])    
 
     # Preview the merged data to ensure that rank information is included
-    logger.info(final_geo_df.head())
+    # print(final_geo_df.head())
 
-    # Generate a timestamp
-    timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+    # # Generate a timestamp
+    # timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
 
-    # Create a unique blob name by appending the timestamp
-    blob_name = f'top_5_suburbs_with_ranks_{timestamp}.geojson'
+    # # Create a unique blob name by appending the timestamp
+    # blob_name = f'top_5_suburbs_with_ranks_{timestamp}.geojson'
 
-    # Connect to the Blob service
-    blob_service_client = BlobServiceClient(account_url=settings.AZURE_ACCOUNT_URL, credential=settings.AZURE_ACCOUNT_KEY)
+    # # Connect to the Blob service
+    # blob_service_client = BlobServiceClient(account_url=settings.AZURE_ACCOUNT_URL, credential=settings.AZURE_ACCOUNT_KEY)
     
-    blob_client = blob_service_client.get_blob_client(container=settings.AZURE_CONTAINER, blob=blob_name)
+    # blob_client = blob_service_client.get_blob_client(container=settings.AZURE_CONTAINER, blob=blob_name)
 
-    # Write the GeoDataFrame to a bytes buffer (in-memory) as GeoJSON
-    geojson_buffer = BytesIO()
-    final_geo_df.to_file(geojson_buffer, driver='GeoJSON')
+    # # Write the GeoDataFrame to a bytes buffer (in-memory) as GeoJSON
+    # geojson_buffer = BytesIO()
+    # final_geo_df.to_file(geojson_buffer, driver='GeoJSON')
     
-    # Move the buffer's position to the start before reading (necessary to upload)
-    geojson_buffer.seek(0)
+    # # Move the buffer's position to the start before reading (necessary to upload)
+    # geojson_buffer.seek(0)
 
-    blob_url = f"{settings.AZURE_CONTAINER_URL}/{blob_name}"
+    # blob_url = f"{settings.AZURE_CONTAINER_URL}/{blob_name}"
 
-    try:
-        # Upload the in-memory GeoJSON data to the Blob
-        blob_client.upload_blob(geojson_buffer, overwrite=True)
-        logger.info(f"GeoJSON uploaded successfully to {blob_url}")
-        # Close the buffer to release memory
-        geojson_buffer.close()
-    except Exception as e:
-        print(f"Error uploading GeoJSON to Blob: {str(e)}")
-        raise
+    # try:
+    #     # Upload the in-memory GeoJSON data to the Blob
+    #     blob_client.upload_blob(geojson_buffer, overwrite=True)
+    #     # print(f"GeoJSON uploaded successfully to {blob_url}")
+    #     # Close the buffer to release memory
+    #     geojson_buffer.close()
+    # except Exception as e:
+    #     print(f"Error uploading GeoJSON to Blob: {str(e)}")
+    #     raise
 
-    return blob_url, top_suburb_names   # Return the GeoJSON path
+    
+    geojson_filename = 'top_5_suburbs_with_ranks.geojson'
+    
+    geojson_path = os.path.join(static_dir, geojson_filename)
+
+    final_geo_df.to_file(geojson_path, driver='GeoJSON')
+
+    return geojson_filename, top_suburb_names
