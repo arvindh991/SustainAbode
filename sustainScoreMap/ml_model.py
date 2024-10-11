@@ -185,40 +185,41 @@ def score_model(user_input):
     # print(final_geo_df.head())
 
     # # Generate a timestamp
-    # timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+    timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
 
-    # # Create a unique blob name by appending the timestamp
-    # blob_name = f'top_5_suburbs_with_ranks_{timestamp}.geojson'
+    # Create a unique blob name by appending the timestamp
+    blob_name = f'top_5_suburbs_with_ranks_{timestamp}.geojson'
 
-    # # Connect to the Blob service
-    # blob_service_client = BlobServiceClient(account_url=settings.AZURE_ACCOUNT_URL, credential=settings.AZURE_ACCOUNT_KEY)
+    # Connect to the Blob service
+    blob_service_client = BlobServiceClient(account_url=settings.AZURE_ACCOUNT_URL, credential=settings.AZURE_ACCOUNT_KEY)
     
-    # blob_client = blob_service_client.get_blob_client(container=settings.AZURE_CONTAINER, blob=blob_name)
+    blob_client = blob_service_client.get_blob_client(container=settings.AZURE_CONTAINER, blob=blob_name)
 
-    # # Write the GeoDataFrame to a bytes buffer (in-memory) as GeoJSON
-    # geojson_buffer = BytesIO()
-    # final_geo_df.to_file(geojson_buffer, driver='GeoJSON')
+    # Write the GeoDataFrame to a bytes buffer (in-memory) as GeoJSON
+    geojson_buffer = BytesIO()
+    final_geo_df.to_file(geojson_buffer, driver='GeoJSON')
     
-    # # Move the buffer's position to the start before reading (necessary to upload)
-    # geojson_buffer.seek(0)
+    # Move the buffer's position to the start before reading (necessary to upload)
+    geojson_buffer.seek(0)
 
-    # blob_url = f"{settings.AZURE_CONTAINER_URL}/{blob_name}"
+    blob_url = f"{settings.AZURE_CONTAINER_URL}/{blob_name}"
 
-    # try:
-    #     # Upload the in-memory GeoJSON data to the Blob
-    #     blob_client.upload_blob(geojson_buffer, overwrite=True)
-    #     # print(f"GeoJSON uploaded successfully to {blob_url}")
-    #     # Close the buffer to release memory
-    #     geojson_buffer.close()
-    # except Exception as e:
-    #     print(f"Error uploading GeoJSON to Blob: {str(e)}")
-    #     raise
+    try:
+        # Upload the in-memory GeoJSON data to the Blob
+        blob_client.upload_blob(geojson_buffer, overwrite=True)
+        # print(f"GeoJSON uploaded successfully to {blob_url}")
+        # Close the buffer to release memory
+        geojson_buffer.close()
+    except Exception as e:
+        print(f"Error uploading GeoJSON to Blob: {str(e)}")
+        raise
 
+    return blob_url, top_suburb_names   # Return the GeoJSON path
+
+    # geojson_filename = 'top_5_suburbs_with_ranks.geojson'
     
-    geojson_filename = 'top_5_suburbs_with_ranks.geojson'
-    
-    geojson_path = os.path.join(static_dir, geojson_filename)
+    # geojson_path = os.path.join(static_dir, geojson_filename)
 
-    final_geo_df.to_file(geojson_path, driver='GeoJSON')
+    # final_geo_df.to_file(geojson_path, driver='GeoJSON')
 
-    return geojson_filename, top_suburb_names
+    # return geojson_filename, top_suburb_names
