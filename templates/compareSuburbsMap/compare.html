@@ -176,7 +176,7 @@
     // Add the GeoJSON data source to the map
     map.addSource('melbourne', {
       'type': 'geojson',
-      'data': '{% static geojson_url %}' // The URL to the geoJSON file
+      'data': '{{ geojson_url }}' // The URL to the geoJSON file
     });
 
     // Add a layer for displaying the neighborhoods, color-coded by their 'SerialNumber' property
