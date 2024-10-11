@@ -203,6 +203,7 @@ def score_model(user_input):
     geojson_buffer.seek(0)
 
     blob_url = f"{settings.AZURE_CONTAINER_URL}/{blob_name}"
+    print(blob_url)
 
     try:
         # Upload the in-memory GeoJSON data to the Blob
