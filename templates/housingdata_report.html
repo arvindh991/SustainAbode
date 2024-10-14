@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}housingdata_report{% endblock %}
+
+{% load static %}
+
+{% block content %}
+
+
+<style>
+    /* Style for full page background image */
+    body {
+        background: url('{% static "images/report_bg.png" %}') no-repeat center center fixed; /* Background image */
+        background-size: cover; /* Make the image cover the entire page */
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        height: 100vh; /* Ensure it covers full height */
+    }
+
+    /* Top content division for the Tableau report */
+    .top-division {
+        position: relative; /* Relative positioning to avoid overlap */
+        height: 70vh; /* 70% of the viewport height */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+
+    /* Tableau container where the report will be displayed */
+    .tableau-container {
+        width: 80%; /* Adjust width as necessary */
+        height: 100%; /* Make the iframe take the full height of the division */
+        border: none; /* Remove border from the iframe */
+    }
+
+    /* Bottom division for the image */
+    .bottom-division {
+        position: relative; /* Ensure that this division doesn't overlap with the top division */
+        height: 80vh; /* 30% of the viewport height */
+        background: url('{% static "images/house.png" %}') no-repeat center center; /* Image as background */
+        background-size: contain; /* Ensures the image stays within the division */
+        background-position: top; /* Ensures the image stays at the top */
+    }
+
+</style>
+<script type="text/javascript" src="https://public.tableau.com/javascripts/api/tableau-2.8.0.min.js"></script>
+
+
+<body>
+
+    <!-- Top content division -->
+    <div class="top-division" style="margin-top: 10%;">
+        <!-- Tableau Report Embed Container -->
+        <div id="tableauViz" class="tableau-container"></div>
+    </div>
+
+    <!-- Bottom image division -->
+    <div class="bottom-division">
+        <!-- The background image is already applied via CSS -->
+    </div>
+    <div class="btn-custom">
+        <a class="btn btn-custom1 discover-more" href= "{% url 'landing_page' %}#skip-down" style="align-items: center;position: relative;left: 50%;font-size: 12px;"> Return </a>
+        <!-- The background image is already applied via CSS -->
+    </div>
+
+    <script>
+        // Function to initialize the Tableau report inside the container
+        function initViz() {
+            var containerDiv = document.getElementById("tableauViz"),
+                // Replace this URL with your Tableau Online or Tableau Public report link
+                url = "https://public.tableau.com/views/AffordableHouseAvailable5/Sheet7?:language=en-GB&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link";
+
+            var options = {
+                width: containerDiv.offsetWidth, // Makes it responsive to the container width
+                height: containerDiv.offsetHeight, // Matches height to the container height
+                hideTabs: true, // Hides the tabs at the bottom of the Tableau report
+                onFirstInteractive: function () {
+                    console.log("Tableau report is interactive and ready.");
+                }
+            };
+
+            // Initialize the Tableau visualization
+            var viz = new tableau.Viz(containerDiv, url, options);
+        }
+
+        // Call the initViz function when the page is loaded
+        window.onload = initViz;
+    </script>
+
+</body>
+{% endblock %}

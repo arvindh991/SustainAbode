@@ -20,7 +20,7 @@ def compare_view(request):
 
         # Pre-populate the form with saved user_input data
         form = UserInputForm(initial=user_input)
-
+        print(user_input)
         print("#################### SESSION DATA RETRIEVED ####################")
 
         # Reset the flag to indicate the user has moved away from sustainscore page
@@ -45,7 +45,10 @@ def compare_view(request):
                 'prefer_parks': form.cleaned_data['prefer_parks'],
                 'prefer_bus': form.cleaned_data['prefer_bus'],
                 'prefer_carpark': form.cleaned_data['prefer_carpark'],
+                'prefer_good_air_quality_low_co2_emission': form.cleaned_data['prefer_good_air_quality_low_co2_emission'],
+                'prefer_less_crime': form.cleaned_data['prefer_less_crime'],
             }
+
 
             # Call the ML model to get new GeoJSON and suburb list
             geojson_url, suburb_list = score_model(user_input)

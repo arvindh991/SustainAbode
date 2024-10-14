@@ -1,7 +1,12 @@
-<form method="post">
-    {% csrf_token %}
-    <h3> Who's there? <h3>
-    <label>Password:</label>
-    <input type="password" name="password">
-    <button type="submit">Submit</button>
-  </form>
+{% load static %}
+
+<center>
+  <form method="post">
+      {% csrf_token %}
+      <img src="{% static 'images/lockdown-knock-knock.webp' %}">
+      <h3> Who's there? <h3>
+      <label>Password:</label>
+      <input type="password" name="password">
+      <button type="submit">Submit</button>
+    </form>
+</center>

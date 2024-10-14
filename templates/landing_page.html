@@ -2,145 +2,203 @@
 
 {% block title %}Home - SustainABode{% endblock %}
 
-{% load static %}  <!-- Add this line to load the static files -->
+{% load static %}
 
 {% block content %}
 
-    <div class="col-lg-6 mx-auto full-width-bg d-flex justify-content-center align-items-start position-relative" style="background-image: url('{% static 'img/landing_img_01.png' %}');">
-        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center position-absolute"
-            style="top: 70%; transform: translateY(-50%);">
-            <a href="#carousel-section" class="btn btn-primary btn-lg px-4 gap-3">Discover More</a>
+    <div class="hero-images">
+        <div class="hero-image-container">
+            <img src="{% static 'images/sustaibability.png' %}" alt="Hero Image 1" class="img-fluid w-100" style="width: 100%;">
+            <a class="btn btn-custom discover-more" id="scrollBtn1" href="#up_id" style="margin-bottom: 12%;">Scroll Down</a>
         </div>
-    </div>
-
-    <!-- Add the Carousel Here, below the Discover section -->
-            
-        <div id="carousel-section" class="col-lg-6 mx-auto full-width-bg d-flex flex-column" style="background-image: url('{% static 'img/landing_img_02.png' %}');">
-            <p class="lead mb-4 text-80">Discover how sustainability and smart choices come together to simplify your home search. Explore the journey from frustration to finding the perfect suburb, with data-driven insights guiding the way.</p>
-            <h3 class="text-center mb-4">Discover Your Sustainable Suburb Today!</h3>
-            <section class="carousel-section mt-6 col-10 col-lg-8 mx-auto" style="width: 70%;">
-
-                <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="false">
-                    <ol class="carousel-indicators">
-                        <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"><span>1</span></li>
-                        <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"><span>2</span></li>
-                        <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"><span>3</span></li>
-                        <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3"><span>4</span></li>
-                        <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="4"><span>5</span></li>
-                    </ol>
-
-                    <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <img src="{% static 'images/frame1.png' %}" alt="First Image" class="d-block w-100" style="border: 2px solid black;">
-                            <div class="carousel-caption d-flex flex-column justify-content-center align-items-center">
-                                <p class="typed-text" id="typed-text-1"></p>
-                            </div>
-                        </div>
-                        <div class="carousel-item">
-                            <img src="{% static 'images/frame2.png' %}" alt="Second Image" class="d-block w-100" style="border: 2px solid black;">
-                            <div class="carousel-caption d-flex flex-column justify-content-center align-items-center">
-                                <p class="typed-text" id="typed-text-2"></p>
-                            </div>
-                        </div>
-                        <div class="carousel-item">
-                            <img src="{% static 'images/frame3.png' %}" alt="Third Image" class="d-block w-100" style="border: 2px solid black;">
-                            <div class="carousel-caption d-flex flex-column justify-content-center align-items-center">
-                                <p class="typed-text" id="typed-text-3"></p>
-                            </div>
-                        </div>
-                        <div class="carousel-item">
-                            <img src="{% static 'images/frame4.png' %}" alt="Fourth Image" class="d-block w-100" style="border: 2px solid black;">
-                            <div class="carousel-caption d-flex flex-column justify-content-center align-items-center">
-                                <p class="typed-text" id="typed-text-4"></p>
-                            </div>
-                        </div>
-                        <div class="carousel-item">
-                            <img src="{% static 'images/frame5.png' %}" alt="Fifth Image" class="d-block w-100" style="border: 2px solid black;">
-                            <div class="carousel-caption d-flex flex-column justify-content-center align-items-center">
-                                <p class="typed-text" id="typed-text-5"></p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-bs-slide="prev" style="width: 5%; left: -8%;">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Previous<</span>
+        <div id="up_id">
+        <div class="second-hero-container" style="margin-top:2";>
+            <img src="{% static 'images/Knowledge Center (4).svg' %}" alt="Hero Image 2" class="img-fluid w-100">
+            <div class="overlay-content">
+                <div class="second-hero-text" style="margin-bottom: ;">
+                    <h1 class="outlined-text" style="margin-top: -14%;">LOOKING FOR A BUDGET FRIENDLY HOUSE<br>THAT ALIGNS WITH SUSTAINABILITY ?</h1>
+                    <a href="#skip-down" class="skip-button" type="button" >
+                        <h1 class="skip-text">SKIP</h1>
+                        <i class="fa-solid fa-chevron-down skip-icon"></i>
                     </a>
-                    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-bs-slide="next" style="width: 5%; right: -8%;">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Next</span>
-                    </a>
+
                 </div>
-            </section>
-        </div>
 
-
-    <!-- Continue with existing content -->
-    <div class="row flex-lg-row-reverse align-items-center g-5 py-5 full-width-bg" style="background-image: url('{% static 'img/landing_img_03.png' %}');">
-        <div class="col-10 col-sm-8 col-lg-6">
-            <img src="{% static 'img/landing_img_04.png' %}" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="700" height="500" loading="lazy">
-        </div>
-        <div class="col-lg-6">
-            <h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3" style="color: #254D54 !important;">Suburb-Wise Sustainability Score</h1>
-            <p class="lead1">Find the suburb that best fits your criteria of sustainable living. Our SustainScore evaluates neighborhoods based on key sustainability indicators.</p>
-            <div class="d-grid gap-2 d-md-flex justify-content-center">
-                <a href="{% url 'sustainscoremap' %}" class="btn btn-primary btn-lg px-4 gap-3">Go</a>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-lg-6 mx-auto full-width-bg d-flex flex-column" style="background-image: url('{% static 'img/landing_img_05.png' %}');">
-
-    </div>
-
-    <div class="col-lg-6 mx-auto full-width-bg d-flex flex-column" style="background-color: #B6C6AC;">
-        <div class="container px-4 py-5" id="custom-cards" >
-            <h1 class="pb-2 text-center" style="font-size: 4rem; color: white;">Knowledge Center</h1>
-            <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
-                <div class="col">
-                    <a href="https://metropole.com.au/10-most-expensive-suburbs-in-melbourne/" target="_blank">
-                    <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" style="background-image: url('{% static 'img/unsplash-photo-1.jpg' %}');">
-                        <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
-                            <h3 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Most Expensive Suburbs</h3>
-                            <ul class="d-flex list-unstyled mt-auto">
-                                <li class="me-auto">
-                                    <p style="font-size: 1.3rem;">10 suburbs worth the money</p>
-                                </li>
-                            </ul>
-                        </div>
+                <div class="wrapper active-page1">
+                    <div class="page page1">
+                        <img src="{% static 'images/f1.png' %}" alt="f1" style="height: 90%; width: 100%" ;>
                     </div>
-                    </a>
+                    <div class="page page2">
+                        <img src="{% static 'images/f2.png' %}" alt="f2" style="height: 100%; width:100%"; >
+                    </div>
+                    <div class="page page3">
+                        <img src="{% static 'images/f3.png' %}" alt="f3" style="height: 90%";>
+                    </div>
+                    <div class="page page4">
+                        <img src="{% static 'images/f4.png' %}" alt="f4" style="height: 100%";>
+                    </div>
+                    <div class="page page5">
+                        <img src="{% static 'images/f5.png' %}" alt="f4" style="height: 100%";>
+                    </div>
                 </div>
-                <div class="col">
-                    <a href="https://www.9news.com.au/melbourne-police" target="_blank">
-                    <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" style="background-image: url('{% static 'img/unsplash-photo-2.jpg' %}');">
-                        <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
-                            <h3 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Latest Crime News</h3>
-                            <ul class="d-flex list-unstyled mt-auto">
-                                <li class="me-auto">
-                                    <p style="font-size: 1.3rem;">Get the latest on crime incidents in the area</p>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    </a>
-                </div>
-                <div class="col">
-                    <a href="https://www.racv.com.au/travel-experiences/holiday-planning/real-time-traffic-information.html" target="_blank">
-                    <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" style="background-image: url('{% static 'img/unsplash-photo-3.jpg' %}');">
-                        <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
-                            <h3 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Road Rages and Melbourne</h3>
-                            <ul class="d-flex list-unstyled mt-auto">
-                                <li class="me-auto">
-                                    <p style="font-size: 1.3rem;">Updates on traffic conditions and road incidents</p>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    </a>
+                <div class="nav-panel">
+                    <div class="scroll-btn up"></div>
+                    <div class="scroll-btn down"></div>
+                    <nav>
+                        <ul>
+                            <li data-target="1" class="nav-btn nav-page1 active"></li>
+                            <li data-target="2" class="nav-btn nav-page2"></li>
+                            <li data-target="3" class="nav-btn nav-page3"></li>
+                            <li data-target="4" class="nav-btn nav-page4"></li>
+                            <li data-target="5" class="nav-btn nav-page5"></li>
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </div>
     </div>
+    /* Transition 3 find out more with four find out more reports */
+        <img src="{% static 'images/6.png' %}" alt="New Frame 1" class="img-fluid w-100">
+
+        <div class="w-100 header-container">
+            <h1 class="outlined-text"><b>How we are helping
+                    promoting sustainability </b>
+            </h1>
+            <div class="frth-section-1">
+                <img src="{% static 'images/HouseSymbol.png' %}" alt="New Frame 5" class="img-fluid" />
+                <h4 class="text" id="scrollText">
+                    We provide insights into affordable
+                    housing options, helping you find a
+                    home that fits your budget without
+                    compromising quality.
+                </h4>
+                <a class="find-out-more" target="_blank" href="{% url 'housingdata_report' %}">find out more</a>
+            </div>
+            <div class="frth-section-2">
+                <img src="{% static 'images/CarbonSymbol.png' %}" alt="New Frame 5" class="img-fluid">
+                <h4 class="text" id="scrollText1">
+                    We help you choose areas with
+                    lower carbon emissions,close to parks and reserves,
+                    promoting sustainable living and reducing
+                    your environmental impact.
+                </h4>
+                <a class="find-out-more" target="_blank" href="{% url 'carbon_emission_report' %}">find out more</a>
+            </div>
+        </div>
+        <div class="w-100 fouth-section2">
+            <div class="frth-section-1">
+                <img src="{% static 'images/CrimeSymbol.png' %}" alt="New Frame 5" class="img-fluid">
+                <h4 class="text" id="scrollText2">
+                    Our solution highlights neighborhoods
+                    with lower crime rates, ensuring safety
+                    and peace of mind for you andyour
+                    family.
+                </h4>
+                <a class="find-out-more" target="_blank" href="{% url 'crime_report' %}">find out more</a>
+            </div>
+
+            <div class="frth-section-2">
+                <img src="{% static 'images/trafficSymbol.png' %}" alt="New Frame 5" class="img-fluid">
+                <h4 class="text" id="scrollText3">
+                    Our platform prioritizes eco-friendly
+                    living by integrating transportation
+                    data, making it easier for you to
+                    choose sustainable travel options.
+                </h4>
+                <a class="find-out-more" target="_blank" href="{% url 'transport_report' %}">
+                    find out more</a>
+            </div>
+
+        </div>
+
+    </div>
+    <!-- Sustainscore map layout -->
+    <div class="third-container">
+        <a class="btn btn-custom discover-more" id="findbutton" href="/sustainscoremap" style="left:24%; margin-bottom: 5%";>find more</a>
+        <img src="{% static 'images/Knowledge Center (5).png' %}" alt="Knowledge Center 5"
+            class="img-fluid w-100">
+        <!-- You can add more content here if needed -->
+    </div>
+
+
+
+
+<!-- top t suburb map  -->
+    <!-- Graph section starts here -->
+        <div class="graph-container">
+            <div class="w-100 header-container" style="position: relative;width: 100%; height: 400px; padding: 20px;">
+                <h3 class="outlined-text1" style="text-align:center; color: #21533b; margin-top: -7%;">Top 5 suburbs of melbourne</h3>
+                <div class="text-container">
+                    <h2 class="outlined-text" style="color: rgb(65, 72, 49);">Latest Trends</h2>
+                    <p style="color: #244b2d; font-size: 18px; text-align: justify;">Melbourne is home to diverse suburbs, each offering unique characteristics that make it one of the most livable cities in the world. With a focus on sustainability, the city balances urban living with environmental responsibility through green spaces, eco-friendly developments, and accessible public transport. However, in a busy lifestyle, finding the perfect neighborhood can be challenging. That’s where our solution helps, guiding you to the best suburbs based on your priorities—whether it’s affordability, sustainability, safety, or convenience. By offering key insights, we empower you to make informed choices that contribute to sustainability and protect the environment</p>
+                </div>
+                
+                <!-- Image Division -->
+                <div class="image-container">
+                    <canvas id="suburbChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+<!-- Knowledge ecnter for news and articles -->
+
+    <div class="Knowledge-container" style="position: relative;">
+        <div class="Knowledge-background-img" style="position: absolute;">
+            <img src="{% static 'images/bg_frame5.png' %}" alt="New Frame 4" class="img-fluid w-100">
+        </div>
+        <div class="Knowledge-header" style="position: absolute; z-index: 12;width: 100%;text-align: center;margin-top: 2%;color: #000;">
+            <h1 class="outlined-text1">Knowledge Center</h1>
+        </div>
+        <div class="Knowledge-main" style="position: absolute; margin-top: 10%;">
+            <div class="Knowledge-section-1">
+                <div class="Knowledge-image-container">
+                    <img src="{% static 'images/expensive_suburbs2.jpeg' %}" alt="New Frame 4" class="img-fluid w-100 animated-img">
+                </div>
+                <div class="Knowledge-text-container">
+                    <h3 style="font-family:ovo ; color: white; text-align: justify; margin: 8%;">
+                        The top most expensive suburbs in melboune
+                    </h3>
+                    
+                </div>
+                <div class="Knowledge-btn-container">
+                    <a class="btn discover-more" style="margin-bottom: -2%;" target="_blank"
+                        href="https://7news.com.au/business/melbourne-property/melbournes-most-liveable-suburb-crowned-as-northcote-in-2021-study-c-4796275">
+                        find more</a>
+                </div>
+            </div>
+
+            <div class="Knowledge-section-2">
+                <div class="Knowledge-image-container">
+                    <img src="{% static 'images/latest_crime.jpg' %}" alt="New Frame 4" class="img-fluid w-100 animated-img">
+                </div>
+                <div class="Knowledge-text-container">
+                    <h3 style="font-family:ovo ; color: white; text-align: justify; margin: 8%;">
+                        Latest crime News across melbourne
+        
+                    </h3>
+                </div>
+                <div class="Knowledge-btn-container">
+                    <a class="btn discover-more" style="margin-bottom: -2%"; target="_blank"
+                        href="https://www.crimestatistics.vic.gov.au/about-the-data">find more</a>
+                </div>
+            </div>
+
+            <div class="Knowledge-section-3">
+                <div class="Knowledge-image-container">
+                    <img src="{% static 'images/Road_rages.jpg' %}" alt="New Frame 4" class="img-fluid w-100 animated-img">
+                </div>
+                <div class="Knowledge-text-container">
+                    <h3 style=" font-family:ovo ; color: white; text-align: justify; margin: 8%;">
+                        Roads Rages and Traffic offense melbourne
+                        
+                    </h3>
+                </div>
+                <div class="Knowledge-btn-container">
+                    <a class="btn discover-more" style="margin-bottom: -2%"; target="_blank"
+                        href="https://7news.com.au/news/melbourne-traffic-update-ahead-of-thursday-morning-peak-hour-including-breakdowns-and-crashes-c-16105856">
+                        find more</a>
+                </div>
+    </div>
+</header>
 
 {% endblock %}

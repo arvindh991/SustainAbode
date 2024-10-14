@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}About Us - SustainABode{% endblock %}
+
+{% block content %}
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+        }
+
+        .container, .container-fluid, .row {
+            padding: 0 !important;
+            margin: 0 !important;
+            max-width: 100%;
+        }
+
+        .full-background {
+            min-height: calc(100vh - 71px); /* Subtract navbar height */
+            width: 100%;
+            margin-top: 71px; /* Add margin to account for navbar */
+            display: flex;
+            flex-direction: column; /* Stack children vertically */
+        }
+
+        .image-container {
+            flex: 1; /* Each container takes up equal vertical space */
+            width: 100%;
+        }
+
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    </style>
+
+    <div class="full-background">
+        <div class="image-container">
+            <img src="{% static 'images/about1.png' %}" alt="About 1">
+        </div>
+        <div class="image-container">
+            <img src="{% static 'images/about2.png' %}" alt="About 2">
+        </div>
+    </div>
+{% endblock %}

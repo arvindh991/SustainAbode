@@ -5,19 +5,13 @@ from .forms import UserInputForm
 from .ml_model import score_model
 from django.conf import settings
 
-# sustainScoreMap/views.py
-
-from django.shortcuts import render, redirect
-from .forms import UserInputForm
-from .ml_model import score_model
-from django.conf import settings
-
 def index(request):
     mapbox_api_key = settings.MAPBOX_API_KEY
     geojson_url = None
     suburbs = []
 
     if request.method == 'POST':
+        print("#################### POST REQUEST ####################")
         form = UserInputForm(request.POST)
         if form.is_valid():
             # Extract cleaned data from the form
@@ -29,6 +23,8 @@ def index(request):
                 'prefer_parks': form.cleaned_data['prefer_parks'],
                 'prefer_bus': form.cleaned_data['prefer_bus'],
                 'prefer_carpark': form.cleaned_data['prefer_carpark'],
+                'prefer_good_air_quality_low_co2_emission': form.cleaned_data['prefer_good_air_quality_low_co2_emission'],
+                'prefer_less_crime': form.cleaned_data['prefer_less_crime'],
             }
 
             # Save the form data in the session to prepopulate later
@@ -44,13 +40,19 @@ def index(request):
             print("#################### SESSION DATA STORED ####################")
 
     else:
+        print('############### Not a POST REQUEST #################')
         form = UserInputForm()
 
-    return render(request, 'sustainScoreMap/sustainscore.html', {
+    print(geojson_url)
+    print(suburbs)
+    print(mapbox_api_key)
+    print(form)
+    print(request)
+    return render(request=request, template_name='sustainScoreMap/sustainscore.html', context={
         'form': form,
         'geojson_url': geojson_url,
         'mapbox_api_key': mapbox_api_key,
-        'suburbs': suburbs
+        'suburbs': suburbs,
     })
 
 

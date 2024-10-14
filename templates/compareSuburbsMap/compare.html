@@ -6,347 +6,355 @@
 
 {% block content %}
 
-<style>
-  {% comment %} body {
-      background-image: url('{% static "images/16.png" %}');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-  } {% endcomment %}
+  <style>
+    
+    .reset-btn {
+      background-color: #f8f9fa; /* Light background */
+      border: 1px solid #000; /* Black border */
+      padding: 5px 10px; /* Padding for button */
+      cursor: pointer; /* Pointer cursor on hover */
+      font-size: 14px; /* Font size */
+    }
+    
+    .reset-btn:hover {
+      background-color: #ddd; /* Darker background on hover */
+    }
 
-  .container-fluid {
-      background-color: transparent;
-      padding: 20px;
-      border-radius: 10px;
-  }
+    tableau-viz {
+      padding: 5px;
+    }
+    
+    .container-fluid {
+        background-color: transparent;
+        padding: 20px;
+    }
 
-  /* Style for the filter box */
-.filter-box {
-    background-color:  #76A458;
-    padding: 20px;
-    border: 2px solid #ccc;
-    border-radius: 15px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-} 
+    /* Style for the filter box */
+    .filter-box {
+        background-color:  #76A458;
+        padding: 20px;
+        border: 2px solid #ccc;
+        border-radius: 15px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    } 
 
-/* Style for the map box */
-.map-box {
-    border: 2px solid #ccc;
-    border-radius: 15px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-}
-</style>
+    /* Style for the map box */
+    .map-box {
+        border: 2px solid #ccc;
+        border-radius: 15px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    }
+  </style>
 
-<div class="container-fluid">
-  <h3> Submit your preferences and select two suburbs for comparison </h3>
-  <div class="row">
-    <!-- First column for the filter form -->
-    <div class="col-md-4 filter-box"> <!-- Applied the filter-box class -->
-      <h6><b>Filter Preferences</b></h6> <!-- Added heading here -->
-      <form method="POST" class="mb-4">
-        {% csrf_token %}
-    
-        <!-- House Type -->
-        <div class="form-group mb-3">
-            <label for="house_type">House Type</label>
-            <select class="form-control" id="house_type" name="house_type" title="Choose whether you want a house or a unit.">
-                <option value="h" selected>House</option>
-                <option value="u">Unit</option>
-            </select>
-        </div>
-    
-        <!-- Number of Rooms -->
-        <div class="form-group mb-3">
-            <label for="rooms">Number of Rooms</label>
-            <input type="number" class="form-control" id="rooms" name="rooms" value="3" min="1" max="10" title="Select the number of rooms you need.">
-        </div>
-    
-        <!-- Suburb Distance -->
-        <div class="form-group mb-3">
-            <label for="distance">Suburb distance from CBD (KM)</label>
-            <input type="number" class="form-control" id="distance" name="distance" value="10" min="5" max="50" title="Input how far you want to live from the CBD.">
-        </div>
-    
-        <!-- Affordable Housing Checkbox -->
-        <div class="mb-3">
-            <label class="form-check-label" for="affordable">Prioritise suburbs with affordable house prices:</label>
-            <input class="form-check-input ms-2" type="checkbox" id="affordable" name="affordable" title="This filter helps identify suburbs with affordable housing.">
-        </div>
-    
-        <!-- Prefer Parks Checkbox -->
-        <div class="mb-3">
-            <label class="form-check-label" for="prefer_parks">I prefer to go for walks in Parks:</label>
-            <input class="form-check-input ms-2" type="checkbox" id="prefer_parks" name="prefer_parks" title="This filter shows suburbs with larger park areas than average.">
-        </div>
-    
-        <!-- Frequent Bus Services Checkbox -->
-        <div class="mb-3">
-            <label class="form-check-label" for="prefer_bus">Prioritise suburbs with frequent bus services:</label>
-            <input class="form-check-input ms-2" type="checkbox" id="prefer_bus" name="prefer_bus" title="Select this filter to prioritize suburbs with more bus stations.">
-        </div>
-    
-        <!-- Car Parking Near Train Stations Checkbox -->
-        <div class="mb-3">
-            <label class="form-check-label" for="prefer_carpark">I prefer to park my car near train stations:</label>
-            <input class="form-check-input ms-2" type="checkbox" id="prefer_carpark" name="prefer_carpark" title="Select this filter to prioritize suburbs with more parking spaces near train stations.">
-        </div>
-    
-        <!-- Low CO2 Emission Checkbox -->
-        <div class="mb-3">
-            <label class="form-check-label" for="prefer_good_air_quality_low_co2_emission">Prioritise suburbs with low carbon dioxide emission:</label>
-            <input class="form-check-input ms-2" type="checkbox" id="prefer_good_air_quality_low_co2_emission" name="prefer_good_air_quality_low_co2_emission" title="Select this filter to find suburbs with the best air quality.">
-        </div>
-    
-        <!-- Low Crime Rate Checkbox -->
-        <div class="mb-3">
-            <label class="form-check-label" for="prefer_less_crime">Suburbs where frequency of crimes are lower:</label>
-            <input class="form-check-input ms-2" type="checkbox" id="prefer_less_crime" name="prefer_less_crime" title="Select this filter to prioritize suburbs with lower crime rates.">
-        </div>
-    
-        <!-- Submit Button -->
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </form>
-    </div>
+  <div id="holder" class="container-fluid" style="background-color: #76A458;">
+    <h4><b><u>Submit your preferences and select two suburbs for comparison</u></b></h4>
 
-    <!-- Second column for the map -->
-    <div class="col-md-8 ">
-      <div class="map-box" id="map" style="width: 100%; height: 650px; position: relative;"></div>
-    </div>
-  </div>
-</div>
+    <div class="container-fluid">
+      <div class="row">
 
-<div class="container mt-4">
-  <div class="row">
-    <div class="col-md-6">
-      <label for="suburb1">Select Suburb 1</label>
-      <select id="suburb1" name="suburb1" class="form-control">
-        <option value="">Select a suburb</option>
-        {% for suburb in suburb_list %}
-          <option value="{{ suburb }}">{{ suburb }}</option>
-        {% endfor %}
-      </select>
-      <h3 id="suburb1-name"></h3>
-      <div class="container mt-2" id="suburb1-reports"></div>
-      <div class="container mt-2" style="display: none;" id="suburb1-visualizations">
-        <tableau-viz id="viz1-crime" src="https://public.tableau.com/views/test_workbook_17281234047560/Sheet1" height="300px"></tableau-viz>
-        <tableau-viz id="viz1-offenses" src="https://public.tableau.com/views/freq_offences/Sheet3" height="300px"></tableau-viz>
-        <tableau-viz id="viz1-price" src="https://public.tableau.com/views/House_price_trends/Sheet2" height="300px"></tableau-viz>
-        <tableau-viz id="viz1-air" src="https://public.tableau.com/views/AirQuality_17281484496810/Sheet4" height="300px"></tableau-viz>
-        <tableau-viz id="viz1-accidents" src="https://public.tableau.com/views/Accident_17281512246590/Sheet5" height="300px"></tableau-viz>
+        <!-- First column for the filter form -->
+        <div class="col-md-4 filter-box">
+          <h4><u><b>Filter Preferences</b></u></h4>
+          <form method="POST" class="mb-4">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+        </div>
+
+        <!-- Second column for the map -->
+        <div class="col-md-8">
+          <div class="map-box" id="map" style="width: 100%; height: 700px; position: relative;"></div>
+        </div>
       </div>
     </div>
 
-    <div class="col-md-6">
-      <label for="suburb2">Select Suburb 2</label>
-      <select id="suburb2" name="suburb2" class="form-control">
-        <option value="">Select a suburb</option>
-        {% for suburb in suburb_list %}
-          <option value="{{ suburb }}">{{ suburb }}</option>
-        {% endfor %}
-      </select>
-      <h3 id="suburb2-name"></h3>
-      <div class="container mt-2" id="suburb2-reports"></div>
-      <div class="container mt-2" style="display: none;" id="suburb2-visualizations">
-        <tableau-viz id="viz2-crime" src="https://public.tableau.com/views/test_workbook_17281234047560/Sheet1" height="300px"></tableau-viz>
-        <tableau-viz id="viz2-offenses" src="https://public.tableau.com/views/freq_offences/Sheet3" height="300px"></tableau-viz>
-        <tableau-viz id="viz2-price" src="https://public.tableau.com/views/House_price_trends/Sheet2" height="300px"></tableau-viz>
-        <tableau-viz id="viz2-air" src="https://public.tableau.com/views/AirQuality_17281484496810/Sheet4" height="300px"></tableau-viz>
-        <tableau-viz id="viz2-accidents" src="https://public.tableau.com/views/Accident_17281512246590/Sheet5" height="300px"></tableau-viz>
+    <div class="row m-0 pt-1">
+      <div class="filter-box col-md-6 pt-2">
+        <label for="suburb1"><h5><u><b>Select Suburb 1</b></u></h5></label>
+        <select id="suburb1" name="suburb1" class="form-control">
+          <option value="">Select</option>
+          {% for suburb in suburb_list %}
+            <option value="{{ suburb }}">{{ suburb }}</option>
+          {% endfor %}
+        </select>
+        <h3 id="suburb1-name"></h3>
+        <div class="container mt-2" id="suburb1-reports"></div>
+        <div class="container mt-2" style="display: none;" id="suburb1-visualizations">
+          <tableau-viz id="viz1-crime" src="https://public.tableau.com/views/test_workbook_17281234047560/Sheet1" height="300px"></tableau-viz>
+          <tableau-viz id="viz1-offenses" src="https://public.tableau.com/views/freq_offences/Sheet3" height="300px"></tableau-viz>
+          <tableau-viz id="viz1-price" src="https://public.tableau.com/views/House_price_trends/Sheet2" height="300px"></tableau-viz>
+          <tableau-viz id="viz1-air" src="https://public.tableau.com/views/AirQuality_17281484496810/Sheet4" height="300px"></tableau-viz>
+          <tableau-viz id="viz1-accidents" src="https://public.tableau.com/views/Accident_17281512246590/Sheet5" height="300px"></tableau-viz>
+        </div>
       </div>
+
+      <div class="filter-box col-md-6 pt-2">
+        <label for="suburb2"><h5><u><b>Select Suburb 2</b></u></h5></label>
+        <select id="suburb2" name="suburb2" class="form-control">
+          <option value="">Select</option>
+          {% for suburb in suburb_list %}
+            <option value="{{ suburb }}">{{ suburb }}</option>
+          {% endfor %}
+        </select>
+        <h3 id="suburb2-name"></h3>
+        <div class="container mt-2" id="suburb2-reports"></div>
+        <div class="container mt-2" style="display: none;" id="suburb2-visualizations">
+          <tableau-viz id="viz2-crime" src="https://public.tableau.com/views/test_workbook_17281234047560/Sheet1" height="300px"></tableau-viz>
+          <tableau-viz id="viz2-offenses" src="https://public.tableau.com/views/freq_offences/Sheet3" height="300px"></tableau-viz>
+          <tableau-viz id="viz2-price" src="https://public.tableau.com/views/House_price_trends/Sheet2" height="300px"></tableau-viz>
+          <tableau-viz id="viz2-air" src="https://public.tableau.com/views/AirQuality_17281484496810/Sheet4" height="300px"></tableau-viz>
+          <tableau-viz id="viz2-accidents" src="https://public.tableau.com/views/Accident_17281512246590/Sheet5" height="300px"></tableau-viz>
+        </div>
+      </div>
+
     </div>
   </div>
-</div>
 
-<script type="module" src="https://public.tableau.com/javascripts/api/tableau.embedding.3.latest.min.js"></script>
-<script>
-  mapboxgl.accessToken = '{{ mapbox_api_key }}'; // Mapbox public access token
+  <script type="module" src="https://public.tableau.com/javascripts/api/tableau.embedding.3.latest.min.js"></script>
 
-  // Initialize the map with basic settings
-  var map = new mapboxgl.Map({
-    container: 'map', // ID of the container element
-    style: 'mapbox://styles/mapbox/streets-v11', // Mapbox style URL
-    center: [144.9631, -37.8136], // Starting position [longitude, latitude]
-    zoom: 11 // Initial zoom level
-  });
+  <script>
+    mapboxgl.accessToken = '{{ mapbox_api_key }}'; // Mapbox public access token
 
-  {% if geojson_url %}
-
-  map.on('load', function () {
-    // Add the GeoJSON data source to the map
-    map.addSource('melbourne', {
-      'type': 'geojson',
-      'data': '{{ geojson_url }}' // The URL to the geoJSON file
+    // Initialize the map with basic settings
+    var map = new mapboxgl.Map({
+      container: 'map', // ID of the container element
+      style: 'mapbox://styles/mapbox/streets-v11', // Mapbox style URL
+      center: [144.9631, -37.8136], // Starting position [longitude, latitude]
+      zoom: 11 // Initial zoom level
     });
 
-    // Add a layer for displaying the neighborhoods, color-coded by their 'SerialNumber' property
-    map.addLayer({
-      'id': 'melbourne-layer',
-      'type': 'fill', // Fill polygons with color
-      'source': 'melbourne', // Use the 'melbourne' GeoJSON source
-      'paint': {
-        'fill-color': [
-          'interpolate', // Interpolate colors based on 'SerialNumber' values
-          ['linear'], 
-          ['get', 'SerialNumber'], // Get the 'SerialNumber' property from the GeoJSON
-          1, '#1bac29',  // Color for SerialNumber 1 (light yellow)
-          2, '#74be79',  // Color for SerialNumber 2 (yellow)
-          3, '#cfe873',  // Color for SerialNumber 3 (orange)
-          4, '#d95b45',  // Color for SerialNumber 4 (red-orange)
-          5, '#e60a0a'   // Color for SerialNumber 5 (dark red)
-        ],
-        'fill-opacity': 0.7 // Set fill opacity for the polygons
-      }
+    // Function to scroll to the compare button after the page refreshes
+    function holder() {
+      const compareContainer = document.getElementById('holder');
+      compareContainer.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center'
+      });
+      
+    }
+
+    // Scroll to the compare button if it's visible
+    document.addEventListener('DOMContentLoaded', function () {
+        holder();
     });
 
-    // Add a black border around each neighborhood polygon
-    map.addLayer({
-      'id': 'border-layer',
-      'type': 'line', // Line layer for borders
-      'source': 'melbourne', // Use the same 'melbourne' GeoJSON source
-      'paint': {
-        'line-color': '#000', // Black border color
-        'line-width': 1 // Border width
-      }
-    });
+    {% if geojson_url %}
 
-    // Once the GeoJSON data is fully loaded, adjust the map bounds to fit all the features
-    map.on('sourcedata', function(e) {
-      if (e.isSourceLoaded && e.sourceId === 'melbourne') {
-          var bounds = new mapboxgl.LngLatBounds(); // Create a bounding box object
+      map.on('load', function () {
+        // Add the GeoJSON data source to the map
+        map.addSource('melbourne', {
+          'type': 'geojson',
+          'data': '{{ geojson_url }}' // The URL to the geoJSON file
+        });
 
-          // Get all features from the 'melbourne' source and extend the bounds to include each feature
-          var features = map.querySourceFeatures('melbourne');
-          features.forEach(function(feature) {
-              var coordinates = feature.geometry.coordinates;
-              coordinates.forEach(function(coord) {
-                  bounds.extend(coord); // Extend the bounds to include the feature's coordinates
-              });
-          });
+        // Add a layer for displaying the neighborhoods, color-coded by their 'SerialNumber' property
+        map.addLayer({
+          'id': 'melbourne-layer',
+          'type': 'fill', // Fill polygons with color
+          'source': 'melbourne', // Use the 'melbourne' GeoJSON source
+          'paint': {
+            'fill-color': [
+              'interpolate', // Interpolate colors based on 'SerialNumber' values
+              ['linear'], 
+              ['get', 'SerialNumber'], // Get the 'SerialNumber' property from the GeoJSON
+              1, '#1bac29',  // Color for SerialNumber 1 (light yellow)
+              2, '#74be79',  // Color for SerialNumber 2 (yellow)
+              3, '#cfe873',  // Color for SerialNumber 3 (orange)
+              4, '#d95b45',  // Color for SerialNumber 4 (red-orange)
+              5, '#e60a0a'   // Color for SerialNumber 5 (dark red)
+            ],
+            'fill-opacity': 0.7 // Set fill opacity for the polygons
+          }
+        });
 
-          originalBounds = bounds; // Store the bounds globally to allow reset later
+        // Add a black border around each neighborhood polygon
+        map.addLayer({
+          'id': 'border-layer',
+          'type': 'line', // Line layer for borders
+          'source': 'melbourne', // Use the same 'melbourne' GeoJSON source
+          'paint': {
+            'line-color': '#000', // Black border color
+            'line-width': 1 // Border width
+          }
+        });
 
-          // Fit the map to the calculated bounds
-          map.fitBounds(bounds, {
-              padding: 20, // Padding around the map view
-              maxZoom: 11, // Maximum zoom level
-              duration: 1000 // Animation duration (1 second)
-          });
-      }
-    });
+        // Once the GeoJSON data is fully loaded, adjust the map bounds to fit all the features
+        map.on('sourcedata', function(e) {
+          if (e.isSourceLoaded && e.sourceId === 'melbourne') {
+              var bounds = new mapboxgl.LngLatBounds(); // Create a bounding box object
 
-    map.addLayer({
-      'id': 'suburb-labels',
-      'type': 'symbol', // Use symbols for labels
-      'source': 'melbourne', // Use the same 'melbourne' GeoJSON source
-      'layout': {
-        'text-field': [
-          'concat',  // Concatenate the rank with the suburb name
-          '#', ['get', 'SerialNumber'], ' ', ['get', 'LOC_NAME']
-        ],
-        'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'], // Font for the labels
-        'text-size': 12, // Font size
-        'text-anchor': 'center' // Anchor the text to the center of the polygon
-      },
-      'paint': {
-        'text-color': '#000', // Set text color to black
-        'text-halo-color': '#FFF', // White halo around the text for readability
-        'text-halo-width': 2 // Halo width
-      }
-    });
-
-    // Custom reset button control to reset the map view to the original bounds
-    class ResetViewControl {
-      onAdd(map) {
-          this.map = map;
-          this.container = document.createElement('button'); // Create a button element
-          this.container.className = 'mapboxgl-ctrl reset-btn'; // Set button class
-          this.container.textContent = 'Reset View'; // Button text
-          this.container.onclick = function() {
-              // Reset the map to the original bounds
-              if (originalBounds) {
-                  map.fitBounds(originalBounds, {
-                      padding: 20, // Same padding used before
-                      maxZoom: 11, // Same maxZoom
-                      duration: 1000 // Same duration
+              // Get all features from the 'melbourne' source and extend the bounds to include each feature
+              var features = map.querySourceFeatures('melbourne');
+              features.forEach(function(feature) {
+                  var coordinates = feature.geometry.coordinates;
+                  coordinates.forEach(function(coord) {
+                      bounds.extend(coord); // Extend the bounds to include the feature's coordinates
                   });
-              }
-          };
-          return this.container; // Return the button element
+              });
+
+              originalBounds = bounds; // Store the bounds globally to allow reset later
+
+              // Fit the map to the calculated bounds
+              map.fitBounds(bounds, {
+                  padding: 20, // Padding around the map view
+                  maxZoom: 11, // Maximum zoom level
+                  duration: 1000 // Animation duration (1 second)
+              });
+          }
+        });
+
+        map.addLayer({
+          'id': 'suburb-labels',
+          'type': 'symbol', // Use symbols for labels
+          'source': 'melbourne', // Use the same 'melbourne' GeoJSON source
+          'layout': {
+            'text-field': [
+              'concat',  // Concatenate the rank with the suburb name
+              '#', ['get', 'SerialNumber'], ' ', ['get', 'LOC_NAME']
+            ],
+            'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'], // Font for the labels
+            'text-size': 12, // Font size
+            'text-anchor': 'center' // Anchor the text to the center of the polygon
+          },
+          'paint': {
+            'text-color': '#000', // Set text color to black
+            'text-halo-color': '#FFF', // White halo around the text for readability
+            'text-halo-width': 2 // Halo width
+          }
+        });
+
+        
+        // Initialize a variable to keep track of the current popup
+        let currentPopup = null;
+
+        // Add a hover effect to the 'melbourne-layer' to show a popup with information
+        map.on('mouseenter', 'melbourne-layer', function (e) {
+            map.getCanvas().style.cursor = 'pointer'; // Change cursor to pointer on hover
+
+            // Get information from the hovered feature
+            var coordinates = e.lngLat;
+            var suburbName = e.features[0].properties.LOC_NAME;
+            var houseCount = e.features[0].properties.HouseCount;
+            var averagePrice = e.features[0].properties.AveragePrice;
+            var averageDistance = e.features[0].properties.AverageDistance;
+            var rank = e.features[0].properties.TotalRank;
+
+            // If there's already a popup, remove it
+            if (currentPopup) {
+                currentPopup.remove();
+            }
+
+            // Create a new popup with the suburb information
+            currentPopup = new mapboxgl.Popup({
+                    closeButton: false, // Disable the close button
+                    closeOnClick: false // Keep the popup open until manually closed or cursor leaves
+                })
+                .setLngLat(coordinates) // Set popup position
+                .setHTML('<h4>' + suburbName + '</h4>' +
+                        '<p>House Count: ' + houseCount + '</p>' +
+                        '<p>Average Price: $' + averagePrice.toFixed(2) + '</p>' +
+                        '<p>Average Distance from Melbourne CBD: ' + averageDistance + ' km</p>' +
+                        '<p>Total Rank: ' + rank + '</p>') // Set HTML content
+                .addTo(map); // Add the popup to the map
+        });
+
+        // Remove the popup when the mouse leaves the feature
+        map.on('mouseleave', 'melbourne-layer', function () {
+            map.getCanvas().style.cursor = ''; // Reset cursor to default
+
+            // Remove the popup if it exists
+            if (currentPopup) {
+                currentPopup.remove();
+                currentPopup = null; // Clear the variable
+            }
+        });
+
+
+        // Custom reset button control to reset the map view to the original bounds
+        class ResetViewControl {
+          onAdd(map) {
+              this.map = map;
+              this.container = document.createElement('button'); // Create a button element
+              this.container.className = 'mapboxgl-ctrl reset-btn'; // Set button class
+              this.container.textContent = 'Reset View'; // Button text
+              this.container.onclick = function() {
+                  // Reset the map to the original bounds
+                  if (originalBounds) {
+                      map.fitBounds(originalBounds, {
+                          padding: 20, // Same padding used before
+                          maxZoom: 11, // Same maxZoom
+                          duration: 1000 // Same duration
+                      });
+                  }
+              };
+              return this.container; // Return the button element
+          }
+
+          onRemove() {
+              this.container.parentNode.removeChild(this.container); // Remove the button element
+              this.map = undefined;
+          }
       }
 
-      onRemove() {
-          this.container.parentNode.removeChild(this.container); // Remove the button element
-          this.map = undefined;
-      }
-   }
+        // Add the reset view button control to the map
+        map.addControl(new ResetViewControl(), 'top-right'); // Add the control to the top-right corner
+      });
 
-    // Add the reset view button control to the map
-    map.addControl(new ResetViewControl(), 'top-right'); // Add the control to the top-right corner
-  });
+      document.getElementById('suburb1').addEventListener('change', checkSelections);
+      document.getElementById('suburb2').addEventListener('change', checkSelections);
 
-  document.getElementById('suburb1').addEventListener('change', checkSelections);
-  document.getElementById('suburb2').addEventListener('change', checkSelections);
+      function checkSelections() {
+        var dropdown1Value = document.getElementById('suburb1').value;
+        var dropdown2Value = document.getElementById('suburb2').value;
 
-  function checkSelections() {
-    var dropdown1Value = document.getElementById('suburb1').value;
-    var dropdown2Value = document.getElementById('suburb2').value;
+        if (dropdown1Value && dropdown2Value && (dropdown1Value != 'Select a suburb') && (dropdown2Value != 'Select a suburb')) {
+          document.getElementById('suburb1-visualizations').style.display = 'block';
+          document.getElementById('suburb2-visualizations').style.display = 'block';
 
-    if (dropdown1Value && dropdown2Value && (dropdown1Value != 'Select a suburb') && (dropdown2Value != 'Select a suburb')) {
-      document.getElementById('suburb1-visualizations').style.display = 'block';
-      document.getElementById('suburb2-visualizations').style.display = 'block';
+          // scroll to reports
+          var reports = document.getElementById('reports')
+          reports.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center'
+        });
 
-      // Update visualizations with the selected suburb keys
-      updateVisualizations(dropdown1Value, 'viz1');
-      updateVisualizations(dropdown2Value, 'viz2');
-    }
-  }
-
-  function updateVisualizations(suburb, vizPrefix) {
-    let report_types = ['crime', 'offenses', 'price', 'air', 'accidents'];
-    let parameter_id = ['Suburb Selector', 'Suburb Selector', 'Suburb Selector', 'Suburb Name', 'Suburb Selector'];
-
-    for (let i = 0; i < report_types.length; i++) {
-        let vizElementId = `${vizPrefix}-${report_types[i]}`;
-        let vizElement = document.getElementById(vizElementId);
-        if (vizElement) {
-            tableau.VizManager.getVizs().forEach(viz => {
-                if (viz._vizDiv.id === vizElementId) {
-                    viz.getWorkbook().changeParameterValueAsync(parameter_id[i], suburb)
-                        .catch(function (error) {
-                            console.error('Error updating visualization:', error);
-                        });
-                }
-            });
+          // Update visualizations with the selected suburb keys
+          updateVisualizations(dropdown1Value, 'viz1');
+          updateVisualizations(dropdown2Value, 'viz2');
         }
-    }
-  }
-{% endif %}
-</script>
+      }
 
-<!-- Enable tooltips for fields with title attributes using Bootstrap -->
-<script>
+      function updateVisualizations(suburb, vizPrefix) {
+        let report_types = ['crime', 'offenses', 'price', 'air', 'accidents'];
+        let parameter_id = ['Suburb Selector', 'Suburb Selector', 'Suburb Selector', 'Suburb Name', 'Suburb Selector'];
+
+        for (let i = 0; i < report_types.length; i++) {
+            let vizElementId = `${vizPrefix}-${report_types[i]}`;
+            let vizElement = document.getElementById(vizElementId);
+            if (vizElement) {
+                tableau.VizManager.getVizs().forEach(viz => {
+                    if (viz._vizDiv.id === vizElementId) {
+                        viz.getWorkbook().changeParameterValueAsync(parameter_id[i], suburb)
+                            .catch(function (error) {
+                                console.error('Error updating visualization:', error);
+                            });
+                    }
+                });
+            }
+        }
+      }
+    {% endif %}
+  </script>
+
+  <!-- Enable tooltips for fields with title attributes using Bootstrap -->
+  <script>
     document.addEventListener("DOMContentLoaded", function() {
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[title]'));
         var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
           return new bootstrap.Tooltip(tooltipTriggerEl);
         });
       });
-    </script>
-    
-    <!-- Optional: Style the reset button with custom CSS -->
-    <style>
-      .reset-btn {
-        background-color: #f8f9fa; /* Light background */
-        border: 1px solid #000; /* Black border */
-        padding: 5px 10px; /* Padding for button */
-        cursor: pointer; /* Pointer cursor on hover */
-        font-size: 14px; /* Font size */
-      }
-      
-      .reset-btn:hover {
-        background-color: #ddd; /* Darker background on hover */
-      }
-</style>
+  </script>
     
 {% endblock %}

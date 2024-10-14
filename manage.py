@@ -9,7 +9,7 @@ def main():
 
     # When running in Azure, the WEBSITE_HOSTNAME environment variable is automatically set to
     # the URL of the app (e.g. msdocs-python-webapp-quickstart-123.azurewebsites.net)
-    settings_module = 'sustainabode.production' if 'WEBSITE_HOSTNAME' in os.environ else 'sustainabode.settings'
+    settings_module = 'project.production' if 'WEBSITE_HOSTNAME' in os.environ else 'project.settings'
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', settings_module)
 
     try:
