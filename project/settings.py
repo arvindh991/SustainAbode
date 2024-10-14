@@ -15,7 +15,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [os.environ['WEBSITE_HOSTNAME']] if 'WEBSITE_HOSTNAME' in os.environ else ['sustainabodeau-e2c9bec8e3hre8f0.australiasoutheast-01.azurewebsites.net', 'sustainabode.xyz', '127.0.0.1']
 
-CSRF_TRUSTED_ORIGINS = ['https://sustainabodeau-e2c9bec8e3hre8f0.australiasoutheast-01.azurewebsites.net', 'https://sustainabode.xyz']
+CSRF_TRUSTED_ORIGINS = ['https://sustainabodeau-e2c9bec8e3hre8f0.australiasoutheast-01.azurewebsites.net', 'https://sustainabode.xyz', '20.70.176.88']
 
 # Application definition
 
