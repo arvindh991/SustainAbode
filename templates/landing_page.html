@@ -8,12 +8,12 @@
 
     <div class="hero-images">
         <div class="hero-image-container">
-            <img src="{% static 'images/sustaibability.png' %}" alt="Hero Image 1" class="img-fluid w-100" style="width: 100%;">
+            <img src="{% static '/images/sustaibability.png' %}" alt="Hero Image 1" class="img-fluid w-100" style="width: 100%;">
             <a class="btn btn-custom discover-more" id="scrollBtn1" href="#up_id" style="margin-bottom: 12%;">Scroll Down</a>
         </div>
         <div id="up_id">
         <div class="second-hero-container" style="margin-top:2";>
-            <img src="{% static 'images/Knowledge Center (4).svg' %}" alt="Hero Image 2" class="img-fluid w-100">
+            <img src="{% static '/images/Knowledge Center (4).svg' %}" alt="Hero Image 2" class="img-fluid w-100">
             <div class="overlay-content">
                 <div class="second-hero-text" style="margin-bottom: ;">
                     <h1 class="outlined-text" style="margin-top: -14%;">LOOKING FOR A BUDGET FRIENDLY HOUSE<br>THAT ALIGNS WITH SUSTAINABILITY ?</h1>
@@ -26,19 +26,19 @@
 
                 <div class="wrapper active-page1">
                     <div class="page page1">
-                        <img src="{% static 'images/f1.png' %}" alt="f1" style="height: 90%; width: 100%" ;>
+                        <img src="{% static '/images/f1.png' %}" alt="f1" style="height: 90%; width: 100%" ;>
                     </div>
                     <div class="page page2">
-                        <img src="{% static 'images/f2.png' %}" alt="f2" style="height: 100%; width:100%"; >
+                        <img src="{% static '/images/f2.png' %}" alt="f2" style="height: 100%; width:100%"; >
                     </div>
                     <div class="page page3">
-                        <img src="{% static 'images/f3.png' %}" alt="f3" style="height: 90%";>
+                        <img src="{% static '/images/f3.png' %}" alt="f3" style="height: 90%";>
                     </div>
                     <div class="page page4">
-                        <img src="{% static 'images/f4.png' %}" alt="f4" style="height: 100%";>
+                        <img src="{% static '/images/f4.png' %}" alt="f4" style="height: 100%";>
                     </div>
                     <div class="page page5">
-                        <img src="{% static 'images/f5.png' %}" alt="f4" style="height: 100%";>
+                        <img src="{% static '/images/f5.png' %}" alt="f4" style="height: 100%";>
                     </div>
                 </div>
                 <div class="nav-panel">
@@ -57,15 +57,16 @@
             </div>
         </div>
     </div>
-    /* Transition 3 find out more with four find out more reports */
-        <img src="{% static 'images/6.png' %}" alt="New Frame 1" class="img-fluid w-100">
+    <!-- ------------------ Transition 3 find out more with four "find out more reports"------------------------- -->
+    <div id="skip-down" class="fourth-container">
+        <img src="{% static '/images/6.png' %}" alt="New Frame 1" class="img-fluid w-100">
 
         <div class="w-100 header-container">
             <h1 class="outlined-text"><b>How we are helping
                     promoting sustainability </b>
             </h1>
             <div class="frth-section-1">
-                <img src="{% static 'images/HouseSymbol.png' %}" alt="New Frame 5" class="img-fluid" />
+                <img src="{% static '/images/HouseSymbol.png' %}" alt="New Frame 5" class="img-fluid" />
                 <h4 class="text" id="scrollText">
                     We provide insights into affordable
                     housing options, helping you find a
@@ -75,7 +76,7 @@
                 <a class="find-out-more" target="_blank" href="{% url 'housingdata_report' %}">find out more</a>
             </div>
             <div class="frth-section-2">
-                <img src="{% static 'images/CarbonSymbol.png' %}" alt="New Frame 5" class="img-fluid">
+                <img src="{% static '/images/CarbonSymbol.png' %}" alt="New Frame 5" class="img-fluid">
                 <h4 class="text" id="scrollText1">
                     We help you choose areas with
                     lower carbon emissions,close to parks and reserves,
@@ -87,7 +88,7 @@
         </div>
         <div class="w-100 fouth-section2">
             <div class="frth-section-1">
-                <img src="{% static 'images/CrimeSymbol.png' %}" alt="New Frame 5" class="img-fluid">
+                <img src="{% static '/images/CrimeSymbol.png' %}" alt="New Frame 5" class="img-fluid">
                 <h4 class="text" id="scrollText2">
                     Our solution highlights neighborhoods
                     with lower crime rates, ensuring safety
@@ -98,7 +99,7 @@
             </div>
 
             <div class="frth-section-2">
-                <img src="{% static 'images/trafficSymbol.png' %}" alt="New Frame 5" class="img-fluid">
+                <img src="{% static '/images/trafficSymbol.png' %}" alt="New Frame 5" class="img-fluid">
                 <h4 class="text" id="scrollText3">
                     Our platform prioritizes eco-friendly
                     living by integrating transportation
@@ -112,10 +113,10 @@
         </div>
 
     </div>
-    <!-- Sustainscore map layout -->
+    <!-- ------------------Sustainscore map layout ------ -->
     <div class="third-container">
         <a class="btn btn-custom discover-more" id="findbutton" href="/sustainscoremap" style="left:24%; margin-bottom: 5%";>find more</a>
-        <img src="{% static 'images/Knowledge Center (5).png' %}" alt="Knowledge Center 5"
+        <img  src="{% static '/images/Knowledge Center (5).png' %}" alt="Knowledge Center 5"
             class="img-fluid w-100">
         <!-- You can add more content here if needed -->
     </div>
@@ -123,7 +124,7 @@
 
 
 
-<!-- top t suburb map  -->
+<!-- ------------------top t suburb map  ------ -->
     <!-- Graph section starts here -->
         <div class="graph-container">
             <div class="w-100 header-container" style="position: relative;width: 100%; height: 400px; padding: 20px;">
@@ -140,11 +141,11 @@
             </div>
         </div>
 
-<!-- Knowledge ecnter for news and articles -->
+<!-- ------------------Knowledge ecnter for news and articles ------ -->
 
     <div class="Knowledge-container" style="position: relative;">
         <div class="Knowledge-background-img" style="position: absolute;">
-            <img src="{% static 'images/bg_frame5.png' %}" alt="New Frame 4" class="img-fluid w-100">
+            <img src="{% static '/images/bg_frame5.png' %}" alt="New Frame 4" class="img-fluid w-100">
         </div>
         <div class="Knowledge-header" style="position: absolute; z-index: 12;width: 100%;text-align: center;margin-top: 2%;color: #000;">
             <h1 class="outlined-text1">Knowledge Center</h1>
@@ -152,7 +153,7 @@
         <div class="Knowledge-main" style="position: absolute; margin-top: 10%;">
             <div class="Knowledge-section-1">
                 <div class="Knowledge-image-container">
-                    <img src="{% static 'images/expensive_suburbs2.jpeg' %}" alt="New Frame 4" class="img-fluid w-100 animated-img">
+                    <img src="{% static '/images/expensive_suburbs2.jpeg' %}" alt="New Frame 4" class="img-fluid w-100 animated-img">
                 </div>
                 <div class="Knowledge-text-container">
                     <h3 style="font-family:ovo ; color: white; text-align: justify; margin: 8%;">
@@ -169,7 +170,7 @@
 
             <div class="Knowledge-section-2">
                 <div class="Knowledge-image-container">
-                    <img src="{% static 'images/latest_crime.jpg' %}" alt="New Frame 4" class="img-fluid w-100 animated-img">
+                    <img src="{% static '/images/latest_crime.jpg' %}" alt="New Frame 4" class="img-fluid w-100 animated-img">
                 </div>
                 <div class="Knowledge-text-container">
                     <h3 style="font-family:ovo ; color: white; text-align: justify; margin: 8%;">
@@ -185,7 +186,7 @@
 
             <div class="Knowledge-section-3">
                 <div class="Knowledge-image-container">
-                    <img src="{% static 'images/Road_rages.jpg' %}" alt="New Frame 4" class="img-fluid w-100 animated-img">
+                    <img src="{% static '/images/Road_rages.jpg' %}" alt="New Frame 4" class="img-fluid w-100 animated-img">
                 </div>
                 <div class="Knowledge-text-container">
                     <h3 style=" font-family:ovo ; color: white; text-align: justify; margin: 8%;">
